@@ -10,7 +10,7 @@
 
 [![在线访问](https://img.shields.io/badge/在线访问-stellasora--team--cn.pages.dev-4b5082?style=for-the-badge)](https://stellasora-team-cn.pages.dev)
 [![托管](https://img.shields.io/badge/托管-Cloudflare%20Pages-F38020?style=flat-square&logo=cloudflare&logoColor=white)](https://stellasora-team-cn.pages.dev)
-[![数据来源](https://img.shields.io/badge/数据来源-stelladb%20%2F%20BWIKI-52C878?style=flat-square)](#数据来源)
+[![数据来源](https://img.shields.io/badge/数据来源-stelladb-52C878?style=flat-square)](https://github.com/AutumnVN/stelladb)
 
 </div>
 
@@ -64,12 +64,23 @@ github.com/AutumnVN/ssassets   ──►  download-*.js   ──►  assets/img/
 
 ### 数据来源
 
-| 内容 | 来源 |
-|------|------|
-| 旅人 / 秘纹 / 潜能 / 预设码格式 | [stelladb](https://github.com/AutumnVN/stelladb)（含 ss-data） |
-| 高清头像 / 立绘 / 潜能图标 / 秘纹效果图 / buff 图 | [ssassets](https://github.com/AutumnVN/ssassets) |
-| 3-4 星秘纹国服译名、属性 / 星级 / 音符图标 | 星塔旅人 BWIKI |
-| 字体 | MiSans / MiSansLatin（按站点用字子集化，19 MB → 1.1 MB） |
+站点数据全部来自 **stelladb**（同一作者 AutumnVN 的项目，包含两个仓库，本站两个都用）：
+
+| stelladb 的仓库 | 提供什么 |
+|---|---|
+| [ss-data](https://github.com/AutumnVN/ss-data) | 旅人与秘纹的全部文本数据：星级 / 属性 / 职业 / 潜能分组 / 效果描述 / 各级数值 / 音符需求 |
+| [ssassets](https://github.com/AutumnVN/ssassets) | 全部图片素材：旅人头像 39、秘纹立绘 100、潜能图标 423、秘纹效果图 69、buff 图 32 |
+
+```
+stelladb
+  |- ss-data    -->  build-data.js   -->  assets/data/*.json
+  '- ssassets   -->  download-*.js   -->  assets/img/hd/**
+```
+
+其余部分：
+
+- 属性 / 星级 / 音符小图标（24 个）：stelladb 的素材库里没有对应资源，这部分是早期从社区 wiki 整理的，随项目打包，不由脚本下载
+- 字体 MiSans / MiSansLatin，已按站点用字子集化（19 MB 压缩到 1.1 MB）
 
 ---
 

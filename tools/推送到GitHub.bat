@@ -2,57 +2,63 @@
 cd /d "%~dp0.."
 set REPO=https://github.com/yizhishan-zzz/stellasora-team-cn.git
 echo ==================================================
-echo   Upload project to GitHub (Cloudflare rebuilds)
+echo   Upload to GitHub  (Cloudflare rebuilds in ~1 min)
 echo   Folder: %CD%
+echo   Repo  : %REPO%
 echo ==================================================
 echo.
 if not exist ".git" (
-  echo [X] .git not found in %CD%
+  echo [X] .git not found. Put this file inside the project folder.
   pause
   exit /b 1
 )
 git remote remove origin >nul 2>&1
 git remote add origin %REPO%
 git branch -M main
+echo --- Commits to upload ---
+git log --oneline -6
 echo.
-echo ==================================================
-echo   Login prompt:
-echo     Username : yizhishan-zzz
-echo     Password : paste your access token
-echo                (nothing shows while typing - normal)
-echo ==================================================
-echo.
-pause
-echo.
-echo --- Step 1/3: check local data files ---
+echo --- Check data files ---
 node tools\check-data.js
 if errorlevel 1 (
   echo.
-  echo     [X] Data file is broken - aborting upload so the site stays working.
+  echo     [X] Data file is broken. Upload cancelled so the website stays working.
   pause
   exit /b 1
 )
 echo.
-echo --- Step 2/3: fetch remote ---
+echo --- Fetch remote ---
 git fetch origin main
 echo.
-echo --- Step 3/3: force push local data over remote ---
-echo     (local file is the source of truth; remote edits will be overwritten)
-git push --force-with-lease origin main
-set RC=%ERRORLEVEL%
+echo --- Push (local data overwrites the remote copy) ---
+git push --force origin main
+if errorlevel 1 (
+  echo.
+  echo     [!] Push failed. Retrying once ...
+  echo     If a login prompt appears:
+  echo        Username : yizhishan-zzz
+  echo        Password : paste your token  ^(text stays invisible - normal^)
+  echo.
+  git fetch origin main
+  git push --force origin main
+)
+if errorlevel 1 (
+  echo.
+  echo [X] Push still failed. Common reasons:
+  echo     1. Network problem - just run this file again
+  echo     2. Token expired or lacks Contents write permission
+  echo     3. Wrong repository name
+  pause
+  exit /b 1
+)
 echo.
-if "%RC%"=="0" goto ok
-echo [X] Push FAILED, exit code %RC%
-echo.
-echo   If it complains about stale info, run again - it usually works the second time.
-pause
-exit /b 1
-:ok
 echo [OK] Uploaded!
-echo      Repo: https://github.com/yizhishan-zzz/stellasora-team-cn
-echo      Site: https://stellasora-team-cn.pages.dev   (rebuilds in ~1 min)
 echo.
-echo [IMPORTANT] Remove the token from local git config:
-echo   git remote set-url origin %REPO%
+echo --- Verify what is on GitHub now ---
+node tools\verify-push.js
 echo.
+echo ==================================================
+echo   Site : https://stellasora-team-cn.pages.dev
+echo   Wait about 1 minute, then press Ctrl+Shift+R on the site.
+echo ==================================================
 pause
