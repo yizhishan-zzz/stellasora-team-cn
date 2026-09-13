@@ -674,83 +674,6 @@
       "updatedAt": 1789106538594
     },
     {
-      "id": "rec11",
-      "name": "猫眼菈露圣夜队(2)",
-      "description": "",
-      "chars": [
-        "maoyan",
-        "lalusy",
-        "zijin"
-      ],
-      "pots": [
-        {
-          "喵神诅咒": 1,
-          "黑暗轮回": 1,
-          "优势火力": 6,
-          "强敌断灭": 6,
-          "诅咒降临": 6,
-          "贯穿射击": 6,
-          "灾厄余响": 6
-        },
-        {
-          "火雨倾盆": 1,
-          "特别装药": 1,
-          "礼炮双响": 1,
-          "庆典再启": 6,
-          "童话法则": 6,
-          "玩具军团": 6
-        },
-        {
-          "薪火的再燃": 1,
-          "往日·余烬": 1,
-          "伏笔验证": 6,
-          "完美接戏": 6,
-          "客串回": 6,
-          "印象强化": 6,
-          "永不落幕的演出": 6,
-          "渡火轮回": 1
-        }
-      ],
-      "mainPatterns": [
-        "p060",
-        "p023",
-        null
-      ],
-      "subPatterns": [
-        null,
-        null,
-        null
-      ],
-      "mainBackup": [
-        null,
-        null,
-        null,
-        null,
-        null
-      ],
-      "subBackup": [
-        null,
-        null,
-        null,
-        null,
-        null
-      ],
-      "tags": {
-        "element": "火",
-        "style": "",
-        "power": ""
-      },
-      "presetCode": "AAAAcgAAAJ4AAAB+MAADDbbCABgMBmwwGGwB",
-      "charNames": [
-        "猫眼",
-        "菈露(圣夜)",
-        "紫槿"
-      ],
-      "potTotal": 86,
-      "isRecommended": true,
-      "updatedAt": 1789106540594
-    },
-    {
       "id": "rec12",
       "name": "猫眼赤霞队",
       "description": "",
@@ -1664,5 +1587,9 @@
       "updatedAt": 1789327585723
     }
   ],
+<<<<<<< HEAD
   "updatedAt": "2026-09-13T19:26:25.723Z"
+=======
+  "updatedAt": "2026-09-13T19:22:48.634Z"
+>>>>>>> origin/main
 }
