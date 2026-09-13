@@ -56,14 +56,15 @@ stella_sora_network/
 │
 ├── tools/                 工具脚本（不参与运行，只在本机用）
 │   ├── 启动服务器.bat       启动本地服务器（8080）
-│   ├── 推送到GitHub.bat     推送到仓库（自动检查数据 + 强制覆盖线上）
+│   ├── 推送到GitHub.bat     推送（先体检数据，再强制覆盖线上）
 │   ├── 检查数据.bat         体检：JSON 能否解析、有无合并冲突残留
-│   ├── 更新数据.bat         4 步更新游戏数据与高清图
+│   ├── 更新数据.bat         一键更新：抓数据 → 重建 JSON → 下高清图 → 体检
 │   ├── serve.js             零依赖静态服务器 + 配队保存接口
-│   ├── fetch-data.ps1       下载 ss-data
-│   ├── build-data.js        把 ss-data 转成 assets/data/*.json
-│   ├── download-icons.js    下载高清潜能 / 秘纹 / buff 图
-│   ├── subset-fonts.js      字体子集化（数据大改后可重跑）
+│   ├── fetch-data.js        下载 ss-data（Node 版；原 ps1 版已被 TLS 挡住）
+│   ├── build-data.js        把 ss-data 转成 assets/data/*.json，会自动新增新角色/新秘纹
+│   ├── download-icons.js    下载高清潜能 / 秘纹效果图 / buff 图
+│   ├── download-hd.js       下载高清头像与秘纹立绘
+│   ├── subset-fonts.js      字体子集化（数据大改、出现新汉字后重跑）
 │   ├── check-data.js        数据检查的实现
 │   ├── check-images.html    图片自检页（用 localhost:8080 打开）
 │   └── 更新部署包.bat        打包 dist/（可选）
