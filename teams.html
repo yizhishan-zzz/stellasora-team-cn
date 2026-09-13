@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>配队方案 - 星塔旅人配队一览</title>
+  <meta name="description" content="星塔旅人配队方案：新建、编辑、删除你的配队，支持预设码。">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-page="teams">
+  <div id="navbar"></div>
+  <main class="container">
+    <div class="page-head">
+      <div class="page-head-row">
+        <h1 class="page-title">配队方案</h1>
+        <button class="btn" id="newTeamBtn">+ 新建配队</button>
+      </div>
+      <p class="page-sub">共 <span id="count">0</span> 个配队 · 3 名上场旅人 + 3 主位秘纹 + 3 辅位秘纹</p>
+    </div>
+    <div class="filter-bar" id="teamFilters"></div>
+    <div class="grid teams" id="grid"></div>
+    <div class="empty" id="empty" hidden><div class="empty-icon">🎒</div><div class="empty-text">还没有配队方案，点「新建配队」开始</div></div>
+  </main>
+  <script src="assets/js/auth.js"></script>
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/github-store.js"></script>
+  <script src="assets/js/teams-store.js"></script>
+  <script src="assets/js/components.js"></script>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+# ===== NEVER upload =====
+admin/
+
+# ===== local / temp =====
+assets/data/_backup/
+tools/ss-data/
+*.log
+~$*
+Thumbs.db
+.DS_Store
+
+# ===== archives (kept locally, not published) =====
+过往资源/
+过往文件/

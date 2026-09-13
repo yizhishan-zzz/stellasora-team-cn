@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>图片资源自检 · 星塔旅人配队一览</title>
+<style>
+  body { font-family: "Microsoft YaHei", sans-serif; background:#f4f5f9; color:#333; margin:0; padding:24px; }
+  h1 { font-size: 20px; }
+  .bar { background:#fff; border:1px solid #ddd; border-radius:8px; padding:14px 16px; margin-bottom:16px; }
+  .big { font-size: 18px; font-weight:700; }
+  .ok { color:#2E9E5B; } .bad { color:#d9534f; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:14px; }
+  .card { background:#fff; border:1px solid #ddd; border-radius:8px; padding:12px; }
+  .card h3 { margin:0 0 8px; font-size:14px; }
+  .row { display:flex; align-items:center; gap:12px; }
+  .row img { width:64px; height:64px; object-fit:contain; background:#f0f1f6; border:1px solid #e0e0e0; border-radius:8px; }
+  .meta { font-size:12px; color:#666; line-height:1.6; word-break:break-all; }
+  pre { background:#1e1e28; color:#dcdcdc; padding:12px; border-radius:8px; overflow:auto; max-height:320px; font-size:12px; }
+</style>
+</head>
+<body>
+<h1>图片资源自检</h1>
+<div class="bar">
+  <div class="big" id="summary">正在检查…</div>
+  <div id="detail" class="meta" style="margin-top:6px;"></div>
+</div>
+<div class="grid" id="grid"></div>
+<h2 style="font-size:16px;margin-top:22px;">详细结果（可复制给 AI）</h2>
+<pre id="log">…</pre>
+<script>
+// 该文件在 tools/ 下，页面里的相对路径按 上一级目录 计算
+var PREFIX = "../";
+var SAMPLES = [
+  { label: "潜能图标 · 律动光泡", file: "assets/img/hd/potential/16001_Potential_03_A.webp" },
+  { label: "潜能图标 · 云泡乘风(通用)", file: "assets/img/hd/potential/Common_Potential_15_A.webp" },
+  { label: "潜能图标 · 夏花花影旋风", file: "assets/img/hd/potential/13301_Potential_01_A.webp" },
+  { label: "秘纹效果图", file: "assets/img/hd/discskill/DiscSkill_214041.webp" },
+  { label: "秘纹 buff 图", file: "assets/img/hd/buff/Icon_DiscBuff_214016.webp" },
+  { label: "旅人头像", file: "assets/img/hd/head/head_15702_XL.webp" },
+  { label: "秘纹立绘", file: "assets/img/hd/outfit/outfit_4041.webp" },
+  { label: "属性图标", file: "assets/img/ui/el-dark.png" },
+  { label: "字体", file: "assets/fonts/MiSans-Regular.woff2" }
+];
+var grid = document.getElementById("grid");
+var lines = [];
+function probe(item) {
+  return new Promise(function (res) {
+    var img = new Image();
+    img.onload = function () { res({ ok: true, w: img.naturalWidth, h: img.naturalHeight }); };
+    img.onerror = function () { res({ ok: false, w: 0, h: 0 }); };
+    img.src = PREFIX + item.file + "?cb=" + Date.now();
+  });
+}
+(async function () {
+  var okN = 0;
+  for (var i = 0; i < SAMPLES.length; i++) {
+    var item = SAMPLES[i];
+    var r = await probe(item);
+    if (r.ok) okN++;
+    lines.push((r.ok ? "OK   " : "FAIL ") + item.file + "  " + (r.ok ? r.w + "x" + r.h : "加载失败"));
+    var card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML = "<h3>" + item.label + "</h3>" +
+      "<div class=\"row\"><img src=\"" + PREFIX + item.file + "\" alt=\"\">" +
+      "<div class=\"meta\">" + (r.ok ? r.w + " x " + r.h : "<span class=\"bad\">加载失败</span>") + "<br>" + item.file + "</div></div>";
+    grid.appendChild(card);
+  }
+  document.getElementById("summary").innerHTML = okN === SAMPLES.length
+    ? "<span class=\"ok\">全部 " + SAMPLES.length + " 个资源都能加载 ✓</span>"
+    : "<span class=\"bad\">" + (SAMPLES.length - okN) + " / " + SAMPLES.length + " 个加载失败 ✗</span>";
+  document.getElementById("detail").textContent = "页面地址：" + location.href;
+  document.getElementById("log").textContent = lines.join("\n") +
+    "\n\n页面地址: " + location.href +
+    "\n如果显示加载失败，先确认是通过 http://localhost:8080 打开的（file:// 会被浏览器限制）。";
+})();
+</script>
+</body>
+</html>
