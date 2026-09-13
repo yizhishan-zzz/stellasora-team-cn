@@ -44,6 +44,7 @@ async function initTeamStore() {
   TEAM_STORE.mode = mode;
   setStatus('', err);
   await importLocalBackup();
+  await healTeams();          // 兜底：万一历史数据里有重复 id，这里清掉
   return mode;
 }
 
@@ -56,6 +57,7 @@ function teamStoreLabel() {
 
 // 写入：把当前内存里的全部配队落到数据源
 async function persistTeams() {
+  dedupeTeams();              // 写之前先按 id 去重，保证 json 里永远不重复
   const data = { teams: allTeams(), updatedAt: new Date().toISOString() };
   const json = JSON.stringify(data, null, 2);
   if (TEAM_STORE.mode === 'file') {
@@ -141,6 +143,32 @@ async function deletePresetOverride(id) { return deleteTeam(id); }
 async function resetPresetOverride() { return true; }
 function activePresetIds() { return allTeams().map(t => t.id); }
 
+// 按 id 去重（保留最后一次出现的），防止任何来源造成重复配队
+function dedupeTeams() {
+  const seen = {};
+  const out = [];
+  // 从后往前扫，后面的（较新的）覆盖前面的
+  for (let i = allTeams().length - 1; i >= 0; i--) {
+    const t = allTeams()[i];
+    if (!t || !t.id) continue;
+    if (seen[t.id]) continue;
+    seen[t.id] = 1;
+    out.unshift(t);
+  }
+  const before = allTeams().length;
+  DATA.presetTeams = out;
+  return before - out.length;
+}
+// 自愈：发现重复就清理并写回数据源
+async function healTeams() {
+  const removed = dedupeTeams();
+  if (removed > 0) {
+    try { await persistTeams(); } catch (e) {}
+    setStatus('已清理 ' + removed + ' 个重复配队');
+  }
+  return removed;
+}
+
 // ===== 旧数据搬家：把浏览器里的旧格式并进 JSON，只并一次 =====
 async function importLocalBackup() {
   const parts = [];
@@ -166,9 +194,9 @@ async function importLocalBackup() {
     if (!t) return;
     if (t.__removeId) { removals.push(t.__removeId); return; }
     const i = allTeams().findIndex(x => x.id === t.id);
-    if (i >= 0) { DATA.presetTeams[i] = Object.assign({}, DATA.presetTeams[i], t); }
-    else { DATA.presetTeams.push(t); }
-    changed++;
+    if (i >= 0) { DATA.presetTeams[i] = Object.assign({}, DATA.presetTeams[i], t); changed++; }   // 已存在就合并，绝不新增
+    else if (t.isRecommended) { /* 推荐配队只允许合并，不新增 */ }
+    else { DATA.presetTeams.push(t); changed++; }
   });
   if (removals.length) DATA.presetTeams = allTeams().filter(t => removals.indexOf(t.id) < 0);
   await persistTeams();

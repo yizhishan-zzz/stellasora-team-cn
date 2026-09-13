@@ -81,7 +81,7 @@ function initNavbar(active) {
   if (el) el.innerHTML = `
     <header class="navbar">
       <div class="navbar-inner">
-        <a class="brand" href="index.html"><span class="brand-mark">✦</span>星塔旅人配队一览</a>
+        <a class="brand" href="index.html"><img class="brand-logo" src="assets/img/logo.ico" alt="" width="26" height="26">星塔旅人配队一览</a>
         <nav class="nav-links">${links}</nav>
         <span id="adminSlot" class="admin-slot"></span>
       </div>
