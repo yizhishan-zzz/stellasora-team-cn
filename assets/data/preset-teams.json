@@ -676,7 +676,7 @@
     {
       "id": "rec10",
       "name": "猫眼菈露圣夜队",
-      "description": "",
+      "description": "火队当前版本的t0，",
       "chars": [
         "maoyan",
         "lalusy",
@@ -752,7 +752,7 @@
       ],
       "potTotal": 86,
       "isRecommended": true,
-      "updatedAt": 1789325621598
+      "updatedAt": 1789325666774
     },
     {
       "id": "rec11",
@@ -1745,5 +1745,5 @@
       "updatedAt": 1789106552594
     }
   ],
-  "updatedAt": "2026-09-13T18:53:41.598Z"
+  "updatedAt": "2026-09-13T18:54:26.774Z"
 }
