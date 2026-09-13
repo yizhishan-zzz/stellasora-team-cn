@@ -739,7 +739,10 @@
       "tags": {
         "element": "火",
         "style": "技伤流",
-        "power": ""
+        "power": "T0",
+        "scene": [
+          "单体环境"
+        ]
       },
       "presetCode": "AAAAcgAAAJ4AAAB+MAbBbATCABgMBsw2GAGB",
       "charNames": [
@@ -749,7 +752,7 @@
       ],
       "potTotal": 86,
       "isRecommended": true,
-      "updatedAt": 1789325619120
+      "updatedAt": 1789325621598
     },
     {
       "id": "rec11",
@@ -1742,5 +1745,5 @@
       "updatedAt": 1789106552594
     }
   ],
-  "updatedAt": "2026-09-13T18:53:39.120Z"
+  "updatedAt": "2026-09-13T18:53:41.598Z"
 }
