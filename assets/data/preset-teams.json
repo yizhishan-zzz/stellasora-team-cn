@@ -676,7 +676,7 @@
     {
       "id": "rec10",
       "name": "猫眼菈露圣夜队",
-      "description": "火队当前版本的t0，",
+      "description": "火队当前版本的t0，猫眼的灾厄余响可以点到6级，紫槿的渡火轮回可以不点",
       "chars": [
         "maoyan",
         "lalusy",
@@ -752,7 +752,7 @@
       ],
       "potTotal": 86,
       "isRecommended": true,
-      "updatedAt": 1789325666774
+      "updatedAt": 1789325740051
     },
     {
       "id": "rec11",
@@ -1745,5 +1745,5 @@
       "updatedAt": 1789106552594
     }
   ],
-  "updatedAt": "2026-09-13T18:54:26.774Z"
+  "updatedAt": "2026-09-13T18:55:40.051Z"
 }
