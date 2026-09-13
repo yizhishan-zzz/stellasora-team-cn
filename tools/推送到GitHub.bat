@@ -24,26 +24,7 @@ echo ==================================================
 echo.
 pause
 echo.
-echo --- Step 1/3: fetch remote changes ---
-git fetch origin main
-echo.
-echo --- Step 2/3: merge remote changes (auto-resolve data file if needed) ---
-git merge origin/main --no-edit -m "merge remote edits"
-if errorlevel 1 (
-  echo.
-  echo     [!] Conflict detected. Auto-resolving the data file by keeping the newest version...
-  git checkout --theirs -- assets/data/preset-teams.json
-  git add assets/data/preset-teams.json
-  git commit --no-edit -m "auto-merge: keep newest team data"
-  if errorlevel 1 (
-    echo     [X] Auto-resolve FAILED. Tell the assistant.
-    pause
-    exit /b 1
-  )
-  echo     [OK] Resolved.
-)
-echo.
-echo --- Check data files ---
+echo --- Step 1/3: check local data files ---
 node tools\check-data.js
 if errorlevel 1 (
   echo.
@@ -52,12 +33,18 @@ if errorlevel 1 (
   exit /b 1
 )
 echo.
-echo --- Step 3/3: push ---
-git push -u origin main
+echo --- Step 2/3: fetch remote ---
+git fetch origin main
+echo.
+echo --- Step 3/3: force push local data over remote ---
+echo     (local file is the source of truth; remote edits will be overwritten)
+git push --force-with-lease origin main
 set RC=%ERRORLEVEL%
 echo.
 if "%RC%"=="0" goto ok
 echo [X] Push FAILED, exit code %RC%
+echo.
+echo   If it complains about stale info, run again - it usually works the second time.
 pause
 exit /b 1
 :ok
