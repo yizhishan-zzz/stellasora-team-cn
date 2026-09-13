@@ -3,7 +3,13 @@ admin/
 
 # ===== local / temp =====
 assets/data/_backup/
+assets/fonts/_original/
 tools/ss-data/
+tools/node_modules/
+tools/package.json
+tools/package-lock.json
+_npmcache/
+字体原始备份/
 *.log
 ~$*
 Thumbs.db
