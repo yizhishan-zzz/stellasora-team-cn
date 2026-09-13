@@ -54,26 +54,37 @@ async function ghReadFile(cfg, filePath) {
   if (!resp.ok) throw new Error('GitHub 读取失败：HTTP ' + resp.status + ' ' + (await resp.text()).slice(0, 200));
   return await resp.json();
 }
-// 写入文件（自动带 sha，实现覆盖提交）
+// 写入文件（自动带 sha 实现覆盖提交；遇到版本冲突自动重取 sha 重试）
 async function ghWriteFile(cfg, filePath, text, message) {
-  let sha = null;
-  try {
-    const cur = await ghReadFile(cfg, filePath);
-    if (cur && cur.sha) sha = cur.sha;
-  } catch (e) { /* 读不到就当新增 */ }
-  const body = {
-    message: message || '更新配队数据（站内编辑）',
-    content: utf8ToB64(text),
-    branch: cfg.branch || 'main'
-  };
-  if (sha) body.sha = sha;
-  const resp = await fetch(GH_API + '/repos/' + cfg.owner + '/' + cfg.repo + '/contents/' + filePath, {
-    method: 'PUT',
-    headers: Object.assign({ 'Content-Type': 'application/json' }, ghHeaders(cfg)),
-    body: JSON.stringify(body)
-  });
-  if (!resp.ok) throw new Error('GitHub 写入失败：HTTP ' + resp.status + ' ' + (await resp.text()).slice(0, 300));
-  return await resp.json();
+  const content = utf8ToB64(text);
+  let lastErr = null;
+  for (let attempt = 0; attempt < 4; attempt++) {
+    // 每次尝试都重新读一次当前文件的 sha，避免「文件已被别处改动」的 409 冲突
+    let sha = null;
+    try {
+      const cur = await ghReadFile(cfg, filePath);
+      if (cur && cur.sha) sha = cur.sha;
+    } catch (e) { /* 读不到就当新增文件 */ }
+    const body = {
+      message: message || '更新配队数据（站内编辑）',
+      content: content,
+      branch: cfg.branch || 'main'
+    };
+    if (sha) body.sha = sha;
+    const resp = await fetch(GH_API + '/repos/' + cfg.owner + '/' + cfg.repo + '/contents/' + filePath, {
+      method: 'PUT',
+      headers: Object.assign({ 'Content-Type': 'application/json' }, ghHeaders(cfg)),
+      body: JSON.stringify(body)
+    });
+    if (resp.ok) return await resp.json();
+    const detail = (await resp.text()).slice(0, 300);
+    lastErr = new Error('GitHub 写入失败：HTTP ' + resp.status + ' ' + detail);
+    // 409 / 422 = sha 过期，重取后重试；429 = 触发限流，等一会儿再试
+    if (resp.status === 409 || resp.status === 422) { await new Promise(r => setTimeout(r, 250 * (attempt + 1))); continue; }
+    if (resp.status === 429) { await new Promise(r => setTimeout(r, 1200 * (attempt + 1))); continue; }
+    throw lastErr;
+  }
+  throw lastErr || new Error('GitHub 写入失败');
 }
 // 校验配置是否可用（读一次仓库信息）
 async function ghCheck(cfg) {
