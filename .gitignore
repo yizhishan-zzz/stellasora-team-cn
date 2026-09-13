@@ -11,7 +11,7 @@ tools/node_modules/
 tools/package.json
 tools/package-lock.json
 _npmcache/
-字体原始备份/
+_tmppip/
 *.log
 ~$*
 Thumbs.db
