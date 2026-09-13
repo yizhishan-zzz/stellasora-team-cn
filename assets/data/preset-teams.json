@@ -738,7 +738,7 @@
       ],
       "tags": {
         "element": "火",
-        "style": "",
+        "style": "技伤流",
         "power": ""
       },
       "presetCode": "AAAAcgAAAJ4AAAB+MAbBbATCABgMBsw2GAGB",
@@ -749,7 +749,7 @@
       ],
       "potTotal": 86,
       "isRecommended": true,
-      "updatedAt": 1789325615573
+      "updatedAt": 1789325619120
     },
     {
       "id": "rec11",
@@ -1742,5 +1742,5 @@
       "updatedAt": 1789106552594
     }
   ],
-  "updatedAt": "2026-09-13T18:53:35.573Z"
+  "updatedAt": "2026-09-13T18:53:39.120Z"
 }
