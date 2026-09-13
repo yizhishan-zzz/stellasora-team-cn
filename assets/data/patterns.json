@@ -9477,6 +9477,47 @@
       "maxLevel": 5,
       "gkId": null,
       "sid": 213017
+    },
+    {
+      "id": "p101",
+      "name": "测试新秘纹",
+      "portrait": "assets/img/hd/outfit/outfit_299999.webp",
+      "rarity": 5,
+      "element": "fire",
+      "funcs": [
+        "ATK",
+        "Minion",
+        "Ultimate"
+      ],
+      "melody": {
+        "name": "测试新秘纹",
+        "tpl": "队伍中火系角色攻击力提升{1}。 火系援护角色的仆从在场时，队伍中火系角色召唤的仆从造成的仆从伤害提升{2}。",
+        "params": [
+          "5%,8%",
+          "6%,9.6%",
+          "7%,11.2%",
+          "8%,12.8%",
+          "9%,14.4%",
+          "10%,16%"
+        ],
+        "skillImg": "assets/img/hd/discskill/DiscSkill_214041.webp",
+        "dupe": [
+          130,
+          260,
+          390,
+          520,
+          650
+        ],
+        "buffs": []
+      },
+      "harmony": [],
+      "notes": [
+        "burst",
+        "technique"
+      ],
+      "maxLevel": 5,
+      "gkId": null,
+      "sid": 299999
     }
   ]
 }

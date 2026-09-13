@@ -12289,6 +12289,320 @@
       "noteRecs": [],
       "secrets": [],
       "sid": 137
+    },
+    {
+      "id": "suntide-willow",
+      "name": "新角色测试",
+      "gkId": null,
+      "nameEn": "Suntide Willow",
+      "element": "water",
+      "role": "support",
+      "rarity": 5,
+      "attackType": "远程",
+      "affiliation": "Trekker Association",
+      "birthday": "December 14th",
+      "cvCn": "mace",
+      "cvJp": "Hitomi Nabatame",
+      "weapon": null,
+      "portrait": "assets/img/hd/head/head_99902_XL.webp",
+      "description": null,
+      "variantOf": null,
+      "skills": null,
+      "potentials": [
+        {
+          "name": "纷乱泡泡",
+          "flow": "前排核心",
+          "type": "核心潜能",
+          "desc": "",
+          "icon": "assets/img/hd/potential/99901_Potential_01_A.webp",
+          "potId": 599901,
+          "rarity": "core",
+          "corner": null
+        },
+        {
+          "name": "流光微颤",
+          "flow": "前排核心",
+          "type": "核心潜能",
+          "desc": "",
+          "icon": "assets/img/hd/potential/99901_Potential_02_A.webp",
+          "potId": 599902,
+          "rarity": "core",
+          "corner": null
+        },
+        {
+          "name": "律动光泡",
+          "flow": "前排核心",
+          "type": "核心潜能",
+          "desc": "",
+          "icon": "assets/img/hd/potential/99901_Potential_03_A.webp",
+          "potId": 599903,
+          "rarity": "core",
+          "corner": null
+        },
+        {
+          "name": "七彩回弹",
+          "flow": "前排核心",
+          "type": "核心潜能",
+          "desc": "",
+          "icon": "assets/img/hd/potential/99901_Potential_04_A.webp",
+          "potId": 599904,
+          "rarity": "core",
+          "corner": null
+        },
+        {
+          "name": "久悬不破",
+          "flow": "前排特有",
+          "type": "金潜能",
+          "desc": "",
+          "icon": "assets/img/hd/potential/99901_Potential_01_A.webp",
+          "potId": 599901,
+          "rarity": "common",
+          "corner": "Diamond"
+        },
+        {
+          "name": "梦幻泡影",
+          "flow": "前排特有",
+          "type": "金潜能",
+          "desc": "",
+          "icon": "assets/img/hd/potential/99901_Potential_02_A.webp",
+          "potId": 599902,
+          "rarity": "common",
+          "corner": "Triangle"
+        },
+        {
+          "name": "凝而不散",
+          "flow": "前排特有",
+          "type": "金潜能",
+          "desc": "",
+          "icon": "assets/img/hd/potential/99901_Potential_03_A.webp",
+          "potId": 599903,
+          "rarity": "rare",
+          "corner": "Round"
+        },
+        {
+          "name": "碎沫余音",
+          "flow": "前排特有",
+          "type": "金潜能",
+          "desc": "",
+          "icon": "assets/img/hd/potential/99901_Potential_04_A.webp",
+          "potId": 599904,
+          "rarity": "common",
+          "corner": "Diamond"
+        },
+        {
+          "name": "触地既跃",
+          "flow": "前排特有",
+          "type": "金潜能",
+          "desc": "",
+          "icon": "assets/img/hd/potential/99901_Potential_05_A.webp",
+          "potId": 599905,
+          "rarity": "common",
+          "corner": "Triangle"
+        },
+        {
+          "name": "风吟碧岸",
+          "flow": "前排特有",
+          "type": "金潜能",
+          "desc": "",
+          "icon": "assets/img/hd/potential/99901_Potential_06_A.webp",
+          "potId": 599906,
+          "rarity": "common",
+          "corner": "Diamond"
+        },
+        {
+          "name": "云泡乘风",
+          "flow": "前排特有",
+          "type": "金潜能",
+          "desc": "",
+          "icon": "assets/img/hd/potential/99901_Potential_07_A.webp",
+          "potId": 599907,
+          "rarity": "rare",
+          "corner": "Round"
+        },
+        {
+          "name": "摇曳浮光",
+          "flow": "前排特有",
+          "type": "金潜能",
+          "desc": "",
+          "icon": "assets/img/hd/potential/99901_Potential_08_A.webp",
+          "potId": 599908,
+          "rarity": "rare",
+          "corner": "Round"
+        },
+        {
+          "name": "逐浪听风",
+          "flow": "前排特有",
+          "type": "金潜能",
+          "desc": "",
+          "icon": "assets/img/hd/potential/99901_Potential_09_A.webp",
+          "potId": 599909,
+          "rarity": "common",
+          "corner": "Triangle"
+        },
+        {
+          "name": "潮声告诫",
+          "flow": "通用",
+          "type": "金潜能",
+          "desc": "",
+          "icon": "assets/img/hd/potential/99901_Potential_01_A.webp",
+          "potId": 599901,
+          "rarity": "common",
+          "corner": "Diamond"
+        },
+        {
+          "name": "晴滩管制",
+          "flow": "通用",
+          "type": "金潜能",
+          "desc": "",
+          "icon": "assets/img/hd/potential/99901_Potential_02_A.webp",
+          "potId": 599902,
+          "rarity": "common",
+          "corner": "Triangle"
+        },
+        {
+          "name": "海风执纪",
+          "flow": "通用",
+          "type": "金潜能",
+          "desc": "",
+          "icon": "assets/img/hd/potential/99901_Potential_03_A.webp",
+          "potId": 599903,
+          "rarity": "common",
+          "corner": "Round"
+        },
+        {
+          "name": "水花飞溅",
+          "flow": "后排核心",
+          "type": "核心潜能",
+          "desc": "",
+          "icon": "assets/img/hd/potential/99901_Potential_01_A.webp",
+          "potId": 599901,
+          "rarity": "core",
+          "corner": null
+        },
+        {
+          "name": "激流覆岸",
+          "flow": "后排核心",
+          "type": "核心潜能",
+          "desc": "",
+          "icon": "assets/img/hd/potential/99901_Potential_02_A.webp",
+          "potId": 599902,
+          "rarity": "core",
+          "corner": null
+        },
+        {
+          "name": "音浪荡漾",
+          "flow": "后排核心",
+          "type": "核心潜能",
+          "desc": "",
+          "icon": "assets/img/hd/potential/99901_Potential_03_A.webp",
+          "potId": 599903,
+          "rarity": "core",
+          "corner": null
+        },
+        {
+          "name": "浪鸣震耳",
+          "flow": "后排核心",
+          "type": "核心潜能",
+          "desc": "",
+          "icon": "assets/img/hd/potential/99901_Potential_04_A.webp",
+          "potId": 599904,
+          "rarity": "core",
+          "corner": null
+        },
+        {
+          "name": "劝诫依旧",
+          "flow": "后排特有",
+          "type": "金潜能",
+          "desc": "",
+          "icon": "assets/img/hd/potential/99901_Potential_01_A.webp",
+          "potId": 599901,
+          "rarity": "common",
+          "corner": "Diamond"
+        },
+        {
+          "name": "海风低徊",
+          "flow": "后排特有",
+          "type": "金潜能",
+          "desc": "",
+          "icon": "assets/img/hd/potential/99901_Potential_02_A.webp",
+          "potId": 599902,
+          "rarity": "rare",
+          "corner": "Triangle"
+        },
+        {
+          "name": "海鸣不息",
+          "flow": "后排特有",
+          "type": "金潜能",
+          "desc": "",
+          "icon": "assets/img/hd/potential/99901_Potential_03_A.webp",
+          "potId": 599903,
+          "rarity": "common",
+          "corner": "Round"
+        },
+        {
+          "name": "巨浪吞城",
+          "flow": "后排特有",
+          "type": "金潜能",
+          "desc": "",
+          "icon": "assets/img/hd/potential/99901_Potential_04_A.webp",
+          "potId": 599904,
+          "rarity": "common",
+          "corner": "Diamond"
+        },
+        {
+          "name": "异色水泡",
+          "flow": "后排特有",
+          "type": "金潜能",
+          "desc": "",
+          "icon": "assets/img/hd/potential/99901_Potential_05_A.webp",
+          "potId": 599905,
+          "rarity": "rare",
+          "corner": "Round"
+        },
+        {
+          "name": "流彩为壁",
+          "flow": "后排特有",
+          "type": "金潜能",
+          "desc": "",
+          "icon": "assets/img/hd/potential/99901_Potential_06_A.webp",
+          "potId": 599906,
+          "rarity": "common",
+          "corner": "Diamond"
+        },
+        {
+          "name": "海色轻柔",
+          "flow": "后排特有",
+          "type": "金潜能",
+          "desc": "",
+          "icon": "assets/img/hd/potential/99901_Potential_07_A.webp",
+          "potId": 599907,
+          "rarity": "common",
+          "corner": "Triangle"
+        },
+        {
+          "name": "潮音渐歇",
+          "flow": "后排特有",
+          "type": "金潜能",
+          "desc": "",
+          "icon": "assets/img/hd/potential/99901_Potential_08_A.webp",
+          "potId": 599908,
+          "rarity": "common",
+          "corner": "Triangle"
+        },
+        {
+          "name": "风和浪暖",
+          "flow": "后排特有",
+          "type": "金潜能",
+          "desc": "",
+          "icon": "assets/img/hd/potential/99901_Potential_09_A.webp",
+          "potId": 599909,
+          "rarity": "rare",
+          "corner": "Round"
+        }
+      ],
+      "noteRecs": [],
+      "secrets": [],
+      "sid": 999
     }
   ]
 }

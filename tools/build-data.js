@@ -75,6 +75,42 @@ function clean(s) {
     .replace(/\s+/g, ' ').trim();
 }
 
+// ===== 新增条目的辅助 =====
+// 旅人 id：优先用英文名转 slug（如 Suntide Willow -> suntide-willow），没有就用 c<sid>
+function slugify(s) {
+  return String(s || '').toLowerCase().trim()
+    .replace(/['’]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+function uniqueId(base, used) {
+  let id = base || 'c';
+  let n = 2;
+  while (used.has(id)) { id = base + '-' + n; n++; }
+  used.add(id);
+  return id;
+}
+// 从 ss-data 的 supportNote 推断音符类型
+// 秘纹新 id：接着现有的 pNNN 最大编号往下排（p001、p002 … p101）
+function nextPatternId(used) {
+  let max = 0;
+  used.forEach(id => {
+    const m = /^p(d+)$/.exec(id);
+    if (m) max = Math.max(max, parseInt(m[1], 10));
+  });
+  let n = max + 1;
+  while (used.has('p' + String(n).padStart(3, '0'))) n++;   // 万一被占用就往下找
+  const id = 'p' + String(n).padStart(3, '0');
+  used.add(id);
+  return id;
+}
+
+function notesFromSupportNote(supportNote) {
+  if (!Array.isArray(supportNote) || !supportNote.length) return [];
+  const last = supportNote[supportNote.length - 1] || {};
+  return Object.keys(last).map(k => NOTE[k]).filter(Boolean);
+}
+
 function need(p) { if (!fs.existsSync(p)) { console.error('[缺少] ' + p); console.error('请先运行 tools/fetch-data.bat 下载数据'); process.exit(1); } }
 
 const F = {
@@ -128,6 +164,59 @@ for (const c of cj.characters) {
   }
   if (next.length) { c.potentials = next; cUpd++; }
 }
+// ===== 新增旅人：ss-data 里有、网站里没有的，自动补齐 =====
+const usedCharIds = new Set(cj.characters.map(c => c.id));
+let cAdded = 0;
+const knownSids = new Set(cj.characters.map(c => String(c.sid)));
+for (const sid of Object.keys(charBin)) {
+  if (knownSids.has(String(sid))) continue;           // 已存在，跳过
+  const s = charBin[sid];
+  if (!s) continue;
+  const cnName = charCN['Character.' + sid + '.1'] || null;
+  const enName = s.name || null;
+  const id = uniqueId(slugify(enName) || ('c' + sid), usedCharIds);
+  const pots = [];
+  for (const key of Object.keys(FLOW)) {
+    for (const p of ((s.potential || {})[key] || [])) {
+      pots.push({
+        name: p.nameCN || p.name,
+        flow: FLOW[key],
+        type: isCore(key) ? '核心潜能' : '金潜能',
+        desc: clean(potCN['Potential.' + p.id + '.2'] || potCN['Potential.' + p.id + '.1']),
+        icon: potentialIcon(p, null),
+        potId: p.id,
+        rarity: p.rarity || (isCore(key) ? 'core' : 'common'),
+        corner: p.corner || null
+      });
+    }
+  }
+  cj.characters.push({
+    id: id,
+    name: cnName || enName || ('角色' + sid),
+    gkId: null,
+    nameEn: enName,
+    element: EL[s.element] || 'none',
+    role: CLS[s.class] || null,
+    rarity: s.star || null,
+    attackType: ATK[s.attackType] || null,
+    affiliation: s.force || null,
+    birthday: s.birthday || null,
+    cvCn: s.cnCv || null,
+    cvJp: s.jpCv || null,
+    weapon: null,
+    portrait: 'assets/img/hd/head/head_' + sid + '02_XL.webp',
+    description: null,
+    variantOf: null,
+    skills: null,
+    potentials: pots,
+    noteRecs: [],
+    secrets: [],
+    sid: Number(sid)
+  });
+  cAdded++;
+  console.log('  [新增旅人] ' + (cnName || enName) + '  (sid ' + sid + ', id ' + id + ', ' + pots.length + ' 个潜能)');
+}
+
 wr(path.join(ROOT, 'assets/data/characters.json'), cj);
 
 // ============ 秘纹 ============
@@ -168,8 +257,46 @@ for (const p of pj.patterns) {
   }
   pUpd++;
 }
+// ===== 新增秘纹：ss-data 里有、网站里没有的，自动补齐 =====
+const usedPatIds = new Set(pj.patterns.map(p => p.id));
+let pAdded = 0;
+const knownPSids = new Set(pj.patterns.map(p => String(p.sid)));
+for (const sid of Object.keys(discBin)) {
+  if (knownPSids.has(String(sid))) continue;
+  const d = discBin[sid];
+  if (!d) continue;
+  const ms = d.mainSkill || {};
+  const params = ms.params ? String(ms.params).split('/') : [];
+  const pname = ms.nameCN || d.name || ('秘纹' + sid);
+  const elKey = EL[d.element] || 'none';
+  const funcs = Array.isArray(d.tag) ? d.tag.slice(0, 4) : [];
+  pj.patterns.push({
+    id: nextPatternId(usedPatIds),
+    name: pname,
+    portrait: 'assets/img/hd/outfit/outfit_' + sid + '.webp',
+    rarity: d.star || null,
+    element: elKey,
+    funcs: funcs,
+    melody: {
+      name: pname,
+      tpl: ms.descCN ? cleanTpl(ms.descCN) : '',
+      params: params,
+      skillImg: ms.icon ? hdIcon('skill', ms.icon, null) : null,
+      dupe: (d.dupe || []).map(x => x.ATK).filter(v => v != null),
+      buffs: (ms.buffIcon || []).filter(v => v && v !== 'No Icon').map(v => hdIcon('buff', v, null))
+    },
+    harmony: [],                                    // ss-data 不提供协奏效果，需要人工补
+    notes: notesFromSupportNote(d.supportNote),
+    maxLevel: 5,
+    gkId: null,
+    sid: Number(sid)
+  });
+  pAdded++;
+  console.log('  [新增秘纹] ' + pname + '  (sid ' + sid + ', ' + (d.star || '?') + ' 星, ' + elKey + ')');
+}
+
 wr(path.join(ROOT, 'assets/data/patterns.json'), pj);
 
-console.log('旅人更新:', cUpd, '| 潜能描述变更:', potUpd);
-console.log('秘纹更新:', pUpd, '/', pj.patterns.length);
+console.log('旅人更新:', cUpd, '| 新增旅人:', cAdded, '| 潜能描述变更:', potUpd);
+console.log('秘纹更新:', pUpd, '| 新增秘纹:', pAdded, '| 秘纹总数:', pj.patterns.length);
 console.log('完成。');
