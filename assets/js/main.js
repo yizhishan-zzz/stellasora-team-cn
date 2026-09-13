@@ -25,7 +25,9 @@ async function init() {
   initNavbar(page);
   initFooter();
     initAdminButton();
-  await initTeamStore();        // 接数据源：本机文件 / 线上仓库 / 本地暂存
+  // 接数据源：本机文件 / 线上仓库 / 本地暂存
+  // （加 typeof 防御：万一某个页面漏引 teams-store.js，也不至于整页渲染不出来）
+  if (typeof initTeamStore === 'function') await initTeamStore();
   if (routes[page]) routes[page]();
 }
 
