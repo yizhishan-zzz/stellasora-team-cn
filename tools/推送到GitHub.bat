@@ -2,9 +2,9 @@
 cd /d "%~dp0.."
 set REPO=https://github.com/yizhishan-zzz/stellasora-team-cn.git
 echo ==================================================
-echo   Push this project to GitHub
-echo   Target folder: %CD%
-echo   Target repo  : %REPO%
+echo   Upload project to GitHub (Cloudflare will rebuild)
+echo   Folder: %CD%
+echo   Repo  : %REPO%
 echo ==================================================
 echo.
 if not exist ".git" (
@@ -12,23 +12,23 @@ if not exist ".git" (
   pause
   exit /b 1
 )
-echo --- Local commits that will be uploaded ---
-git log --oneline
+echo --- Commits waiting to be uploaded ---
+git log --oneline -5
 echo.
-echo --- Set remote origin ---
+echo --- Set remote ---
 git remote remove origin >nul 2>&1
 git remote add origin %REPO%
 git remote -v
 echo.
-echo --- Rename branch to main ---
+echo --- Branch: main ---
 git branch -M main
 git branch --show-current
 echo.
 echo ==================================================
-echo   Login prompt is coming:
+echo   Login prompt:
 echo     Username : yizhishan-zzz
 echo     Password : paste your access token
-echo                (token text stays invisible while typing - normal)
+echo                (nothing shows while typing - normal)
 echo ==================================================
 echo.
 pause
@@ -47,8 +47,9 @@ echo.
 pause
 exit /b 1
 :ok
-echo [OK] Push succeeded!
-echo      Check: https://github.com/yizhishan-zzz/stellasora-team-cn
+echo [OK] Uploaded!
+echo      Repo   : https://github.com/yizhishan-zzz/stellasora-team-cn
+echo      Site   : https://stellasora-team-cn.pages.dev  (Cloudflare rebuilds in ~1 min)
 echo.
 echo [IMPORTANT] Remove the token from local git config:
 echo   git remote set-url origin %REPO%

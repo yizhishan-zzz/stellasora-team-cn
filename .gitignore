@@ -1,5 +1,7 @@
 # ===== NEVER upload =====
 admin/
+密码备忘*.txt
+*password*.txt
 
 # ===== local / temp =====
 assets/data/_backup/
