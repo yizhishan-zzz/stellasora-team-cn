@@ -718,9 +718,9 @@
         "p044"
       ],
       "subPatterns": [
-        null,
-        null,
-        null
+        "p040",
+        "p001",
+        "p033"
       ],
       "mainBackup": [
         null,
@@ -749,7 +749,7 @@
       ],
       "potTotal": 86,
       "isRecommended": true,
-      "updatedAt": 1789106539594
+      "updatedAt": 1789325598797
     },
     {
       "id": "rec11",
@@ -1742,5 +1742,5 @@
       "updatedAt": 1789106552594
     }
   ],
-  "updatedAt": "2026-09-13T17:37:30.214Z"
+  "updatedAt": "2026-09-13T18:53:18.797Z"
 }
