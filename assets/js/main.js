@@ -453,8 +453,8 @@ function renderTeams() {
     grid.querySelectorAll('.team-del').forEach(b => b.addEventListener('click', ev => {
       ev.preventDefault(); ev.stopPropagation();
       const nm = b.dataset.name || '';
-      if (confirm('确定删除「' + nm + '」吗？\n（会直接改 json 数据文件；服务器会自动留一份备份）')) {
-        deleteTeam(b.dataset.id);
+      if (confirm('确定删除「' + nm + '」吗？')) {
+        deleteTeam(b.dataset.id);   // 立刻从内存移除并重绘，提交在后台进行
         refresh();
       }
     }));
@@ -861,7 +861,7 @@ function renderTeam() {
         const de = document.getElementById('teamDesc');
         if (de) patch.description = de.value;
         save(patch);
-        alert('已保存到 ' + teamStoreLabel());
+        setStatus('已保存');   // 右上角提示，不弹窗打断
       });
     } else {
       const copyBtn = document.getElementById('presetCopy');
@@ -875,7 +875,10 @@ function renderTeam() {
     const delBtn = document.getElementById('delBtn');
     if (delBtn) delBtn.addEventListener('click', () => {
       const nm = cur().name || '这个配队';
-      if (confirm('确定删除「' + nm + '」吗？\n（会直接改 json 数据文件；服务器会自动留一份备份）')) { deleteTeam(id); location.href = 'teams.html'; }
+      if (confirm('确定删除「' + nm + '」吗？')) {
+        deleteTeam(id);
+        location.href = 'teams.html';   // 立刻返回列表，提交在后台进行
+      }
     });
 
   }
