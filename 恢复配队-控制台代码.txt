@@ -1,0 +1,21 @@
+(function(){
+  var out = [];
+  try {
+    var raw = localStorage.getItem('ss_teams_cache_v1');
+    if (raw) { var o = JSON.parse(raw); if (o && Array.isArray(o.teams)) out = o.teams; }
+  } catch(e){}
+  if (!out.length) {
+    try {
+      if (typeof DATA !== 'undefined' && Array.isArray(DATA.presetTeams)) out = DATA.presetTeams;
+    } catch(e){}
+  }
+  if (!out.length) { console.log('%c没有找到配队数据', 'color:#c00;font-size:15px'); return; }
+  var json = JSON.stringify({ teams: out });
+  console.log('%c找到 ' + out.length + ' 个配队：', 'color:#0a0;font-size:15px;font-weight:bold');
+  out.forEach(function(t, i){ console.log('  ' + (i+1) + '. ' + t.name + '   (' + t.id + ')'); });
+  copy(json);
+  console.log('');
+  console.log('%c已复制到剪贴板！请把内容粘贴给助手（Ctrl+V）', 'color:#08f;font-size:15px;font-weight:bold');
+  console.log('如果复制失败，手动全选下面这行内容复制：');
+  console.log(json);
+})();

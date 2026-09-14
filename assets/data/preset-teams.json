@@ -1,3 +1,126 @@
 {
-  "teams": []
+  "teams": [
+    {
+      "id": "t_mu0qfvdqemzk",
+      "name": "高暴击猫眼技伤流",
+      "presetCode": "AAAAcgAAAJ4AAAB+MAbBbAbCABgMBsw2ADGA",
+      "description": "此配队要求猫眼纹章刷出来30的暴击率，暴击率足够高紫槿的印象强化可不点，转成客串回加攻击",
+      "tags": {
+        "element": "火",
+        "style": "技伤流",
+        "power": "T0",
+        "scene": [
+          "单体环境"
+        ]
+      },
+      "chars": [
+        "maoyan",
+        "lalusy",
+        "zijin"
+      ],
+      "mainPatterns": [
+        "p060",
+        "p078",
+        "p044"
+      ],
+      "mainBackup": [
+        "p046",
+        "p093",
+        null,
+        null,
+        null
+      ],
+      "subPatterns": [
+        "p040",
+        "p001",
+        "p033"
+      ],
+      "subBackup": [
+        "p023",
+        "p022",
+        null,
+        null,
+        null
+      ],
+      "pots": [
+        {
+          "喵神诅咒": 1,
+          "黑暗轮回": 1,
+          "幸运子弹": 6,
+          "猎杀标记": 6,
+          "优势火力": 2,
+          "黑暗烙印": 6,
+          "强敌断灭": 6,
+          "灾厄余响": 6
+        },
+        {
+          "火雨倾盆": 1,
+          "特别装药": 1,
+          "礼炮双响": 1,
+          "庆典再启": 6,
+          "童话法则": 6,
+          "玩具军团": 6
+        },
+        {
+          "明日·薪火": 1,
+          "薪火的再燃": 1,
+          "伏笔验证": 6,
+          "完美接戏": 6,
+          "视觉冲击": 6,
+          "印象强化": 3,
+          "绝息热焰": 6
+        }
+      ],
+      "isRecommended": false,
+      "updatedAt": 1789359669107
+    },
+    {
+      "id": "t_mu0qk9bzj8qf",
+      "name": "新配队",
+      "presetCode": "",
+      "description": "",
+      "tags": {
+        "element": "",
+        "style": "",
+        "power": "",
+        "scene": []
+      },
+      "chars": [
+        null,
+        null,
+        null
+      ],
+      "mainPatterns": [
+        null,
+        null,
+        null
+      ],
+      "mainBackup": [
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "subPatterns": [
+        null,
+        null,
+        null
+      ],
+      "subBackup": [
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "pots": [
+        {},
+        {},
+        {}
+      ],
+      "isRecommended": false,
+      "updatedAt": 1789359695423
+    }
+  ]
 }
