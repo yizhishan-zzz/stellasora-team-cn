@@ -51,10 +51,14 @@ function readPending() {
 function writePending(map) {
   try { localStorage.setItem(PENDING_KEY, JSON.stringify(map || {})); } catch (e) {}
 }
-function markPending(teams) {
+function markPending(teams, onlyIds) {
   const map = readPending();
   const at = Date.now();
-  (teams || []).forEach(x => { if (x && x.id) map[x.id] = { at: at, team: x }; });
+  (teams || []).forEach(x => {
+    if (!x || !x.id) return;
+    if (onlyIds && onlyIds.size && !onlyIds.has(x.id)) return;   // 只记这次改动过的
+    map[x.id] = { at: at, team: x };
+  });
   writePending(map);
 }
 function clearPendingFor(teams) {
@@ -64,6 +68,12 @@ function clearPendingFor(teams) {
   writePending(map);
   return n;
 }
+function deletePendingFor(id) {
+  const map = readPending();
+  if (map[id]) { delete map[id]; writePending(map); return true; }
+  return false;
+}
+// 合并未同步改动时按 updatedAt 取新的那份，避免用旧副本覆盖别处的新改动
 // 把未同步的改动合并进当前数据（页面加载时调用）
 function applyPending() {
   const map = readPending();
@@ -74,9 +84,10 @@ function applyPending() {
     const item = map[id];
     if (!item || !item.team) return;
     const i = allTeams().findIndex(x => x.id === id);
-    if (i >= 0) DATA.presetTeams[i] = item.team;
-    else DATA.presetTeams.push(item.team);
-    n++;
+    if (i >= 0) {
+      const cur = DATA.presetTeams[i];
+      if ((item.team.updatedAt || 0) >= (cur.updatedAt || 0)) { DATA.presetTeams[i] = item.team; n++; }
+    } else { DATA.presetTeams.push(item.team); n++; }
   });
   return n;
 }
@@ -144,6 +155,9 @@ async function persistTeams(snapshot) {
 let inflight = [];
 let writeQueue = [];
 let writing = false;
+// 本次会话真正改动过的配队 id —— 只把这些记为未同步。
+// 否则整个列表都会被标记，老队也会被本机旧副本覆盖（换设备时丢改动）。
+const touchedIds = new Set();
 
 function drainQueue() {
   if (writing || !writeQueue.length) return;
@@ -164,7 +178,7 @@ function drainQueue() {
 function queuePersist() {
   const snapshot = allTeams().map(t => Object.assign({}, t));   // 深一点的快照，避免提交过程中被改
   pendingWrites = writeQueue.length + (writing ? 1 : 0) + 1;
-  markPending(snapshot);        // 先记到本机：就算提交失败、就算用户立刻刷新，改动也不会丢
+  markPending(snapshot, touchedIds);   // 只记本次改动过的
   setStatus('正在同步 ' + pendingWrites + ' 项…');
   const p = new Promise((resolve, reject) => {
     writeQueue.push({ snapshot: snapshot, resolve: resolve, reject: reject });
@@ -259,6 +273,7 @@ function presetSyncPending() { return pendingWrites; }
 async function createTeam(name) {
   const t = blankTeam(name);
   DATA.presetTeams.push(t);
+  touchedIds.add(t.id);
   queuePersist();
   return t;
 }
@@ -266,6 +281,7 @@ async function updateTeam(id, patch) {
   const i = allTeams().findIndex(t => t.id === id);
   if (i < 0) return null;
   DATA.presetTeams[i] = Object.assign({}, DATA.presetTeams[i], patch, { updatedAt: Date.now() });
+  touchedIds.add(id);
   queuePersist();
   return DATA.presetTeams[i];
 }
@@ -273,6 +289,8 @@ async function saveTeamPatch(id, patch) { return updateTeam(id, patch); }
 async function saveTeam(id, patch) { if (patch) return updateTeam(id, patch); return queuePersist(); }
 async function deleteTeam(id) {
   DATA.presetTeams = allTeams().filter(t => t.id !== id);
+  deletePendingFor(id);
+  touchedIds.add(id);
   queuePersist();
   return true;
 }
