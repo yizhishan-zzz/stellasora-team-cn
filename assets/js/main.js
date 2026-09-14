@@ -346,6 +346,22 @@ function showToast(msg, kind) {
   } catch (e) {}
 }
 
+// ===== 云端同步状态提示 =====
+let cloudSyncToastShown = false;
+function onCloudSyncDone(r) {
+  if (!r) return;
+  if (!r.ok) {
+    if (typeof showToast === "function") showToast("云端同步失败：请检查仓库设置或网络", "err");
+    return;
+  }
+  var more = r.count ? ("，共 " + r.count + " 支配队") : "";
+  if (r.changed || !cloudSyncToastShown) {
+    if (typeof showToast === "function") showToast("已与" + (r.source || "云端") + "同步" + more);
+    cloudSyncToastShown = true;
+  }
+  if (typeof renderTeamStoreStatus === "function") renderTeamStoreStatus();
+}
+
 function renderTeamStoreStatus() {
   const host = document.getElementById('adminSlot');
   if (!host) return;
@@ -367,9 +383,16 @@ function renderTeamStoreStatus() {
   }
   const mode = (typeof TEAM_STORE !== 'undefined') ? TEAM_STORE.mode : '';
   const txt = (typeof teamStoreLabel === 'function') ? teamStoreLabel() : '';
-  el.textContent = txt;
+  if (typeof TEAM_STORE !== "undefined" && TEAM_STORE.lastSync && TEAM_STORE.lastSync.ok) {
+    el.textContent = txt + " · 已同步";
+    el.title = "上次同步 " + new Date(TEAM_STORE.lastSync.at).toLocaleTimeString() + "（" + TEAM_STORE.lastSync.count + " 支配队）";
+  } else if (typeof TEAM_STORE !== "undefined" && TEAM_STORE.lastSync && !TEAM_STORE.lastSync.ok) {
+    el.textContent = txt + " · 同步失败";
+  } else {
+    el.textContent = txt + " · 同步中…";
+  }
   el.classList.toggle('store-status-local', mode === 'local');
-  el.title = (typeof TEAM_STORE !== 'undefined' && TEAM_STORE.lastError) ? TEAM_STORE.lastError : '数据文件：assets/data/preset-teams.json';
+  if (!(typeof TEAM_STORE !== "undefined" && TEAM_STORE.lastSync)) el.title = (typeof TEAM_STORE !== 'undefined' && TEAM_STORE.lastError) ? TEAM_STORE.lastError : '数据文件：assets/data/preset-teams.json';
   const cfgReady = (typeof ghConfigured === 'function') && ghConfigured();
   // 仓库设置入口：线上编辑时用
   let repoBtn = document.getElementById('repoCfgBtn');

@@ -12,7 +12,7 @@ const LOCAL_KEY = 'ss_teams_v1';          // 第 3 种模式（纯本地暂存�
 const CACHE_KEY = 'ss_teams_cache_v1';    // 本机缓存：{ at, updatedAt, teams, deleted }
 const DATA_FILE_PATH = 'assets/data/preset-teams.json';
 
-const TEAM_STORE = { mode: 'loading', lastError: '', lastText: '', usedOverlay: false };
+const TEAM_STORE = { mode: 'loading', lastError: '', lastText: '', usedOverlay: false, lastSync: null };
 let pendingWrites = 0;
 let inflight = [];
 let writeQueue = [];
@@ -227,7 +227,7 @@ async function initTeamStore() {
   TEAM_STORE.mode = mode;
 
   // ③ 后台校准（不阻塞页面渲染）
-  calibrate().catch(() => {});
+  calibrate(function (r) { if (typeof onCloudSyncDone === 'function') onCloudSyncDone(r); }).catch(function () {});
 
   await importLocalBackup();
   if (n0 > 0) setStatus('已清理 ' + n0 + ' 个重复配队');
@@ -235,30 +235,41 @@ async function initTeamStore() {
 }
 
 // 后台校准：拉一次真实数据，刷新本机缓存（下次打开就是最新的）
-async function calibrate() {
-  let fresh = null, updatedAt = '';
+// 后台校准：拉一次真实数据，刷新本机缓存；完成后回调通知界面
+async function calibrate(onDone) {
+  let fresh = null, updatedAt = '', source = '';
   try {
     const r = await fetch('/api/teams', { cache: 'no-store' });
     const ct = (r.headers.get('content-type') || '');
     if (r.ok && ct.indexOf('application/json') >= 0) {
       const j = await r.json();
-      if (j && Array.isArray(j.teams)) { fresh = j.teams; updatedAt = j.updatedAt || ''; TEAM_STORE.mode = 'file'; }
+      if (j && Array.isArray(j.teams)) { fresh = j.teams; updatedAt = j.updatedAt || ''; source = '本机文件'; TEAM_STORE.mode = 'file'; }
     }
-  } catch (e) { /* 线上没有这个接口，正常 */ }
+  } catch (err) { /* 线上没有这个接口，正常 */ }
   if (!fresh && typeof ghConfigured === 'function' && ghConfigured()) {
     try {
       const cfg = ghGetCfg();
       const cur = await ghReadFile(cfg, DATA_FILE_PATH);
-      if (cur && cur.text) {
-        const j = JSON.parse(cur.text);
-        if (j && Array.isArray(j.teams)) { fresh = j.teams; updatedAt = j.updatedAt || ''; }
+      if (cur && cur.content) {
+        const j = JSON.parse(b64ToUtf8(cur.content));
+        if (j && Array.isArray(j.teams)) { fresh = j.teams; updatedAt = j.updatedAt || ''; source = '线上仓库'; }
       }
-    } catch (e) { /* 令牌无效或网络问题，忽略 */ }
+    } catch (err) { /* 令牌无效或网络问题，忽略 */ }
   }
-  if (!fresh) return;
+  if (!fresh) {
+    TEAM_STORE.lastSync = { ok: false, at: Date.now(), count: 0, source: '' };
+    if (typeof onDone === 'function') onDone(TEAM_STORE.lastSync);
+    return null;
+  }
+  const before = JSON.stringify((readCache() || {}).teams || []);
   const mergedNow = mergeWithCache(fresh, updatedAt);
   if (mergedNow.changed) writeCache({ teams: mergedNow.teams, updatedAt: mergedNow.updatedAt });
+  const after = JSON.stringify(mergedNow.teams || []);
+  TEAM_STORE.lastSync = { ok: true, at: Date.now(), count: (mergedNow.teams || []).length, source: source, changed: before !== after };
+  if (typeof onDone === 'function') onDone(TEAM_STORE.lastSync);
+  return mergedNow;
 }
+
 
 function teamStoreLabel() {
   if (TEAM_STORE.mode === 'file') return '本机文件（改完即写入 JSON）';
