@@ -461,7 +461,13 @@ function renderTeams() {
   }
   if (btn) {
     if (typeof isAdmin === 'function' && !isAdmin()) btn.style.display = 'none';
-    btn.addEventListener('click', async () => { const t = await createTeam(); location.href = 'team.html?id=' + t.id; });
+    btn.addEventListener('click', async () => {
+    const t = await createTeam();
+    // 必须等提交落盘再跳转：新页面会重新从数据源加载，否则读到的还是旧数据（会显示找不到该配队）
+    setStatus('正在创建…');
+    await waitPendingWrites();
+    location.href = 'team.html?id=' + t.id;
+  });
   }
   refresh();
 }
@@ -702,7 +708,7 @@ function renderTeam() {
       <section class="section">
         <h2 class="section-title">预设码</h2>
         ${isEdit
-          ? '<div class="preset-box"><input class="preset-input" id="presetInput" value="' + escapeHtml(t.presetCode || '') + '" placeholder="粘贴游戏内预设码"><button class="copy-btn" id="presetImport">一键导入</button></div>'
+          ? '<div class="preset-box"><input class="preset-input" id="presetInput" value="' + escapeHtml(t.presetCode || '') + '" placeholder="粘贴游戏内预设码，或点右侧一键生成"><button class="copy-btn" id="presetImport">一键导入</button><button class="copy-btn" id="presetGen">一键生成</button></div>'
           : '<div class="preset-box"><input class="preset-input" id="presetInput" value="' + escapeHtml(t.presetCode || '') + '" readonly placeholder="未设置预设码"><button class="copy-btn" id="presetCopy">复制</button></div>'}
       </section>
     `;
@@ -756,6 +762,25 @@ function renderTeam() {
       if (nameEl) nameEl.addEventListener('change', () => { save({ name: nameEl.value.trim() || '未命名配队' }); });
       const presetEl = document.getElementById('presetInput');
       if (presetEl) presetEl.addEventListener('change', () => { save({ presetCode: presetEl.value.trim() }); });
+      const genBtn = document.getElementById('presetGen');
+      if (genBtn) genBtn.addEventListener('click', () => {
+        const r = teamToPresetCode(cur());
+        if (!r.code || !/[^A]/.test(r.code.slice(6))) {
+          alert('还生成不了：' + (r.missing.length ? r.missing.join('；') : '请先选好 3 名旅人'));
+          return;
+        }
+        presetEl.value = r.code;
+        save({ presetCode: r.code });
+        if (presetEl.select) { try { presetEl.select(); } catch (e) {} }
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(r.code).then(
+            () => setStatus('已生成预设码并复制到剪贴板' + (r.missing.length ? '（注意：' + r.missing.join('；') + '）' : '')),
+            () => setStatus('已生成预设码' + (r.missing.length ? '（注意：' + r.missing.join('；') + '）' : ''))
+          );
+        } else {
+          setStatus('已生成预设码' + (r.missing.length ? '（注意：' + r.missing.join('；') + '）' : ''));
+        }
+      });
 
       root.querySelectorAll('.build-char.editable').forEach(el => el.addEventListener('click', () => {
         const i = parseInt(el.dataset.idx, 10);
@@ -1050,6 +1075,62 @@ function openPotPicker(char, selected, isFront, onSave) {
   modal.querySelector('.picker-close').addEventListener('click', () => modal.remove());
   modal.addEventListener('click', e => { if (e.target === modal) modal.remove(); });
   modal.querySelector('#potSave').addEventListener('click', () => { onSave(sel); modal.remove(); });
+}
+
+// ============ 预设码：解包 / 生成 ============
+// 生成：把当前配队（3 名旅人 + 已选潜能及等级）编码成游戏内可用的预设码。
+// 位布局与 unpackPreset 严格对应，已用 23 个真实游戏预设码做过往返验证。
+function packPreset(entries) {
+  const bits = [];
+  const w = (v, n) => { for (let i = n - 1; i >= 0; i--) bits.push((v >> i) & 1); };
+  entries.forEach(e => w((e.charId || 0) >>> 0, 32));
+  const packP = (sel, ids, special) => {
+    for (const id of (ids || [])) {
+      if (special) { w(sel[id] != null ? 1 : 0, 1); }
+      else {
+        let lv = sel[id] != null ? (parseInt(sel[id], 10) || 1) : 0;
+        if (lv > 7) lv = 7;
+        w(lv, 3);
+      }
+    }
+  };
+  entries.forEach((e, k) => {
+    const cfg = DATA.potentialCfg && DATA.potentialCfg.chars[String(e.charId)];
+    if (!cfg) return;
+    if (k === 0) { packP(e.sel, cfg.mainCore, true); packP(e.sel, cfg.mainNormal, false); }
+    else { packP(e.sel, cfg.assistCore, true); packP(e.sel, cfg.assistNormal, false); }
+    packP(e.sel, cfg.common, false);
+  });
+  const bytes = [];
+  for (let i = 0; i < bits.length; i += 8) {
+    let b = 0;
+    for (let j = 0; j < 8; j++) b = (b << 1) | (bits[i + j] || 0);
+    bytes.push(b);
+  }
+  let s = '';
+  bytes.forEach(b => { s += String.fromCharCode(b); });
+  return btoa(s);
+}
+
+// 把队伍数据（chars + pots）转成预设码；missing 是没配全的部分
+function teamToPresetCode(team) {
+  const missing = [];
+  const entries = [0, 1, 2].map(i => {
+    const cid = (team.chars || [])[i];
+    const ch = cid ? DATA.characters.find(c => c.id === cid) : null;
+    if (!ch) missing.push('第 ' + (i + 1) + ' 名旅人未选');
+    const sel = {};
+    const potSel = (team.pots || [])[i] || {};
+    Object.keys(potSel).forEach(nm => {
+      const p = (ch && ch.potentials || []).find(x => x.name === nm);
+      if (p && p.potId != null) sel[p.potId] = potSel[nm];
+      else if (ch) missing.push(ch.name + ' 的「' + nm + '」找不到编号，已跳过');
+    });
+    if (ch && !Object.keys(sel).length) missing.push(ch.name + ' 还没配潜能');
+    return { charId: ch ? ch.sid : 0, sel: sel };
+  });
+  if (!DATA.potentialCfg) return { code: '', missing: ['缺少预设码字典'] };
+  return { code: packPreset(entries), missing: missing };
 }
 
 // ============ 预设码解包 / 一键导入 ============

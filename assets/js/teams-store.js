@@ -83,12 +83,24 @@ async function persistTeams(snapshot) {
   return { ok: true, where: 'local' };
 }
 
+// 正在提交的 Promise 列表：跳转页面前等它落盘，避免新页面读到的还是旧数据
+let inflight = [];
+function waitPendingWrites() {
+  if (!inflight.length) return Promise.resolve();
+  // 等当前这一批，且最多等 10 秒，网络卡住也不会把用户永远卡在这里
+  const batch = inflight.slice();
+  return Promise.race([
+    Promise.all(batch.map(p => p.catch(() => null))),
+    new Promise(r => setTimeout(r, 10000))
+  ]);
+}
+
 // 乐观更新的核心：立刻返回，提交丢到后台
 function queuePersist() {
   const snapshot = allTeams().slice();
   pendingWrites++;
   setStatus('正在同步 ' + pendingWrites + ' 项…');
-  return persistTeams(snapshot)
+  const p = persistTeams(snapshot)
     .then(function (r) {
       pendingWrites = Math.max(0, pendingWrites - 1);
       if (!pendingWrites) setStatus('');
@@ -99,7 +111,11 @@ function queuePersist() {
       setStatus('', e.message);
       alert('提交失败：' + e.message);
       throw e;
-    });
+    })
+    .then(function (r) { inflight = inflight.filter(x => x !== p); return r; },
+          function (e) { inflight = inflight.filter(x => x !== p); throw e; });
+  inflight.push(p);
+  return p;
 }
 
 async function initTeamStore() {
