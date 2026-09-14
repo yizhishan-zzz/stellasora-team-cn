@@ -119,6 +119,7 @@ async function persistTeams(snapshot) {
     const r = await fetch('/api/teams', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: json });
     if (!r.ok) throw new Error('写入失败 HTTP ' + r.status + ' ' + (await r.text()).slice(0, 200));
     clearPendingFor(teams);
+    if (typeof showToast === 'function') showToast('已保存到数据文件');
     if (!pendingWrites) setStatus('已保存到 assets/data/preset-teams.json');
     return { ok: true, where: 'file' };
   }
@@ -126,6 +127,7 @@ async function persistTeams(snapshot) {
     const cfg = ghGetCfg();
     await ghWriteFile(cfg, DATA_FILE_PATH, json, '更新配队数据（站内编辑）');
     clearPendingFor(teams);   // 提交成功；云端部署还要 30~60 秒，这期间靠未同步记录兜住
+    if (typeof showToast === 'function') showToast('已同步到线上仓库');
     if (!pendingWrites) setStatus('已提交到 ' + cfg.owner + '/' + cfg.repo + '（页面稍后自动更新）');
     return { ok: true, where: 'github' };
   }
@@ -171,6 +173,7 @@ function queuePersist() {
   const safe = p.catch(e => {
     // 提交失败不再弹窗打断（改动已存在本机覆盖层里，不会丢）
     setStatus('有改动还没提交成功，稍后会自动重试');
+    if (typeof showToast === 'function') showToast('提交失败，改动已存在本机', 'err');
     TEAM_STORE.lastError = e.message;
     return { ok: false, error: e.message };
   });

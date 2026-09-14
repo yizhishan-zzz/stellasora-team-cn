@@ -325,6 +325,27 @@ async function syncFromRepo() {
 
 // ============ 配队数据源状态 ============
 // 在管理员按钮旁显示当前保存在哪，并给一个「仓库设置」入口
+// ===== 轻量提示：右上角浮层，几秒后自动消失（不打断操作）=====
+function showToast(msg, kind) {
+  try {
+    var box = document.getElementById('toastBox');
+    if (!box) {
+      box = document.createElement('div');
+      box.id = 'toastBox';
+      box.className = 'toast-box';
+      document.body.appendChild(box);
+    }
+    var el = document.createElement('div');
+    el.className = 'toast' + (kind ? ' toast-' + kind : '');
+    el.textContent = msg;
+    box.appendChild(el);
+    setTimeout(function () {
+      el.className = 'toast out';
+      setTimeout(function () { if (el.parentNode) el.parentNode.removeChild(el); }, 260);
+    }, 2600);
+  } catch (e) {}
+}
+
 function renderTeamStoreStatus() {
   const host = document.getElementById('adminSlot');
   if (!host) return;
@@ -759,7 +780,10 @@ function renderTeam() {
         }));
       }
       const nameEl = document.getElementById('teamName');
-      if (nameEl) nameEl.addEventListener('change', () => { save({ name: nameEl.value.trim() || '未命名配队' }); });
+      if (nameEl) nameEl.addEventListener('change', async () => {
+        await save({ name: nameEl.value.trim() || '未命名配队' });
+        showToast('队名已保存', 'ok');
+      });
       const presetEl = document.getElementById('presetInput');
       if (presetEl) presetEl.addEventListener('change', () => { save({ presetCode: presetEl.value.trim() }); });
       const genBtn = document.getElementById('presetGen');
@@ -879,14 +903,27 @@ function renderTeam() {
       });
       // 推荐配队：把本地改动写回 preset-teams.json（选过一次文件后就是一键覆盖）
       const saveBtn = document.getElementById('saveBtn');
-      if (saveBtn) saveBtn.addEventListener('click', () => {
+      if (saveBtn) saveBtn.addEventListener('click', async () => {
         const patch = {};
         const ne = document.getElementById('teamName');
         if (ne) patch.name = ne.value.trim() || '未命名配队';
         const de = document.getElementById('teamDesc');
         if (de) patch.description = de.value;
-        save(patch);
-        setStatus('已保存');   // 右上角提示，不弹窗打断
+        saveBtn.disabled = true;
+        saveBtn.textContent = '保存中…';
+        try {
+          await save(patch);                 // 等数据真的写进去
+          await waitPendingWrites();         // 提交也要等，避免下一页读到旧数据
+          showToast('已保存', 'ok');
+          const sp = new URLSearchParams(location.search);
+          sp.delete('edit');
+          location.search = sp.toString();   // 回到队伍详情页
+        } catch (e) {
+          // 写入失败：按钮恢复，让用户可以重试（改动已存在本机，不会丢）
+          saveBtn.disabled = false;
+          saveBtn.textContent = '保存';
+          showToast('保存失败：' + (e && e.message ? e.message : '未知错误'), 'err');
+        }
       });
     } else {
       const copyBtn = document.getElementById('presetCopy');
