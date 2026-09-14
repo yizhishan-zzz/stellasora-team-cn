@@ -47,15 +47,15 @@ const noteName = n => NOTE_TYPES[n] || '?';
 function renderStars(rarity, size) {
   const n = parseInt(rarity) || 0;
   if (n <= 0 || n > 5) return '';
-  return '<img class="star-img' + (size ? ' star-img-' + size : '') + '" src="assets/img/ui/star-' + n + '.png" alt="' + n + '星">';
+  return '<img loading="lazy" decoding="async" class="star-img' + (size ? ' star-img-' + size : '') + '" src="assets/img/ui/star-' + n + '.png" alt="' + n + '星">';
 }
 
 // 属性图标 / 音符图标
 function elIcon(el) {
-  return '<img class="el-icon" src="assets/img/ui/el-' + (el || 'none') + '.png" alt="' + elementName(el) + '">';
+  return '<img loading="lazy" decoding="async" class="el-icon" src="assets/img/ui/el-' + (el || 'none') + '.png" alt="' + elementName(el) + '">';
 }
 function noteIcon(id) {
-  return '<img class="note-icon" src="assets/img/ui/note-' + id + '.png" alt="' + noteName(id) + '">';
+  return '<img loading="lazy" decoding="async" class="note-icon" src="assets/img/ui/note-' + id + '.png" alt="' + noteName(id) + '">';
 }
 
 function renderPortrait(char, cls) {
@@ -81,7 +81,7 @@ function initNavbar(active) {
   if (el) el.innerHTML = `
     <header class="navbar">
       <div class="navbar-inner">
-        <a class="brand" href="index.html"><img class="brand-logo" src="assets/img/logo.ico" alt="" width="26" height="26">星塔旅人配队一览</a>
+        <a class="brand" href="index.html"><img loading="lazy" decoding="async" class="brand-logo" src="assets/img/logo.ico" alt="" width="26" height="26">星塔旅人配队一览</a>
         <nav class="nav-links">${links}</nav>
         <span id="adminSlot" class="admin-slot"></span>
       </div>
@@ -131,7 +131,7 @@ function renderPresetTeamCard(t) {
     ? '<span class="ut-char" title="' + escapeHtml(x.name) + '">' + renderPortrait(x, 'ut-char-img') + '</span>'
     : '<span class="ut-char ut-empty">+</span>').join('');
   const patSlots = (arr, cls) => arr.map(p => p
-    ? '<span class="ut-pat ' + cls + '">' + (p.portrait ? '<img src="' + escapeHtml(p.portrait) + '" alt="">' : '') + '</span>'
+    ? '<span class="ut-pat ' + cls + '">' + (p.portrait ? '<img loading="lazy" decoding="async" src="' + escapeHtml(p.portrait) + '" alt="">' : '') + '</span>'
     : '<span class="ut-pat ut-empty ' + cls + '"></span>').join('');
   const potTotal = (t.pots || []).reduce((s, p) => s + Object.values(p || {}).reduce((a, v) => a + (typeof v === 'number' ? v : 0), 0), 0);
   const tg = t.tags || {};

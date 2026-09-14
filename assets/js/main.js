@@ -351,7 +351,13 @@ let cloudSyncToastShown = false;
 function onCloudSyncDone(r) {
   if (!r) return;
   if (!r.ok) {
-    if (typeof showToast === "function") showToast("云端同步失败：请检查仓库设置或网络", "err");
+    var configured = (typeof ghConfigured === "function") && ghConfigured();
+    if (!configured) {
+      if (typeof showToast === "function") showToast("此设备未配置仓库令牌：可以浏览和编辑，但改动只存本机", "err");
+    } else {
+      if (typeof showToast === "function") showToast("云端同步失败：请检查网络或仓库令牌是否过期", "err");
+    }
+    if (typeof renderTeamStoreStatus === "function") renderTeamStoreStatus();
     return;
   }
   var more = r.count ? ("，共 " + r.count + " 支配队") : "";
@@ -387,9 +393,9 @@ function renderTeamStoreStatus() {
     el.textContent = txt + " · 已同步";
     el.title = "上次同步 " + new Date(TEAM_STORE.lastSync.at).toLocaleTimeString() + "（" + TEAM_STORE.lastSync.count + " 支配队）";
   } else if (typeof TEAM_STORE !== "undefined" && TEAM_STORE.lastSync && !TEAM_STORE.lastSync.ok) {
-    el.textContent = txt + " · 同步失败";
+    el.textContent = txt + " · 未配置令牌";
   } else {
-    el.textContent = txt + " · 同步中…";
+    el.textContent = txt + " · 读取中…";
   }
   el.classList.toggle('store-status-local', mode === 'local');
   if (!(typeof TEAM_STORE !== "undefined" && TEAM_STORE.lastSync)) el.title = (typeof TEAM_STORE !== 'undefined' && TEAM_STORE.lastError) ? TEAM_STORE.lastError : '数据文件：assets/data/preset-teams.json';
@@ -524,7 +530,7 @@ function renderUserTeamCard(t) {
     ? '<span class="ut-char" title="' + escapeHtml(c.name) + '">' + renderPortrait(c, 'ut-char-img') + '</span>'
     : '<span class="ut-char ut-empty">+</span>').join('');
   const patSlots = (arr, cls) => arr.map(p => p
-    ? '<span class="ut-pat ' + cls + '">' + (p.portrait ? '<img src="' + escapeHtml(p.portrait) + '" alt="">' : '') + '</span>'
+    ? '<span class="ut-pat ' + cls + '">' + (p.portrait ? '<img loading="lazy" decoding="async" src="' + escapeHtml(p.portrait) + '" alt="">' : '') + '</span>'
     : '<span class="ut-pat ut-empty ' + cls + '"></span>').join('');
   const filled = chars.filter(Boolean).length;
   const potTotal = (t.pots || []).reduce((sum, p) => {
@@ -653,7 +659,7 @@ function renderTeam() {
 
     const patSlot = (p, i, kind) => `
       <div class="edit-slot${isEdit ? ' editable' : ''}" data-kind="${kind}" data-idx="${i}">
-        ${p ? (p.portrait ? '<img class="es-img es-img-pat" src="' + escapeHtml(p.portrait) + '" alt="">' : '') + '<div class="es-name">' + escapeHtml(p.name) + '</div>'
+        ${p ? (p.portrait ? '<img loading="lazy" decoding="async" class="es-img es-img-pat" src="' + escapeHtml(p.portrait) + '" alt="">' : '') + '<div class="es-name">' + escapeHtml(p.name) + '</div>'
             : '<div class="es-empty">＋ 选择秘纹</div>'}
       </div>`;
 
@@ -661,7 +667,7 @@ function renderTeam() {
       <div class="backup-list">
         ${arr.map((p, i) => `
           <div class="edit-slot backup-slot${isEdit ? ' editable' : ''}${p ? ' filled' : ' backup-empty'}" data-kind="${kind}" data-idx="${i}">
-            ${p ? (isEdit ? '<i class="es-del" title="删除这个备选">✕</i>' : '') + (p.portrait ? '<img class="es-img es-img-pat" src="' + escapeHtml(p.portrait) + '" alt="">' : '') + '<div class="es-name">' + escapeHtml(p.name) + '</div>'
+            ${p ? (isEdit ? '<i class="es-del" title="删除这个备选">✕</i>' : '') + (p.portrait ? '<img loading="lazy" decoding="async" class="es-img es-img-pat" src="' + escapeHtml(p.portrait) + '" alt="">' : '') + '<div class="es-name">' + escapeHtml(p.name) + '</div>'
                 : '<div class="es-empty">备选</div>'}
           </div>`).join('')}
       </div>`;
@@ -880,7 +886,7 @@ function renderTeam() {
         const used = usedEverywhere({ k: key, i: i });
         const isBk = (key === 'mainBackup' || key === 'subBackup');
         openPicker(kind === 'main' || kind === 'mainBk' ? (kind === 'main' ? '选择主位秘纹' : '选择主位备选秘纹') : (kind === 'sub' ? '选择辅位秘纹' : '选择辅位备选秘纹'), DATA.patterns,
-          p => (p.portrait ? '<img class="pk-img pk-img-pat" src="' + escapeHtml(p.portrait) + '">' : '') + '<span>' + escapeHtml(p.name) + '</span><em>' + (p.funcs || []).join('/') + '</em>',
+          p => (p.portrait ? '<img loading="lazy" decoding="async" class="pk-img pk-img-pat" src="' + escapeHtml(p.portrait) + '">' : '') + '<span>' + escapeHtml(p.name) + '</span><em>' + (p.funcs || []).join('/') + '</em>',
           list => {
             const arr = (cur()[key] || []).slice();
             const n = isBk ? 5 : 3;
@@ -1298,7 +1304,7 @@ function renderPattern() {
 
   const melodyHtml = melody.name ? `
     <div class="eff-card">
-      ${melody.skillImg ? '<img class="eff-icon" src="' + escapeHtml(melody.skillImg) + '" alt="">' : '<div class="eff-icon eff-icon-ph">♪</div>'}
+      ${melody.skillImg ? '<img loading="lazy" decoding="async" class="eff-icon" src="' + escapeHtml(melody.skillImg) + '" alt="">' : '<div class="eff-icon eff-icon-ph">♪</div>'}
       <div class="eff-body">
         <div class="eff-name">${escapeHtml(melody.name)}</div>
         <div class="eff-toolbar">
@@ -1314,7 +1320,7 @@ function renderPattern() {
 
   const harmonyCards = harmony.map((h, i) => `
     <div class="eff-card">
-      ${h.skillImg ? '<img class="eff-icon" src="' + escapeHtml(h.skillImg) + '" alt="">' : '<div class="eff-icon eff-icon-ph">♪</div>'}
+      ${h.skillImg ? '<img loading="lazy" decoding="async" class="eff-icon" src="' + escapeHtml(h.skillImg) + '" alt="">' : '<div class="eff-icon eff-icon-ph">♪</div>'}
       <div class="eff-body">
         <div class="eff-name">${escapeHtml(h.name || '')}</div>
         <div class="eff-toolbar">
@@ -1331,7 +1337,7 @@ function renderPattern() {
 
   root.innerHTML = `
     <div class="detail-head">
-      ${p.portrait ? '<img class="pattern-big" src="' + escapeHtml(p.portrait) + '" alt="' + escapeHtml(p.name) + '">' : ''}
+      ${p.portrait ? '<img loading="lazy" decoding="async" class="pattern-big" src="' + escapeHtml(p.portrait) + '" alt="' + escapeHtml(p.name) + '">' : ''}
       <div class="detail-info">
         <h1 class="detail-name">${escapeHtml(p.name)}</h1>
         <div class="badge-row">${renderStars(p.rarity)}${elBadge}</div>
