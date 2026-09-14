@@ -350,10 +350,14 @@ function showToast(msg, kind) {
 let cloudSyncToastShown = false;
 function onCloudSyncDone(r) {
   if (!r) return;
+  // 只有管理员才提示同步状态：访客不涉及提交，不该看到任何同步信息
+  var admin = (typeof isAdmin === "function") && isAdmin();
+  if (!admin) return;
   if (!r.ok) {
+    // 管理员也没配令牌（比如换了一台设备）-> 温和说明，不报错
     var configured = (typeof ghConfigured === "function") && ghConfigured();
     if (!configured) {
-      if (typeof showToast === "function") showToast("此设备未配置仓库令牌：可以浏览和编辑，但改动只存本机", "err");
+      if (typeof showToast === "function") showToast("本机未配置仓库令牌：改动只存在这台设备", "err");
     } else {
       if (typeof showToast === "function") showToast("云端同步失败：请检查网络或仓库令牌是否过期", "err");
     }
