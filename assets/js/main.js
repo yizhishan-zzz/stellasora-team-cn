@@ -584,7 +584,7 @@ function elKeyByName(name) {
 function renderTeam() {
   const id = getUrlParam('id');
   const root = document.getElementById('content');
-  if (!getTeamAny(id)) { root.innerHTML = isJustCreated(id) ? newTeamScreen() : notFound('未找到该配队', 'teams.html', '返回配队方案'); return; }
+  if (!getTeamAny(id)) { root.innerHTML = notFound('未找到该配队', 'teams.html', '返回配队方案'); return; }
 
   function render() {
     const isEdit = getUrlParam('edit') === '1' && (typeof isAdmin === 'function' && isAdmin());
@@ -1344,24 +1344,6 @@ function renderPattern() {
 // ============ 通用小部件 ============
 function notFound(msg, backHref, backLabel) {
   return '<div class="empty center"><div class="empty-icon">❓</div><p class="empty-text">' + escapeHtml(msg) + '</p><a class="btn" href="' + backHref + '">' + escapeHtml(backLabel) + '</a></div>';
-}
-// 新建配队后立刻打开详情页时，数据可能还没同步回来（提交在后台进行）。
-// 这种不是找不到，而是已经建好了，所以单独给一句说明。
-function isJustCreated(id) {
-  try {
-    if (typeof readPending !== "function") return false;
-    const map = readPending();
-    const item = map && map[id];
-    return !!(item && item.team && (Date.now() - (item.at || 0)) < 5 * 60 * 1000);
-  } catch (e) { return false; }
-}
-function newTeamScreen() {
-  return `<div class="empty center">` +
-    `<div class="empty-icon">OK</div>` +
-    `<p class="empty-text">配队已建立</p>` +
-    `<p class="hint">请返回配队方案，把新配队编辑完整：选旅人、配潜能、填标签与预设码。</p>` +
-    `<a class="btn" href="teams.html">返回配队方案编辑新配队</a>` +
-    `</div>`;
 }
 function emptyHint(text) {
   return '<p class="hint">' + escapeHtml(text) + '</p>';
