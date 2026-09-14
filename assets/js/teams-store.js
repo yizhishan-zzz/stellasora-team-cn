@@ -79,16 +79,21 @@ function applyPending() {
   const map = readPending();
   const ids = Object.keys(map);
   if (!ids.length) return 0;
-  let n = 0;
+  const allIds = new Set(allTeams().map(x => x.id));
+  const now = Date.now();
+  let n = 0, cleaned = 0;
   ids.forEach(id => {
     const item = map[id];
-    if (!item || !item.team) return;
-    const i = allTeams().findIndex(x => x.id === id);
-    if (i >= 0) {
-      const cur = DATA.presetTeams[i];
-      if ((item.team.updatedAt || 0) >= (cur.updatedAt || 0)) { DATA.presetTeams[i] = item.team; n++; }
+    if (!item || !item.team) { delete map[id]; cleaned++; return; }
+    if (deletedIds.has(id)) { delete map[id]; cleaned++; return; }          // 本次删掉的不复活
+    if (!allIds.has(id) && (now - (item.at || 0)) > 24 * 3600 * 1000) { delete map[id]; cleaned++; return; }  // 过期残留清理
+    const i2 = DATA.presetTeams.findIndex(x => x.id === id);
+    if (i2 >= 0) {
+      const cur = DATA.presetTeams[i2];
+      if ((item.team.updatedAt || 0) >= (cur.updatedAt || 0)) { DATA.presetTeams[i2] = item.team; n++; }
     } else { DATA.presetTeams.push(item.team); n++; }
   });
+  if (cleaned) writePending(map);
   return n;
 }
 
@@ -158,6 +163,8 @@ let writing = false;
 // 本次会话真正改动过的配队 id —— 只把这些记为未同步。
 // 否则整个列表都会被标记，老队也会被本机旧副本覆盖（换设备时丢改动）。
 const touchedIds = new Set();
+// 本次会话删掉的配队 id —— 防止它们被"未同步记录"复活
+const deletedIds = new Set();
 
 function drainQueue() {
   if (writing || !writeQueue.length) return;
@@ -290,6 +297,7 @@ async function saveTeam(id, patch) { if (patch) return updateTeam(id, patch); re
 async function deleteTeam(id) {
   DATA.presetTeams = allTeams().filter(t => t.id !== id);
   deletePendingFor(id);
+  deletedIds.add(id);
   touchedIds.add(id);
   queuePersist();
   return true;
