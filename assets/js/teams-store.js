@@ -36,18 +36,49 @@ function setStatus(text, err) {
   if (typeof renderTeamStoreStatus === 'function') renderTeamStoreStatus();
 }
 
-// ===== 本地覆盖层：写入成功后留一份，加载时用它兜住云端还没部署好的窗口期 =====
-function saveOverlay(teams) {
-  try { localStorage.setItem(OVERLAY_KEY, JSON.stringify({ at: Date.now(), teams: teams || allTeams() })); } catch (e) {}
-}
-function readOverlay() {
+// ===== 未同步改动：把还没提交成功的队伍单独记在本机 =====
+// 用途：① 云端部署有 30~60 秒延迟，期间新页面读静态文件还是旧的，用它兜住
+//       ② 提交失败（网络/GitHub 报错）时改动不丢，刷新后还在
+// 只覆盖 id 相同的队伍，不会把远程其他队伍挤掉。
+const PENDING_KEY = 'ss_teams_pending_v1';
+
+function readPending() {
   try {
-    const raw = localStorage.getItem(OVERLAY_KEY);
-    if (!raw) return null;
-    const o = JSON.parse(raw);
-    if (!o || !Array.isArray(o.teams) || !o.at) return null;
-    return o;
-  } catch (e) { return null; }
+    const o = JSON.parse(localStorage.getItem(PENDING_KEY) || '{}');
+    return (o && typeof o === 'object') ? o : {};
+  } catch (e) { return {}; }
+}
+function writePending(map) {
+  try { localStorage.setItem(PENDING_KEY, JSON.stringify(map || {})); } catch (e) {}
+}
+function markPending(teams) {
+  const map = readPending();
+  const at = Date.now();
+  (teams || []).forEach(x => { if (x && x.id) map[x.id] = { at: at, team: x }; });
+  writePending(map);
+}
+function clearPendingFor(teams) {
+  const map = readPending();
+  let n = 0;
+  (teams || []).forEach(x => { if (x && x.id && map[x.id]) { delete map[x.id]; n++; } });
+  writePending(map);
+  return n;
+}
+// 把未同步的改动合并进当前数据（页面加载时调用）
+function applyPending() {
+  const map = readPending();
+  const ids = Object.keys(map);
+  if (!ids.length) return 0;
+  let n = 0;
+  ids.forEach(id => {
+    const item = map[id];
+    if (!item || !item.team) return;
+    const i = allTeams().findIndex(x => x.id === id);
+    if (i >= 0) DATA.presetTeams[i] = item.team;
+    else DATA.presetTeams.push(item.team);
+    n++;
+  });
+  return n;
 }
 
 // 按 id 去重（保留最后一次出现的），防止任何来源造成重复配队
@@ -87,14 +118,14 @@ async function persistTeams(snapshot) {
   if (TEAM_STORE.mode === 'file') {
     const r = await fetch('/api/teams', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: json });
     if (!r.ok) throw new Error('写入失败 HTTP ' + r.status + ' ' + (await r.text()).slice(0, 200));
-    saveOverlay(teams);
+    clearPendingFor(teams);
     if (!pendingWrites) setStatus('已保存到 assets/data/preset-teams.json');
     return { ok: true, where: 'file' };
   }
   if (TEAM_STORE.mode === 'github') {
     const cfg = ghGetCfg();
     await ghWriteFile(cfg, DATA_FILE_PATH, json, '更新配队数据（站内编辑）');
-    saveOverlay(teams);   // 云端部署要 30~60 秒才跟上，先在本机兜住
+    clearPendingFor(teams);   // 提交成功；云端部署还要 30~60 秒，这期间靠未同步记录兜住
     if (!pendingWrites) setStatus('已提交到 ' + cfg.owner + '/' + cfg.repo + '（页面稍后自动更新）');
     return { ok: true, where: 'github' };
   }
@@ -103,39 +134,57 @@ async function persistTeams(snapshot) {
   return { ok: true, where: 'local' };
 }
 
-// 正在提交的 Promise 列表：跳转页面前等它落盘，避免新页面读到的还是旧数据
+
+
+// 乐观更新的核心：立刻返回，提交丢到后台。
+// 关键：所有提交串行执行（一次只提交一个）。
+// 否则用户连续改几个字段时，多个提交会带着同一个过期版本号同时发出，GitHub 全部回 409。
 let inflight = [];
-function waitPendingWrites() {
-  if (!inflight.length) return Promise.resolve();
-  // 等当前这一批，且最多等 10 秒，网络卡住也不会把用户永远卡在这里
-  const batch = inflight.slice();
-  return Promise.race([
-    Promise.all(batch.map(p => p.catch(() => null))),
-    new Promise(r => setTimeout(r, 10000))
-  ]);
+let writeQueue = [];
+let writing = false;
+
+function drainQueue() {
+  if (writing || !writeQueue.length) return;
+  writing = true;
+  const job = writeQueue.shift();
+  persistTeams(job.snapshot)
+    .then(r => { job.resolve(r); })
+    .catch(e => { job.reject(e); })
+    .then(() => {
+      writing = false;
+      pendingWrites = writeQueue.length;
+      if (!pendingWrites) setStatus('');
+      else setStatus('正在同步 ' + pendingWrites + ' 项…');
+      drainQueue();
+    });
 }
 
-// 乐观更新的核心：立刻返回，提交丢到后台
 function queuePersist() {
-  const snapshot = allTeams().slice();
-  pendingWrites++;
+  const snapshot = allTeams().map(t => Object.assign({}, t));   // 深一点的快照，避免提交过程中被改
+  pendingWrites = writeQueue.length + (writing ? 1 : 0) + 1;
+  markPending(snapshot);        // 先记到本机：就算提交失败、就算用户立刻刷新，改动也不会丢
   setStatus('正在同步 ' + pendingWrites + ' 项…');
-  const p = persistTeams(snapshot)
-    .then(function (r) {
-      pendingWrites = Math.max(0, pendingWrites - 1);
-      if (!pendingWrites) setStatus('');
-      return r;
-    })
-    .catch(function (e) {
-      pendingWrites = Math.max(0, pendingWrites - 1);
-      setStatus('', e.message);
-      alert('提交失败：' + e.message);
-      throw e;
-    })
-    .then(function (r) { inflight = inflight.filter(x => x !== p); return r; },
-          function (e) { inflight = inflight.filter(x => x !== p); throw e; });
-  inflight.push(p);
-  return p;
+  const p = new Promise((resolve, reject) => {
+    writeQueue.push({ snapshot: snapshot, resolve: resolve, reject: reject });
+    drainQueue();
+  });
+  const safe = p.catch(e => {
+    // 提交失败不再弹窗打断（改动已存在本机覆盖层里，不会丢）
+    setStatus('有改动还没提交成功，稍后会自动重试');
+    TEAM_STORE.lastError = e.message;
+    return { ok: false, error: e.message };
+  });
+  inflight.push(safe);
+  safe.then(() => { inflight = inflight.filter(x => x !== safe); });
+  return safe;
+}
+
+function waitPendingWrites() {
+  if (!inflight.length && !writeQueue.length && !writing) return Promise.resolve();
+  return Promise.race([
+    Promise.all(inflight.slice().map(p => p.catch(() => null))),
+    new Promise(r => setTimeout(r, 15000))
+  ]);
 }
 
 async function initTeamStore() {
@@ -154,15 +203,9 @@ async function initTeamStore() {
   if (mode !== 'file' && typeof ghConfigured === 'function' && ghConfigured()) mode = 'github';
   TEAM_STORE.mode = mode;
   setStatus('', err);
-  // 云端部署还没跟上时，用本地覆盖层兜住刚做的改动
-  const ov = readOverlay();
-  const ovAt = ov ? ov.at : 0;
-  const fileAt = Date.parse(DATA.presetTeamsUpdatedAt || '') || 0;
-  if (ov && ov.teams.length && ovAt > fileAt) {
-    DATA.presetTeams = normList(ov.teams);
-    TEAM_STORE.usedOverlay = true;
-    setStatus('刚做的改动还在，正等线上部署跟上');
-  }
+  // 把还没同步成功的改动合并进来（云端部署延迟 / 提交失败都能兜住）
+  const applied = applyPending();
+  if (applied > 0) { TEAM_STORE.usedOverlay = true; setStatus('有 ' + applied + ' 处改动还在本机，正在等线上跟上'); }
   await importLocalBackup();
   await healTeams();
   if (n0 > 0) setStatus('已清理 ' + n0 + ' 个重复配队');
