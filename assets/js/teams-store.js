@@ -11,6 +11,10 @@
  * 写入策略：乐观更新 —— 先在内存里改完、立刻重绘页面，提交放后台，不用等网络。
  */
 const LOCAL_KEY = 'ss_teams_v1';
+// 本地覆盖层：每次写入成功后存一份最新数据。
+// 线上 GitHub 模式提交后，要等 Cloudflare 重新部署（30~60 秒）静态文件才会更新，
+// 这段时间新页面读到的还是旧文件，会把刚建的配队弄丢。加载时若本地这份更新，就用它兜住。
+const OVERLAY_KEY = 'ss_teams_overlay_v1';
 const DATA_FILE_PATH = 'assets/data/preset-teams.json';
 
 const TEAM_STORE = { mode: 'loading', lastError: '', lastText: '' };
@@ -30,6 +34,20 @@ function setStatus(text, err) {
   TEAM_STORE.lastError = err || '';
   if (text) TEAM_STORE.lastText = text;
   if (typeof renderTeamStoreStatus === 'function') renderTeamStoreStatus();
+}
+
+// ===== 本地覆盖层：写入成功后留一份，加载时用它兜住云端还没部署好的窗口期 =====
+function saveOverlay(teams) {
+  try { localStorage.setItem(OVERLAY_KEY, JSON.stringify({ at: Date.now(), teams: teams || allTeams() })); } catch (e) {}
+}
+function readOverlay() {
+  try {
+    const raw = localStorage.getItem(OVERLAY_KEY);
+    if (!raw) return null;
+    const o = JSON.parse(raw);
+    if (!o || !Array.isArray(o.teams) || !o.at) return null;
+    return o;
+  } catch (e) { return null; }
 }
 
 // 按 id 去重（保留最后一次出现的），防止任何来源造成重复配队
@@ -69,13 +87,15 @@ async function persistTeams(snapshot) {
   if (TEAM_STORE.mode === 'file') {
     const r = await fetch('/api/teams', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: json });
     if (!r.ok) throw new Error('写入失败 HTTP ' + r.status + ' ' + (await r.text()).slice(0, 200));
+    saveOverlay(teams);
     if (!pendingWrites) setStatus('已保存到 assets/data/preset-teams.json');
     return { ok: true, where: 'file' };
   }
   if (TEAM_STORE.mode === 'github') {
     const cfg = ghGetCfg();
     await ghWriteFile(cfg, DATA_FILE_PATH, json, '更新配队数据（站内编辑）');
-    if (!pendingWrites) setStatus('已提交到 ' + cfg.owner + '/' + cfg.repo);
+    saveOverlay(teams);   // 云端部署要 30~60 秒才跟上，先在本机兜住
+    if (!pendingWrites) setStatus('已提交到 ' + cfg.owner + '/' + cfg.repo + '（页面稍后自动更新）');
     return { ok: true, where: 'github' };
   }
   try { localStorage.setItem(LOCAL_KEY, JSON.stringify(allTeams())); } catch (e) {}
@@ -134,6 +154,15 @@ async function initTeamStore() {
   if (mode !== 'file' && typeof ghConfigured === 'function' && ghConfigured()) mode = 'github';
   TEAM_STORE.mode = mode;
   setStatus('', err);
+  // 云端部署还没跟上时，用本地覆盖层兜住刚做的改动
+  const ov = readOverlay();
+  const ovAt = ov ? ov.at : 0;
+  const fileAt = Date.parse(DATA.presetTeamsUpdatedAt || '') || 0;
+  if (ov && ov.teams.length && ovAt > fileAt) {
+    DATA.presetTeams = normList(ov.teams);
+    TEAM_STORE.usedOverlay = true;
+    setStatus('刚做的改动还在，正等线上部署跟上');
+  }
   await importLocalBackup();
   await healTeams();
   if (n0 > 0) setStatus('已清理 ' + n0 + ' 个重复配队');

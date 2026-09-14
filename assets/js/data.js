@@ -30,7 +30,8 @@ const DATA = {
   characters: [],
   patterns: [],
   potentialCfg: null,
-  presetTeams: []
+  presetTeams: [],
+  presetTeamsUpdatedAt: ''   // 数据文件里的 updatedAt，用于判断本地改动是否比线上新
 };
 
 // 只加载页面真正用到的数据（teams.json / records.json 是旧占位数据，已归档不再加载）
@@ -51,7 +52,7 @@ async function loadData() {
   );
   for (const [key, json] of entries) {
     if (key === 'potentialCfg') DATA.potentialCfg = json;
-    else if (key === 'presetTeams') DATA.presetTeams = json.teams || [];
+    else if (key === 'presetTeams') { DATA.presetTeams = json.teams || []; DATA.presetTeamsUpdatedAt = json.updatedAt || ''; }
     else DATA[key] = json[key];
   }
 }
