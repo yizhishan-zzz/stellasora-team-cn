@@ -694,7 +694,7 @@ function renderTeam() {
           ? '<input class="team-name-input" id="teamName" value="' + escapeHtml(t.name || '') + '" placeholder="配队名称">'
           : '<h1 class="team-title">' + escapeHtml(t.name || '未命名配队') + '</h1>'}
         ${isEdit
-          ? '<button class="btn" id="saveBtn">保存</button>'
+          ? '<button class="btn" id="saveBtn">保存</button><button class="btn-secondary" id="cancelEditBtn">取消编辑</button>'
           : ((typeof isAdmin === 'function' && isAdmin()) ? '<a class="btn" href="team.html?id=' + id + '&edit=1">编辑</a>' : '')}
         ${(typeof isAdmin === 'function' && isAdmin()) ? '<button class="btn-secondary" id="delBtn">删除配队</button>' : ''}
 
@@ -933,6 +933,13 @@ function renderTeam() {
         copyToClipboard(v);
       });
     }
+
+    const cancelBtn = document.getElementById('cancelEditBtn');
+    if (cancelBtn) cancelBtn.addEventListener('click', () => {
+      const sp = new URLSearchParams(location.search);
+      sp.delete('edit');
+      location.search = sp.toString();   // 退出编辑，回到详情页
+    });
 
     const delBtn = document.getElementById('delBtn');
     if (delBtn) delBtn.addEventListener('click', () => {
