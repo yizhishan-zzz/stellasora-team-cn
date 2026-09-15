@@ -1,0 +1,20 @@
+# Cloudflare Pages 缓存策略
+# HTML 不缓存：改了立刻生效
+/*.html
+  Cache-Control: public, max-age=0, must-revalidate
+/
+  Cache-Control: public, max-age=0, must-revalidate
+
+# 静态资源长缓存（文件名带内容，改了会自然失效）
+/assets/img/*
+  Cache-Control: public, max-age=604800
+/assets/fonts/*
+  Cache-Control: public, max-age=604800
+/assets/css/*
+  Cache-Control: public, max-age=86400
+/assets/js/*
+  Cache-Control: public, max-age=86400
+
+# 数据文件不缓存：配队改动尽快可见
+/assets/data/*
+  Cache-Control: public, max-age=0, must-revalidate

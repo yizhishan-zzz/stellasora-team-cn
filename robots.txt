@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+# 配队编辑需要登录，对爬虫没意义
+Disallow: /*?edit=1
+
+Sitemap: https://stellasora-team-cn.pages.dev/sitemap.xml
