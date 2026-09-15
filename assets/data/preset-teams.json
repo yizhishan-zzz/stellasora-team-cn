@@ -440,78 +440,6 @@
       "updatedAt": 1789376934333
     },
     {
-      "id": "t_mu0qk9bzj8qf",
-      "name": "千都世多娜双c",
-      "presetCode": "AAAAkAAAAKAAAACCMAYnYAAwBsBsBs2AIGwA",
-      "description": "纯纯的版本T0，跨属也不在话下，buff比命长，打boss前记得先用千都世主控技叠buff\n参考了星塔攻略组的预设，网站链接：https://www.bilibili.com/opus/1227477781824143396?spm_id_from=333.1387.0.0&spm_id_from=333.1369.0.0\n不清楚攻略组的流波幻舞为啥要点到6，有多的点镜水归潮会更好",
-      "tags": {
-        "element": "水",
-        "style": "技伤流",
-        "power": "T0",
-        "scene": []
-      },
-      "chars": [
-        "qiandushi",
-        "wlsh",
-        "duona"
-      ],
-      "mainPatterns": [
-        "p076",
-        "p025",
-        "p061"
-      ],
-      "mainBackup": [
-        "p068",
-        "p089",
-        null,
-        null,
-        null
-      ],
-      "subPatterns": [
-        "p079",
-        "p071",
-        "p012"
-      ],
-      "subBackup": [
-        "p016",
-        "p005",
-        null,
-        null,
-        null
-      ],
-      "pots": [
-        {
-          "断空泷斩": 1,
-          "溯流泷闪": 1,
-          "潮影环蛇": 6,
-          "镜水归潮": 1,
-          "碧浪霖身": 6,
-          "涟汐环行": 6,
-          "流波幻舞": 1
-        },
-        {
-          "音浪荡漾": 1,
-          "浪鸣震耳": 1,
-          "巨浪吞城": 6,
-          "异色水泡": 6,
-          "潮音渐歇": 6,
-          "风和浪暖": 6,
-          "海风执纪": 6
-        },
-        {
-          "离弦之箭": 1,
-          "残矢清算": 1,
-          "箭矢追击": 6,
-          "凝霜箭寒": 6,
-          "寒潮起势": 1,
-          "水行攻涨": 6,
-          "波纹涟漪": 6
-        }
-      ],
-      "isRecommended": false,
-      "updatedAt": 1789377342430
-    },
-    {
       "id": "t_mu0zw5yee52i",
       "name": "花玲绝招双c",
       "presetCode": "AAAAnQAAAJEAAACOzbADADDNgBkAAG2AwAww",
@@ -656,6 +584,80 @@
       ],
       "isRecommended": false,
       "updatedAt": 1789402014840
+    },
+    {
+      "id": "t_mu0qk9bzj8qf",
+      "name": "千都世多娜双c",
+      "presetCode": "AAAAkAAAAKAAAACCMAYnYAAwBsBsBs2AIGwA",
+      "description": "纯纯的版本T0，跨属也不在话下，buff比命长，打boss前记得先用千都世主控技叠buff\n参考了星塔攻略组的预设，网站链接：https://www.bilibili.com/opus/1227477781824143396?spm_id_from=333.1387.0.0&spm_id_from=333.1369.0.0\n不清楚攻略组的流波幻舞为啥要点到6，有多的点镜水归潮会更好",
+      "tags": {
+        "element": "水",
+        "style": "技伤流",
+        "power": "T0",
+        "scene": [
+          "单体环境"
+        ]
+      },
+      "chars": [
+        "qiandushi",
+        "wlsh",
+        "duona"
+      ],
+      "mainPatterns": [
+        "p076",
+        "p025",
+        "p061"
+      ],
+      "mainBackup": [
+        "p068",
+        "p089",
+        null,
+        null,
+        null
+      ],
+      "subPatterns": [
+        "p079",
+        "p071",
+        "p012"
+      ],
+      "subBackup": [
+        "p016",
+        "p005",
+        null,
+        null,
+        null
+      ],
+      "pots": [
+        {
+          "断空泷斩": 1,
+          "溯流泷闪": 1,
+          "潮影环蛇": 6,
+          "镜水归潮": 1,
+          "碧浪霖身": 6,
+          "涟汐环行": 6,
+          "流波幻舞": 1
+        },
+        {
+          "音浪荡漾": 1,
+          "浪鸣震耳": 1,
+          "巨浪吞城": 6,
+          "异色水泡": 6,
+          "潮音渐歇": 6,
+          "风和浪暖": 6,
+          "海风执纪": 6
+        },
+        {
+          "离弦之箭": 1,
+          "残矢清算": 1,
+          "箭矢追击": 6,
+          "凝霜箭寒": 6,
+          "寒潮起势": 1,
+          "水行攻涨": 6,
+          "波纹涟漪": 6
+        }
+      ],
+      "isRecommended": false,
+      "updatedAt": 1789479702310
     }
   ]
 }
