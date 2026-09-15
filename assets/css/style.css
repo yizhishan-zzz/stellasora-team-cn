@@ -724,3 +724,10 @@ button { font-family: inherit; }
 /* 下拉菜单：标签区需要更宽一点，避免文字换行 */
 .tag-edit .dd-menu { min-width: 150px; z-index: 60; }
 .tag-edit .dd-btn { gap: 8px; }
+
+/* ===== 页脚免责声明 ===== */
+.site-footer .site-disclaimer {
+  max-width: 900px; margin: 0 auto 10px; line-height: 1.7;
+  font-size: 12px; color: var(--text-muted);
+}
+.site-footer .site-note { margin: 0; font-size: 12px; color: var(--text-muted); }

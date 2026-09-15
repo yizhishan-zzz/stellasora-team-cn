@@ -36,7 +36,14 @@ function initFooter() {
   if (document.querySelector('.site-footer')) return;
   const f = document.createElement('footer');
   f.className = 'site-footer';
-  f.textContent = '使用字体：MiSans，MiSansLatin';
+  const d = document.createElement('p');
+  d.className = 'site-disclaimer';
+  d.textContent = '本站为玩家自制的非官方资料整理工具，与游戏官方无任何关联。站内游戏素材（立绘、头像、图标等）版权归原发行商所有，仅用于资料展示，本站不以任何形式盈利，不提供素材下载。如有侵权或不当之处，请联系本站，我会立即删除或调整。';
+  const n = document.createElement('p');
+  n.className = 'site-note';
+  n.textContent = '使用字体：MiSans，MiSansLatin';
+  f.appendChild(d);
+  f.appendChild(n);
   document.body.appendChild(f);
 }
 
