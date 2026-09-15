@@ -736,20 +736,20 @@ function renderTeam() {
         <div class="tag-item">
           <label>流派</label>
           <div class="dd" id="ddStyle">
-            <button type="button" class="dd-btn" id="ddStyleBtn">${' + STYLE_BTN + '}</button>
+            <button type="button" class="dd-btn" id="ddStyleBtn">${tg.style ? styleIcon(tg.style) + '<span>' + escapeHtml(tg.style) + '</span>' : '<span class="dd-ph">未设置</span>'}</button>
             <div class="dd-menu">
               <button type="button" class="dd-opt" data-v=""><span>未设置</span></button>
-              ${' + STYLE_MAP + '}
+              ${STYLE_OPTIONS.map(o => '<button type="button" class="dd-opt' + (tg.style === o ? ' on' : '') + '" data-v="' + o + '">' + styleIcon(o) + '<span>' + o + '</span></button>').join('')}
             </div>
           </div>
         </div>
         <div class="tag-item">
           <label>强度</label>
           <div class="dd" id="ddPower">
-            <button type="button" class="dd-btn" id="ddPowerBtn">${' + POWER_BTN + '}</button>
+            <button type="button" class="dd-btn" id="ddPowerBtn">${tg.power ? powerIcon(tg.power) + '<span>' + escapeHtml(tg.power) + '</span>' : '<span class="dd-ph">未设置</span>'}</button>
             <div class="dd-menu">
               <button type="button" class="dd-opt" data-v=""><span>未设置</span></button>
-              ${' + POWER_MAP + '}
+              ${POWER_OPTIONS.map(o => '<button type="button" class="dd-opt' + (tg.power === o ? ' on' : '') + '" data-v="' + o + '">' + powerIcon(o) + '<span>' + o + '</span></button>').join('')}
             </div>
           </div>
         </div>
