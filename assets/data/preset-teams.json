@@ -1,10 +1,375 @@
 {
   "teams": [
     {
+      "id": "t_mu0tjjadk9jf",
+      "name": "千都世印记",
+      "presetCode": "AAAAkAAAAKAAAABrkDDHbADNhsAABsGGDGAD",
+      "description": "无多娜可选，强度只能排到T1",
+      "tags": {
+        "element": "水",
+        "style": "印记流",
+        "power": "T1",
+        "scene": [
+          "单体环境"
+        ]
+      },
+      "chars": [
+        "qiandushi",
+        "wlsh",
+        "tiliya"
+      ],
+      "mainPatterns": [
+        "p071",
+        "p025",
+        "p076"
+      ],
+      "mainBackup": [
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "subPatterns": [
+        "p012",
+        "p016",
+        "p079"
+      ],
+      "subBackup": [
+        "p068",
+        "p089",
+        null,
+        null,
+        null
+      ],
+      "pots": [
+        {
+          "腾蛇凌波": 1,
+          "溯流泷闪": 1,
+          "逐浪幻鳞": 6,
+          "镜水归潮": 6,
+          "流波幻舞": 1,
+          "碧浪霖身": 6,
+          "涟汐环行": 6,
+          "坚鳞护体": 6
+        },
+        {
+          "水花飞溅": 1,
+          "激流覆岸": 1,
+          "劝诫依旧": 6,
+          "海风低徊": 6,
+          "巨浪吞城": 6,
+          "异色水泡": 6,
+          "海风执纪": 6
+        },
+        {
+          "圣洁的铭刻": 1,
+          "再续的光谱": 1,
+          "强光致盲": 6,
+          "绝妙接力": 6,
+          "护卫决心": 3,
+          "奇招馈能": 6,
+          "骑誓·战意鼓动": 3
+        }
+      ],
+      "isRecommended": false,
+      "updatedAt": 1789365034375
+    },
+    {
+      "id": "t_mu0tr7r6gdhq",
+      "name": "多娜单c",
+      "presetCode": "AAAAfwAAAIIAAACgUYADEbDNgCBsADAAw2wG",
+      "description": "双辅助玩法，对充能效率的要求较高，强度还是很不错的",
+      "tags": {
+        "element": "水",
+        "style": "技伤流",
+        "power": "T0.5",
+        "scene": [
+          "单体环境"
+        ]
+      },
+      "chars": [
+        "telisha",
+        "duona",
+        "wlsh"
+      ],
+      "mainPatterns": [
+        "p061",
+        "p025",
+        "p076"
+      ],
+      "mainBackup": [
+        "p012",
+        "p016",
+        null,
+        null,
+        null
+      ],
+      "subPatterns": [
+        "p079",
+        "p071",
+        "p068"
+      ],
+      "subBackup": [
+        "p089",
+        null,
+        null,
+        null,
+        null
+      ],
+      "pots": [
+        {
+          "潺流·真蓄斩击": 1,
+          "潺流·滴水之覆": 1,
+          "浊噬": 6,
+          "无可取代的牵绊": 6,
+          "魔剑汲能": 1,
+          "绝浪之流": 6,
+          "属性解放": 6
+        },
+        {
+          "离弦之箭": 1,
+          "残矢清算": 1,
+          "箭矢追击": 6,
+          "凝霜箭寒": 6,
+          "寒潮起势": 1,
+          "水行攻涨": 6,
+          "波纹涟漪": 6
+        },
+        {
+          "音浪荡漾": 1,
+          "浪鸣震耳": 1,
+          "异色水泡": 6,
+          "海色轻柔": 6,
+          "潮音渐歇": 6,
+          "风和浪暖": 6,
+          "海风执纪": 6
+        }
+      ],
+      "isRecommended": false,
+      "updatedAt": 1789365324126
+    },
+    {
+      "id": "t_mu0txu1m3ygg",
+      "name": "苍兰单c（需要高练纹章）",
+      "presetCode": "AAAAfwAAAH0AAACgUYADEbBtgMBhgDAAwwwG",
+      "description": "这个队伍对苍兰的纹章要求极度苛刻，不仅要30暴击，还要双彩穿，高充能，冰蚀漩涡+3；特丽莎和薇洛还需要高充能，由于苍兰的冰蚀漩涡惨遭改动，已经没有了早期的优势（爆伤叠不满），培养的好了那就是T0，培养的不好就只是T2水准",
+      "tags": {
+        "element": "水",
+        "style": "普攻流",
+        "power": "T1",
+        "scene": [
+          "单体环境"
+        ]
+      },
+      "chars": [
+        "telisha",
+        "canglan",
+        "wlsh"
+      ],
+      "mainPatterns": [
+        "p061",
+        "p025",
+        "p076"
+      ],
+      "mainBackup": [
+        "p012",
+        "p016",
+        null,
+        null,
+        null
+      ],
+      "subPatterns": [
+        "p079",
+        "p071",
+        "p068"
+      ],
+      "subBackup": [
+        "p089",
+        null,
+        null,
+        null,
+        null
+      ],
+      "pots": [
+        {
+          "潺流·真蓄斩击": 1,
+          "潺流·滴水之覆": 1,
+          "浊噬": 6,
+          "无可取代的牵绊": 6,
+          "魔剑汲能": 1,
+          "绝浪之流": 6,
+          "属性解放": 6
+        },
+        {
+          "严寒预报": 1,
+          "局部降雪": 1,
+          "凛冬之咬": 6,
+          "蚀骨之寒": 6,
+          "信仰庇佑": 6,
+          "救赎之力": 6,
+          "冰蚀漩涡": 6
+        },
+        {
+          "音浪荡漾": 1,
+          "浪鸣震耳": 1,
+          "异色水泡": 6,
+          "海色轻柔": 6,
+          "风和浪暖": 6,
+          "海风执纪": 6
+        }
+      ],
+      "isRecommended": false,
+      "updatedAt": 1789365735528
+    },
+    {
+      "id": "t_mu0vsbh0uzny",
+      "name": "猫眼绝招流",
+      "presetCode": "AAAAcgAAAJ4AAAB+MAADDbbCABgMBmwwGGAA",
+      "description": "猫眼的次选玩法，强度没那么高，可做过渡使用",
+      "tags": {
+        "element": "火",
+        "style": "绝招流",
+        "power": "T1",
+        "scene": [
+          "单体环境"
+        ]
+      },
+      "chars": [
+        "maoyan",
+        "lalusy",
+        "zijin"
+      ],
+      "mainPatterns": [
+        "p060",
+        "p023",
+        "p046"
+      ],
+      "mainBackup": [
+        "p093",
+        null,
+        null,
+        null,
+        null
+      ],
+      "subPatterns": [
+        "p068",
+        "p075",
+        "p045"
+      ],
+      "subBackup": [
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "pots": [
+        {
+          "喵神诅咒": 1,
+          "黑暗轮回": 1,
+          "优势火力": 6,
+          "强敌断灭": 6,
+          "诅咒降临": 6,
+          "贯穿射击": 6,
+          "灾厄余响": 6
+        },
+        {
+          "火雨倾盆": 1,
+          "特别装药": 1,
+          "礼炮双响": 1,
+          "庆典再启": 6,
+          "童话法则": 6,
+          "玩具军团": 6
+        },
+        {
+          "薪火的再燃": 1,
+          "往日·余烬": 1,
+          "伏笔验证": 6,
+          "完美接戏": 6,
+          "客串回": 6,
+          "印象强化": 6
+        }
+      ],
+      "isRecommended": false,
+      "updatedAt": 1789369188647
+    },
+    {
+      "id": "t_mu10cn6n6hpp",
+      "name": "新配队",
+      "presetCode": "AAAAnQAAAJEAAACOMAbDYAAwBhtgAGxA2Aww",
+      "description": "",
+      "tags": {
+        "element": "",
+        "style": "",
+        "power": "",
+        "scene": []
+      },
+      "chars": [
+        "hualing",
+        "yiye",
+        "kesaite"
+      ],
+      "mainPatterns": [
+        null,
+        null,
+        null
+      ],
+      "mainBackup": [
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "subPatterns": [
+        null,
+        null,
+        null
+      ],
+      "subBackup": [
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "pots": [
+        {
+          "猎弹散布": 1,
+          "追猎暗锁": 1,
+          "暗锁溢爆": 6,
+          "高危目标": 6,
+          "同谐气场": 6,
+          "狩猎压制": 6
+        },
+        {
+          "暝色浮波": 1,
+          "暮雨沾衣": 1,
+          "雨织愁痕": 6,
+          "暗色蚕食": 6,
+          "湮灭低鸣": 6,
+          "寒霖浸骨": 6
+        },
+        {
+          "无光落印": 1,
+          "残影印记": 1,
+          "暗·魔痕": 6,
+          "暗·蜃影": 1,
+          "暗·余辉": 6,
+          "虚空祝福": 6,
+          "黑暗之赐": 6,
+          "幽冥烈焰": 6
+        }
+      ],
+      "isRecommended": false,
+      "updatedAt": 1789376148632
+    },
+    {
       "id": "t_mu0qfvdqemzk",
       "name": "高暴击猫眼技伤流",
       "presetCode": "AAAAcgAAAJ4AAAB+MAbBbAbCABgMBsw2ADGA",
-      "description": "此配队要求猫眼纹章刷出来30的暴击率，暴击率足够高紫槿的印象强化可不点，转成客串回加攻击",
+      "description": "此配队要求猫眼纹章刷出来30的暴击率，暴击率足够高紫槿的印象强化可不点，转成客串回加攻击；若猫眼暴击率较低，可讲完美接戏点到3，印象强化点到6，将明日·薪火改为往日·余烬；但这样就会掉到T0.5梯队\n参考了星塔攻略组的预设，网站链接：https://www.bilibili.com/opus/1219678516310704128?spm_id_from=333.1369.0.0\n对此小改了一下，让buff增益最大化",
       "tags": {
         "element": "火",
         "style": "技伤流",
@@ -72,55 +437,225 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1789359669107
+      "updatedAt": 1789376934333
     },
     {
       "id": "t_mu0qk9bzj8qf",
-      "name": "新配队",
-      "presetCode": "",
-      "description": "",
+      "name": "千都世多娜双c",
+      "presetCode": "AAAAkAAAAKAAAACCMAYnYAAwBsBsBs2AIGwA",
+      "description": "纯纯的版本T0，跨属也不在话下，buff比命长，打boss前记得先用千都世主控技叠buff\n参考了星塔攻略组的预设，网站链接：https://www.bilibili.com/opus/1227477781824143396?spm_id_from=333.1387.0.0&spm_id_from=333.1369.0.0\n不清楚攻略组的流波幻舞为啥要点到6，有多的点镜水归潮会更好",
       "tags": {
-        "element": "",
-        "style": "",
-        "power": "",
+        "element": "水",
+        "style": "技伤流",
+        "power": "T0",
         "scene": []
       },
       "chars": [
-        null,
-        null,
-        null
+        "qiandushi",
+        "wlsh",
+        "duona"
       ],
       "mainPatterns": [
+        "p076",
+        "p025",
+        "p061"
+      ],
+      "mainBackup": [
+        "p068",
+        "p089",
         null,
         null,
         null
       ],
-      "mainBackup": [
+      "subPatterns": [
+        "p079",
+        "p071",
+        "p012"
+      ],
+      "subBackup": [
+        "p016",
+        "p005",
         null,
+        null,
+        null
+      ],
+      "pots": [
+        {
+          "断空泷斩": 1,
+          "溯流泷闪": 1,
+          "潮影环蛇": 6,
+          "镜水归潮": 1,
+          "碧浪霖身": 6,
+          "涟汐环行": 6,
+          "流波幻舞": 1
+        },
+        {
+          "音浪荡漾": 1,
+          "浪鸣震耳": 1,
+          "巨浪吞城": 6,
+          "异色水泡": 6,
+          "潮音渐歇": 6,
+          "风和浪暖": 6,
+          "海风执纪": 6
+        },
+        {
+          "离弦之箭": 1,
+          "残矢清算": 1,
+          "箭矢追击": 6,
+          "凝霜箭寒": 6,
+          "寒潮起势": 1,
+          "水行攻涨": 6,
+          "波纹涟漪": 6
+        }
+      ],
+      "isRecommended": false,
+      "updatedAt": 1789377342430
+    },
+    {
+      "id": "t_mu0zw5yee52i",
+      "name": "花玲绝招双c",
+      "presetCode": "AAAAnQAAAJEAAACOzbADADDNgBkAAG2AwAww",
+      "description": "辅位秘纹带3个加绝招伤害的，其中最好有一个是甜言蜜果，不然档会有点难刷\n强度快赶上火队猫眼技伤流了，排到T0.5\n参考了星塔攻略组的预设，网站链接：https://www.bilibili.com/opus/1237894273647509508?spm_id_from=333.1387.0.0&spm_id_from=333.1369.0.0",
+      "tags": {
+        "element": "暗",
+        "style": "绝招流",
+        "power": "T0.5",
+        "scene": [
+          "单体环境"
+        ]
+      },
+      "chars": [
+        "hualing",
+        "yiye",
+        "kesaite"
+      ],
+      "mainPatterns": [
+        "p048",
+        "p054",
+        "p097"
+      ],
+      "mainBackup": [
+        "p069",
         null,
         null,
         null,
         null
       ],
       "subPatterns": [
-        null,
-        null,
-        null
+        "p075",
+        "p045",
+        "p046"
       ],
       "subBackup": [
-        null,
+        "p068",
         null,
         null,
         null,
         null
       ],
       "pots": [
-        {},
-        {},
-        {}
+        {
+          "猎群涡流": 1,
+          "鲨影潜袭": 1,
+          "滔天巨浪": 6,
+          "双影狩猎": 6,
+          "追猎指示": 6,
+          "同谐气场": 6,
+          "绝海的斗争": 6
+        },
+        {
+          "寂影成双": 1,
+          "暗夜行路": 1,
+          "孤灯摇曳": 6,
+          "须臾无踪": 6,
+          "暗色蚕食": 6,
+          "湮灭低鸣": 2
+        },
+        {
+          "无光落印": 1,
+          "残影印记": 1,
+          "暗·魔痕": 6,
+          "暗·蜃影": 6,
+          "暗·余辉": 6,
+          "黑暗之赐": 6,
+          "幽冥烈焰": 6
+        }
       ],
       "isRecommended": false,
-      "updatedAt": 1789359695423
+      "updatedAt": 1789377753459
+    },
+    {
+      "id": "t_mu104g5htvjx",
+      "name": "花玲单c",
+      "presetCode": "AAAAnQAAAJEAAACOzDAbADAwBhsAAGxA2Aww",
+      "description": "这个潜能较为难抓，758的布局跟877抓法差的太远，刷档很吃运气\n魔魔王如果没有乙叶可用薇洛或雾语代替（小禾不行，小禾是技伤通辅）\n参考了星塔攻略组的预设，网站链接：https://www.bilibili.com/opus/1237894273647509508?spm_id_from=333.1387.0.0&spm_id_from=333.1369.0.0",
+      "tags": {
+        "element": "暗",
+        "style": "绝招流",
+        "power": "T1",
+        "scene": [
+          "单体环境"
+        ]
+      },
+      "chars": [
+        "hualing",
+        "yiye",
+        "kesaite"
+      ],
+      "mainPatterns": [
+        "p048",
+        "p054",
+        "p097"
+      ],
+      "mainBackup": [
+        "p018",
+        null,
+        null,
+        null,
+        null
+      ],
+      "subPatterns": [
+        "p075",
+        "p045",
+        "p046"
+      ],
+      "subBackup": [
+        "p068",
+        null,
+        null,
+        null,
+        null
+      ],
+      "pots": [
+        {
+          "猎群涡流": 1,
+          "鲨影潜袭": 1,
+          "滔天巨浪": 6,
+          "追猎指示": 6,
+          "信心倍增": 6,
+          "同谐气场": 6,
+          "绝海的斗争": 6
+        },
+        {
+          "暝色浮波": 1,
+          "暮雨沾衣": 1,
+          "雨织愁痕": 6,
+          "暗色蚕食": 6,
+          "湮灭低鸣": 6
+        },
+        {
+          "无光落印": 1,
+          "残影印记": 1,
+          "暗·魔痕": 6,
+          "暗·蜃影": 1,
+          "暗·余辉": 6,
+          "虚空祝福": 6,
+          "黑暗之赐": 6,
+          "幽冥烈焰": 6
+        }
+      ],
+      "isRecommended": false,
+      "updatedAt": 1789402014840
     }
   ]
 }
