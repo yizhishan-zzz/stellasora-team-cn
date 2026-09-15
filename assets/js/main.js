@@ -778,6 +778,12 @@ function renderTeam() {
       </div>
       ${isEdit ? '<p class="local-edit-hint">改动会直接保存到 <b>assets/data/preset-teams.json</b>（' + teamStoreLabel() + '）</p>' : ''}
       <section class="section">
+        <h2 class="section-title">预设码</h2>
+        ${isEdit
+          ? '<div class="preset-box"><input class="preset-input" id="presetInput" value="' + escapeHtml(t.presetCode || '') + '" placeholder="粘贴游戏内预设码，或点右侧一键生成"><button class="copy-btn" id="presetImport">一键导入</button><button class="copy-btn" id="presetGen">一键生成</button></div>'
+          : '<div class="preset-box"><input class="preset-input" id="presetInput" value="' + escapeHtml(t.presetCode || '') + '" readonly placeholder="未设置预设码"><button class="copy-btn" id="presetCopy">复制</button></div>'}
+      </section>
+      <section class="section">
         <h2 class="section-title">队伍简介</h2>
         ${isEdit
           ? '<textarea class="team-desc-input" id="teamDesc" maxlength="500" placeholder="介绍这个队伍的玩法、适用场景、操作要点等（最多 500 字）">' + escapeHtml(t.description || '') + '</textarea><div class="desc-count"><span id="descCount">' + (t.description || '').length + '</span> / 500</div>'
@@ -802,12 +808,6 @@ function renderTeam() {
       <section class="section">
         <h2 class="section-title">队伍标签</h2>
         ${isEdit ? tagEditor : (tagText ? '<div class="ut-tags">' + tagText + '</div>' : '<div class="team-desc-view empty">暂无标签</div>')}
-      </section>
-      <section class="section">
-        <h2 class="section-title">预设码</h2>
-        ${isEdit
-          ? '<div class="preset-box"><input class="preset-input" id="presetInput" value="' + escapeHtml(t.presetCode || '') + '" placeholder="粘贴游戏内预设码，或点右侧一键生成"><button class="copy-btn" id="presetImport">一键导入</button><button class="copy-btn" id="presetGen">一键生成</button></div>'
-          : '<div class="preset-box"><input class="preset-input" id="presetInput" value="' + escapeHtml(t.presetCode || '') + '" readonly placeholder="未设置预设码"><button class="copy-btn" id="presetCopy">复制</button></div>'}
       </section>
     `;
 
