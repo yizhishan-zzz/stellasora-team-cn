@@ -697,3 +697,30 @@ button { font-family: inherit; }
   .brand { font-size: 14px; }
   .admin-actions .store-status { display: none; }   /* 状态标签在极窄屏隐藏，避免占位 */
 }
+
+/* ===== 队伍标签：流派图标 / 强度图标（与元素图标对齐）===== */
+.tag-ico {
+  display: inline-flex; align-items: center; justify-content: center;
+  height: 20px; min-width: 20px; padding: 0 4px; border-radius: 5px;
+  font-size: 11px; font-weight: 700; color: #fff;
+  flex: 0 0 auto; box-sizing: border-box;
+}
+/* 流派：纯色圆点 */
+.tag-ico.style { width: 14px; min-width: 14px; height: 14px; padding: 0; border-radius: 50%; }
+.tag-ico.style-normal { background: #9aa3b8; }
+.tag-ico.style-skill  { background: #4a9eff; }
+.tag-ico.style-ult    { background: #ff6b4a; }
+.tag-ico.style-mark   { background: #9b6bff; }
+/* 强度：字母徽标，颜色按档位 */
+.tag-ico.power { letter-spacing: .2px; }
+.tag-ico.power-t0  { background: #e0453a; }
+.tag-ico.power-t05 { background: #ef7d33; }
+.tag-ico.power-t1  { background: #d9a441; }
+.tag-ico.power-t15 { background: #8bb04a; }
+.tag-ico.power-t2  { background: #4a9e7a; }
+.tag-ico.power-t25 { background: #4a86b8; }
+.tag-ico.power-t3  { background: #7a8598; }
+
+/* 下拉菜单：标签区需要更宽一点，避免文字换行 */
+.tag-edit .dd-menu { min-width: 150px; z-index: 60; }
+.tag-edit .dd-btn { gap: 8px; }

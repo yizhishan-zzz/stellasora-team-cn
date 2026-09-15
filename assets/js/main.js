@@ -117,7 +117,17 @@ function teamElementKey(t) {
 const HOME_TEAMS_PER_ELEMENT = 6;
 
 // ============ 通用：适用场合标签 ============
-const TEAM_SCENES = ['单体环境', '群体环境'];
+// 队伍标签的可选项（流派 / 强度 / 适用场合）
+const STYLE_OPTIONS = ['普攻流', '技伤流', '绝招流', '印记流'];
+const POWER_OPTIONS = ['T0', 'T0.5', 'T1', 'T1.5', 'T2', 'T2.5', 'T3'];
+const SCENE_OPTIONS = ['单体环境', '群体环境', '新手向'];
+function styleIcoCls(v) {
+  return { '普攻流': 'style-normal', '技伤流': 'style-skill', '绝招流': 'style-ult', '印记流': 'style-mark' }[v] || 'style-normal';
+}
+function powerIcoCls(v) { return 'power-' + String(v || '').toLowerCase().replace('.', ''); }
+function styleIcon(v) { return '<i class="tag-ico style ' + styleIcoCls(v) + '"></i>'; }
+function powerIcon(v) { return '<i class="tag-ico power ' + powerIcoCls(v) + '">' + escapeHtml(v) + '</i>'; }
+const TEAM_SCENES = SCENE_OPTIONS;
 // 兼容旧数据：没有 scene 字段时按空数组处理
 function teamScenes(t) {
   const v = (t && t.tags) ? t.tags.scene : null;
@@ -614,6 +624,27 @@ function elKeyByName(name) {
   return 'none';
 }
 
+// 队伍标签的通用下拉框逻辑（元素 / 流派 / 强度 共用）
+function bindTagDropdown(root, ddId, onPick) {
+  const dd = root.querySelector('#' + ddId);
+  if (!dd) return;
+  const btn = dd.querySelector('.dd-btn');
+  const menu = dd.querySelector('.dd-menu');
+  if (!btn || !menu) return;
+  btn.addEventListener('click', e => {
+    e.stopPropagation();
+    root.querySelectorAll('.tag-edit .dd').forEach(o => { if (o !== dd) o.classList.remove('open'); });
+    dd.classList.toggle('open');
+  });
+  menu.querySelectorAll('.dd-opt').forEach(opt => {
+    opt.addEventListener('click', e => {
+      e.stopPropagation();
+      dd.classList.remove('open');
+      onPick(opt.getAttribute('data-v') || '');
+    });
+  });
+}
+
 function renderTeam() {
   const id = getUrlParam('id');
   const root = document.getElementById('content');
@@ -697,17 +728,23 @@ function renderTeam() {
         </div>
         <div class="tag-item">
           <label>流派</label>
-          <select id="tagStyle" class="tag-select">
-            <option value="">未设置</option>
-            ${['普攻流','技伤流','绝招流','印记流'].map(o => '<option' + (tg.style === o ? ' selected' : '') + '>' + o + '</option>').join('')}
-          </select>
+          <div class="dd" id="ddStyle">
+            <button type="button" class="dd-btn" id="ddStyleBtn">${' + STYLE_BTN + '}</button>
+            <div class="dd-menu">
+              <button type="button" class="dd-opt" data-v=""><span>未设置</span></button>
+              ${' + STYLE_MAP + '}
+            </div>
+          </div>
         </div>
         <div class="tag-item">
           <label>强度</label>
-          <select id="tagPower" class="tag-select">
-            <option value="">未设置</option>
-            ${['T0','T0.5','T1','T1.5','T2','T2.5','T3'].map(o => '<option' + (tg.power === o ? ' selected' : '') + '>' + o + '</option>').join('')}
-          </select>
+          <div class="dd" id="ddPower">
+            <button type="button" class="dd-btn" id="ddPowerBtn">${' + POWER_BTN + '}</button>
+            <div class="dd-menu">
+              <button type="button" class="dd-opt" data-v=""><span>未设置</span></button>
+              ${' + POWER_MAP + '}
+            </div>
+          </div>
         </div>
         <div class="tag-item">
           <label>适用场合</label>
@@ -777,13 +814,18 @@ function renderTeam() {
         descEl.addEventListener('input', () => { const c = document.getElementById('descCount'); if (c) c.textContent = descEl.value.length; });
         descEl.addEventListener('change', () => { save({ description: descEl.value }); });
       }
-      [['tagStyle','style'], ['tagPower','power']].forEach(pair => {
-        const el = document.getElementById(pair[0]);
-        if (el) el.addEventListener('change', () => {
-          const tgg = Object.assign({}, cur().tags || {});
-          tgg[pair[1]] = el.value;
-          save({ tags: tgg });
-        });
+      // 流派 / 强度：下拉框（和元素一致）
+      bindTagDropdown(root, 'ddStyle', v => {
+        const tgg = Object.assign({}, cur().tags || {});
+        tgg.style = v;
+        save({ tags: tgg });
+        render();
+      });
+      bindTagDropdown(root, 'ddPower', v => {
+        const tgg = Object.assign({}, cur().tags || {});
+        tgg.power = v;
+        save({ tags: tgg });
+        render();
       });
       const ddEl = document.getElementById('ddElement');
       if (ddEl) {
