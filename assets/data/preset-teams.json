@@ -668,7 +668,7 @@
       "description": "",
       "tags": {
         "element": "风",
-        "style": "",
+        "style": "普攻流",
         "power": "",
         "scene": []
       },
@@ -729,8 +729,8 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1789629300200
+      "updatedAt": 1789629303323
     }
   ],
-  "updatedAt": "2026-09-17T07:15:00.200Z"
+  "updatedAt": "2026-09-17T07:15:03.323Z"
 }
