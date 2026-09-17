@@ -742,7 +742,9 @@
         "element": "风",
         "style": "技伤流",
         "power": "T0.5",
-        "scene": []
+        "scene": [
+          "群体环境"
+        ]
       },
       "chars": [
         "wlsh",
@@ -805,8 +807,8 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1789630025380
+      "updatedAt": 1789630028967
     }
   ],
-  "updatedAt": "2026-09-17T07:27:05.967Z"
+  "updatedAt": "2026-09-17T07:27:08.968Z"
 }
