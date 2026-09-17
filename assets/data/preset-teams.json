@@ -890,7 +890,9 @@
         "element": "土",
         "style": "印记流",
         "power": "T0.5",
-        "scene": []
+        "scene": [
+          "单体环境"
+        ]
       },
       "chars": [
         "xiaohe",
@@ -949,8 +951,8 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1789632412166
+      "updatedAt": 1789632419128
     }
   ],
-  "updatedAt": "2026-09-17T08:06:52.166Z"
+  "updatedAt": "2026-09-17T08:06:59.129Z"
 }
