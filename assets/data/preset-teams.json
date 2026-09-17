@@ -740,7 +740,7 @@
       "description": "",
       "tags": {
         "element": "风",
-        "style": "",
+        "style": "技伤流",
         "power": "",
         "scene": []
       },
@@ -805,8 +805,8 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1789630021225
+      "updatedAt": 1789630023468
     }
   ],
-  "updatedAt": "2026-09-17T07:27:01.225Z"
+  "updatedAt": "2026-09-17T07:27:03.952Z"
 }
