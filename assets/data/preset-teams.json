@@ -592,7 +592,7 @@
       "id": "t_mu10cn6n6hpp",
       "name": "新配队",
       "presetCode": "AAAAnQAAAJEAAACOMAbDYAAwBhtgAGxA2Aww",
-      "description": "",
+      "description": "强度略次于单c花玲，这个队是比较别扭的（乙叶并不能很好的适配花玲）\n参考了星塔攻略组的预设，网站链接：",
       "tags": {
         "element": "暗",
         "style": "普攻流",
@@ -659,8 +659,8 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1789628590184
+      "updatedAt": 1789628732312
     }
   ],
-  "updatedAt": "2026-09-17T07:03:10.184Z"
+  "updatedAt": "2026-09-17T07:05:32.312Z"
 }
