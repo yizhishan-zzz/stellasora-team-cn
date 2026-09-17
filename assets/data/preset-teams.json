@@ -737,7 +737,7 @@
       "id": "t_mu57c5uskf0g",
       "name": "新配队",
       "presetCode": "AAAAoAAAAIkAAACFMAbDYEjMMANmADAAc2wD",
-      "description": "",
+      "description": "1.15版本最强风队，没薇洛的可以换小禾，虽说是标注群体环境（主要确实适合打心危擂台和灾变防线），但如果面对大体型boss，也可用于单体（例如s11联合讨伐的螃蟹），9月28日的s7终焉绝响貌似可以用上\n参考了星塔攻略组的预设，网站链接：",
       "tags": {
         "element": "风",
         "style": "技伤流",
@@ -807,8 +807,8 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1789630028967
+      "updatedAt": 1789630478282
     }
   ],
-  "updatedAt": "2026-09-17T07:27:08.968Z"
+  "updatedAt": "2026-09-17T07:34:38.282Z"
 }
