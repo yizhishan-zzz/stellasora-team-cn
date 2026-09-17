@@ -594,7 +594,7 @@
       "presetCode": "AAAAnQAAAJEAAACOMAbDYAAwBhtgAGxA2Aww",
       "description": "",
       "tags": {
-        "element": "",
+        "element": "暗",
         "style": "",
         "power": "",
         "scene": []
@@ -657,8 +657,8 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1789628565462
+      "updatedAt": 1789628570752
     }
   ],
-  "updatedAt": "2026-09-17T07:02:45.463Z"
+  "updatedAt": "2026-09-17T07:02:50.752Z"
 }
