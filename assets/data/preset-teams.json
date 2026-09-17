@@ -885,7 +885,7 @@
       "id": "t_mu58viry5m5h",
       "name": "新配队",
       "presetCode": "AAAAnAAAAIwAAACfwYEDbAbBsBgAAJGAAGww",
-      "description": "",
+      "description": "比格芮更好的印记流（auto体验更佳）\n参考了星塔攻略组的预设，网页链接：",
       "tags": {
         "element": "土",
         "style": "印记流",
@@ -951,8 +951,8 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1789632419128
+      "updatedAt": 1789632592202
     }
   ],
-  "updatedAt": "2026-09-17T08:06:59.129Z"
+  "updatedAt": "2026-09-17T08:09:52.203Z"
 }
