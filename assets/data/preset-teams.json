@@ -1,6 +1,154 @@
 {
   "teams": [
     {
+      "id": "t_mu0qfvdqemzk",
+      "name": "高暴击猫眼技伤流",
+      "presetCode": "AAAAcgAAAJ4AAAB+MAbBbAbCABgMBsw2ADGA",
+      "description": "此配队要求猫眼纹章刷出来30的暴击率，暴击率足够高紫槿的印象强化可不点，转成客串回加攻击；若猫眼暴击率较低，可讲完美接戏点到3，印象强化点到6，将明日·薪火改为往日·余烬；但这样就会掉到T0.5梯队\n参考了星塔攻略组的预设，网站链接：https://www.bilibili.com/opus/1219678516310704128?spm_id_from=333.1369.0.0\n对此小改了一下，让buff增益最大化",
+      "tags": {
+        "element": "火",
+        "style": "技伤流",
+        "power": "T0",
+        "scene": [
+          "单体环境"
+        ]
+      },
+      "chars": [
+        "maoyan",
+        "lalusy",
+        "zijin"
+      ],
+      "mainPatterns": [
+        "p060",
+        "p078",
+        "p044"
+      ],
+      "mainBackup": [
+        "p046",
+        "p093",
+        null,
+        null,
+        null
+      ],
+      "subPatterns": [
+        "p040",
+        "p001",
+        "p033"
+      ],
+      "subBackup": [
+        "p023",
+        "p022",
+        null,
+        null,
+        null
+      ],
+      "pots": [
+        {
+          "喵神诅咒": 1,
+          "黑暗轮回": 1,
+          "幸运子弹": 6,
+          "猎杀标记": 6,
+          "优势火力": 2,
+          "黑暗烙印": 6,
+          "强敌断灭": 6,
+          "灾厄余响": 6
+        },
+        {
+          "火雨倾盆": 1,
+          "特别装药": 1,
+          "礼炮双响": 1,
+          "庆典再启": 6,
+          "童话法则": 6,
+          "玩具军团": 6
+        },
+        {
+          "明日·薪火": 1,
+          "薪火的再燃": 1,
+          "伏笔验证": 6,
+          "完美接戏": 6,
+          "视觉冲击": 6,
+          "印象强化": 3,
+          "绝息热焰": 6
+        }
+      ],
+      "isRecommended": false,
+      "updatedAt": 1789376934333
+    },
+    {
+      "id": "t_mu0qk9bzj8qf",
+      "name": "千都世多娜双c",
+      "presetCode": "AAAAkAAAAKAAAACCMAYnYAAwBsBsBs2AIGwA",
+      "description": "纯纯的版本T0，跨属也不在话下，buff比命长，打boss前记得先用千都世主控技叠buff\n参考了星塔攻略组的预设，网站链接：https://www.bilibili.com/opus/1227477781824143396?spm_id_from=333.1387.0.0&spm_id_from=333.1369.0.0\n不清楚攻略组的流波幻舞为啥要点到6，有多的点镜水归潮会更好",
+      "tags": {
+        "element": "水",
+        "style": "技伤流",
+        "power": "T0",
+        "scene": [
+          "单体环境"
+        ]
+      },
+      "chars": [
+        "qiandushi",
+        "wlsh",
+        "duona"
+      ],
+      "mainPatterns": [
+        "p076",
+        "p025",
+        "p061"
+      ],
+      "mainBackup": [
+        "p068",
+        "p089",
+        null,
+        null,
+        null
+      ],
+      "subPatterns": [
+        "p079",
+        "p071",
+        "p012"
+      ],
+      "subBackup": [
+        "p016",
+        "p005",
+        null,
+        null,
+        null
+      ],
+      "pots": [
+        {
+          "断空泷斩": 1,
+          "溯流泷闪": 1,
+          "潮影环蛇": 6,
+          "镜水归潮": 1,
+          "碧浪霖身": 6,
+          "涟汐环行": 6,
+          "流波幻舞": 1
+        },
+        {
+          "音浪荡漾": 1,
+          "浪鸣震耳": 1,
+          "巨浪吞城": 6,
+          "异色水泡": 6,
+          "潮音渐歇": 6,
+          "风和浪暖": 6,
+          "海风执纪": 6
+        },
+        {
+          "离弦之箭": 1,
+          "残矢清算": 1,
+          "箭矢追击": 6,
+          "凝霜箭寒": 6,
+          "寒潮起势": 1,
+          "水行攻涨": 6,
+          "波纹涟漪": 6
+        }
+      ],
+      "isRecommended": false,
+      "updatedAt": 1789479906132
+    },
+    {
       "id": "t_mu0tjjadk9jf",
       "name": "千都世印记",
       "presetCode": "AAAAkAAAAKAAAABrkDDHbADNhsAABsGGDGAD",
@@ -295,151 +443,6 @@
       "updatedAt": 1789369188647
     },
     {
-      "id": "t_mu10cn6n6hpp",
-      "name": "新配队",
-      "presetCode": "AAAAnQAAAJEAAACOMAbDYAAwBhtgAGxA2Aww",
-      "description": "",
-      "tags": {
-        "element": "",
-        "style": "",
-        "power": "",
-        "scene": []
-      },
-      "chars": [
-        "hualing",
-        "yiye",
-        "kesaite"
-      ],
-      "mainPatterns": [
-        null,
-        null,
-        null
-      ],
-      "mainBackup": [
-        null,
-        null,
-        null,
-        null,
-        null
-      ],
-      "subPatterns": [
-        null,
-        null,
-        null
-      ],
-      "subBackup": [
-        null,
-        null,
-        null,
-        null,
-        null
-      ],
-      "pots": [
-        {
-          "猎弹散布": 1,
-          "追猎暗锁": 1,
-          "暗锁溢爆": 6,
-          "高危目标": 6,
-          "同谐气场": 6,
-          "狩猎压制": 6
-        },
-        {
-          "暝色浮波": 1,
-          "暮雨沾衣": 1,
-          "雨织愁痕": 6,
-          "暗色蚕食": 6,
-          "湮灭低鸣": 6,
-          "寒霖浸骨": 6
-        },
-        {
-          "无光落印": 1,
-          "残影印记": 1,
-          "暗·魔痕": 6,
-          "暗·蜃影": 1,
-          "暗·余辉": 6,
-          "虚空祝福": 6,
-          "黑暗之赐": 6,
-          "幽冥烈焰": 6
-        }
-      ],
-      "isRecommended": false,
-      "updatedAt": 1789376148632
-    },
-    {
-      "id": "t_mu0qfvdqemzk",
-      "name": "高暴击猫眼技伤流",
-      "presetCode": "AAAAcgAAAJ4AAAB+MAbBbAbCABgMBsw2ADGA",
-      "description": "此配队要求猫眼纹章刷出来30的暴击率，暴击率足够高紫槿的印象强化可不点，转成客串回加攻击；若猫眼暴击率较低，可讲完美接戏点到3，印象强化点到6，将明日·薪火改为往日·余烬；但这样就会掉到T0.5梯队\n参考了星塔攻略组的预设，网站链接：https://www.bilibili.com/opus/1219678516310704128?spm_id_from=333.1369.0.0\n对此小改了一下，让buff增益最大化",
-      "tags": {
-        "element": "火",
-        "style": "技伤流",
-        "power": "T0",
-        "scene": [
-          "单体环境"
-        ]
-      },
-      "chars": [
-        "maoyan",
-        "lalusy",
-        "zijin"
-      ],
-      "mainPatterns": [
-        "p060",
-        "p078",
-        "p044"
-      ],
-      "mainBackup": [
-        "p046",
-        "p093",
-        null,
-        null,
-        null
-      ],
-      "subPatterns": [
-        "p040",
-        "p001",
-        "p033"
-      ],
-      "subBackup": [
-        "p023",
-        "p022",
-        null,
-        null,
-        null
-      ],
-      "pots": [
-        {
-          "喵神诅咒": 1,
-          "黑暗轮回": 1,
-          "幸运子弹": 6,
-          "猎杀标记": 6,
-          "优势火力": 2,
-          "黑暗烙印": 6,
-          "强敌断灭": 6,
-          "灾厄余响": 6
-        },
-        {
-          "火雨倾盆": 1,
-          "特别装药": 1,
-          "礼炮双响": 1,
-          "庆典再启": 6,
-          "童话法则": 6,
-          "玩具军团": 6
-        },
-        {
-          "明日·薪火": 1,
-          "薪火的再燃": 1,
-          "伏笔验证": 6,
-          "完美接戏": 6,
-          "视觉冲击": 6,
-          "印象强化": 3,
-          "绝息热焰": 6
-        }
-      ],
-      "isRecommended": false,
-      "updatedAt": 1789376934333
-    },
-    {
       "id": "t_mu0zw5yee52i",
       "name": "花玲绝招双c",
       "presetCode": "AAAAnQAAAJEAAACOzbADADDNgBkAAG2AwAww",
@@ -586,78 +589,76 @@
       "updatedAt": 1789402014840
     },
     {
-      "id": "t_mu0qk9bzj8qf",
-      "name": "千都世多娜双c",
-      "presetCode": "AAAAkAAAAKAAAACCMAYnYAAwBsBsBs2AIGwA",
-      "description": "纯纯的版本T0，跨属也不在话下，buff比命长，打boss前记得先用千都世主控技叠buff\n参考了星塔攻略组的预设，网站链接：https://www.bilibili.com/opus/1227477781824143396?spm_id_from=333.1387.0.0&spm_id_from=333.1369.0.0\n不清楚攻略组的流波幻舞为啥要点到6，有多的点镜水归潮会更好",
+      "id": "t_mu10cn6n6hpp",
+      "name": "新配队",
+      "presetCode": "AAAAnQAAAJEAAACOMAbDYAAwBhtgAGxA2Aww",
+      "description": "",
       "tags": {
-        "element": "水",
-        "style": "技伤流",
-        "power": "T0",
-        "scene": [
-          "单体环境"
-        ]
+        "element": "",
+        "style": "",
+        "power": "",
+        "scene": []
       },
       "chars": [
-        "qiandushi",
-        "wlsh",
-        "duona"
+        "hualing",
+        "yiye",
+        "kesaite"
       ],
       "mainPatterns": [
-        "p076",
-        "p025",
-        "p061"
+        "p054",
+        "p069",
+        "p097"
       ],
       "mainBackup": [
-        "p068",
-        "p089",
+        null,
+        null,
         null,
         null,
         null
       ],
       "subPatterns": [
-        "p079",
-        "p071",
-        "p012"
+        null,
+        null,
+        null
       ],
       "subBackup": [
-        "p016",
-        "p005",
+        null,
+        null,
         null,
         null,
         null
       ],
       "pots": [
         {
-          "断空泷斩": 1,
-          "溯流泷闪": 1,
-          "潮影环蛇": 6,
-          "镜水归潮": 1,
-          "碧浪霖身": 6,
-          "涟汐环行": 6,
-          "流波幻舞": 1
+          "猎弹散布": 1,
+          "追猎暗锁": 1,
+          "暗锁溢爆": 6,
+          "高危目标": 6,
+          "同谐气场": 6,
+          "狩猎压制": 6
         },
         {
-          "音浪荡漾": 1,
-          "浪鸣震耳": 1,
-          "巨浪吞城": 6,
-          "异色水泡": 6,
-          "潮音渐歇": 6,
-          "风和浪暖": 6,
-          "海风执纪": 6
+          "暝色浮波": 1,
+          "暮雨沾衣": 1,
+          "雨织愁痕": 6,
+          "暗色蚕食": 6,
+          "湮灭低鸣": 6,
+          "寒霖浸骨": 6
         },
         {
-          "离弦之箭": 1,
-          "残矢清算": 1,
-          "箭矢追击": 6,
-          "凝霜箭寒": 6,
-          "寒潮起势": 1,
-          "水行攻涨": 6,
-          "波纹涟漪": 6
+          "无光落印": 1,
+          "残影印记": 1,
+          "暗·魔痕": 6,
+          "暗·蜃影": 1,
+          "暗·余辉": 6,
+          "虚空祝福": 6,
+          "黑暗之赐": 6,
+          "幽冥烈焰": 6
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1789479702310
+      "updatedAt": 1789628522108
     }
-  ]
+  ],
+  "updatedAt": "2026-09-17T07:02:02.108Z"
 }
