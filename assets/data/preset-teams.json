@@ -961,7 +961,7 @@
       "tags": {
         "element": "光",
         "style": "普攻流",
-        "power": "",
+        "power": "T1",
         "scene": []
       },
       "chars": [
@@ -1021,8 +1021,8 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1789663155966
+      "updatedAt": 1789663161749
     }
   ],
-  "updatedAt": "2026-09-17T16:39:15.966Z"
+  "updatedAt": "2026-09-17T16:39:21.749Z"
 }
