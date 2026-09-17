@@ -960,7 +960,7 @@
       "description": "",
       "tags": {
         "element": "光",
-        "style": "",
+        "style": "普攻流",
         "power": "",
         "scene": []
       },
@@ -1021,8 +1021,8 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1789663152066
+      "updatedAt": 1789663155966
     }
   ],
-  "updatedAt": "2026-09-17T16:39:12.085Z"
+  "updatedAt": "2026-09-17T16:39:15.966Z"
 }
