@@ -737,7 +737,7 @@
       "id": "t_mu57c5uskf0g",
       "name": "薇洛主控双风技伤",
       "presetCode": "AAAAoAAAAIkAAACFMAbDYEjMMANmADAAc2wD",
-      "description": "1.15版本最强风队，没薇洛的可以换小禾，虽说是标注群体环境（主要确实适合打心危擂台和灾变防线），但如果面对大体型boss，也可用于单体（例如s11联合讨伐的螃蟹），9月28日的s7终焉绝响貌似可以用上\n参考了星塔攻略组的预设，网站链接：https://www.bilibili.com/opus/1245655071251759122?spm_id_from=333.1369.0.0\n对此小改了一下",
+      "description": "1.15版本最强风队，没薇洛的可以换小禾，虽说是标注群体环境（主要确实适合打心危擂台和灾变防线），但如果面对大体型boss，也可用于单体（例如s11联合讨伐的螃蟹），9月28日的s7终焉绝响貌似可以用上\n可惜这个队没办法触发风系印记，可能是个毒点\n参考了星塔攻略组的预设，网站链接：https://www.bilibili.com/opus/1245655071251759122?spm_id_from=333.1369.0.0\n对此小改了一下",
       "tags": {
         "element": "风",
         "style": "技伤流",
@@ -807,8 +807,8 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1789630539844
+      "updatedAt": 1789630681247
     }
   ],
-  "updatedAt": "2026-09-17T07:35:42.286Z"
+  "updatedAt": "2026-09-17T07:38:01.247Z"
 }
