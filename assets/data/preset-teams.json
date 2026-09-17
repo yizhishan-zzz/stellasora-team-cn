@@ -957,7 +957,7 @@
       "id": "t_mu5r6gdxxek6",
       "name": "新配队",
       "presetCode": "AAAAmwAAAGsAAABzzbADAgDMMABgBjAGwwwA",
-      "description": "",
+      "description": "战未来，战未来，战未来！\n现强度跟早期光队其实差不了多少，火垂的潜能和伴生秘纹都不很契合当今版本光队\n参考了星塔攻略组的预设，网页链接：",
       "tags": {
         "element": "光",
         "style": "普攻流",
@@ -1023,8 +1023,8 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1789663163338
+      "updatedAt": 1789663285469
     }
   ],
-  "updatedAt": "2026-09-17T16:39:24.284Z"
+  "updatedAt": "2026-09-17T16:41:25.470Z"
 }
