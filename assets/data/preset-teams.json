@@ -617,9 +617,9 @@
         null
       ],
       "subPatterns": [
-        null,
-        null,
-        null
+        "p025",
+        "p049",
+        "p077"
       ],
       "subBackup": [
         null,
@@ -657,8 +657,8 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1789628529991
+      "updatedAt": 1789628551865
     }
   ],
-  "updatedAt": "2026-09-17T07:02:09.991Z"
+  "updatedAt": "2026-09-17T07:02:31.866Z"
 }
