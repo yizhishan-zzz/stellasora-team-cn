@@ -815,7 +815,7 @@
       "presetCode": "AAAAjAAAAJwAAACfzbAbAADBgBgNhpGAAGAw",
       "description": "",
       "tags": {
-        "element": "",
+        "element": "土",
         "style": "技伤流",
         "power": "",
         "scene": []
@@ -877,8 +877,8 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1789631742815
+      "updatedAt": 1789631745375
     }
   ],
-  "updatedAt": "2026-09-17T07:55:42.816Z"
+  "updatedAt": "2026-09-17T07:55:45.376Z"
 }
