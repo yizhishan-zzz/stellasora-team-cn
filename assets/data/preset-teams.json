@@ -889,7 +889,7 @@
       "tags": {
         "element": "土",
         "style": "印记流",
-        "power": "",
+        "power": "T0.5",
         "scene": []
       },
       "chars": [
@@ -949,8 +949,8 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1789632399524
+      "updatedAt": 1789632412166
     }
   ],
-  "updatedAt": "2026-09-17T08:06:39.524Z"
+  "updatedAt": "2026-09-17T08:06:52.166Z"
 }
