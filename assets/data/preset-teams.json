@@ -962,7 +962,9 @@
         "element": "光",
         "style": "普攻流",
         "power": "T1",
-        "scene": []
+        "scene": [
+          "单体环境"
+        ]
       },
       "chars": [
         "xiya",
@@ -1021,8 +1023,8 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1789663161749
+      "updatedAt": 1789663163338
     }
   ],
-  "updatedAt": "2026-09-17T16:39:21.749Z"
+  "updatedAt": "2026-09-17T16:39:24.284Z"
 }
