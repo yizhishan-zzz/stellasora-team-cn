@@ -597,7 +597,9 @@
         "element": "暗",
         "style": "普攻流",
         "power": "T1",
-        "scene": []
+        "scene": [
+          "单体环境"
+        ]
       },
       "chars": [
         "hualing",
@@ -657,8 +659,8 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1789628574981
+      "updatedAt": 1789628590184
     }
   ],
-  "updatedAt": "2026-09-17T07:02:54.981Z"
+  "updatedAt": "2026-09-17T07:03:10.184Z"
 }
