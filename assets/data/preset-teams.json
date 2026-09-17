@@ -670,7 +670,9 @@
         "element": "风",
         "style": "普攻流",
         "power": "T1",
-        "scene": []
+        "scene": [
+          "单体环境"
+        ]
       },
       "chars": [
         "fengying",
@@ -729,8 +731,8 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1789629305605
+      "updatedAt": 1789629308822
     }
   ],
-  "updatedAt": "2026-09-17T07:15:05.939Z"
+  "updatedAt": "2026-09-17T07:15:08.822Z"
 }
