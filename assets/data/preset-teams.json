@@ -970,9 +970,9 @@
         "huochui"
       ],
       "mainPatterns": [
-        null,
-        null,
-        null
+        "p067",
+        "p055",
+        "p002"
       ],
       "mainBackup": [
         null,
@@ -1021,8 +1021,8 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1789663071523
+      "updatedAt": 1789663133722
     }
   ],
-  "updatedAt": "2026-09-17T16:37:54.106Z"
+  "updatedAt": "2026-09-17T16:38:53.722Z"
 }
