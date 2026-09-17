@@ -678,9 +678,9 @@
         "xingzi"
       ],
       "mainPatterns": [
-        null,
-        null,
-        null
+        "p007",
+        "p026",
+        "p043"
       ],
       "mainBackup": [
         null,
@@ -729,8 +729,8 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1789628921547
+      "updatedAt": 1789629267033
     }
   ],
-  "updatedAt": "2026-09-17T07:08:44.895Z"
+  "updatedAt": "2026-09-17T07:14:27.034Z"
 }
