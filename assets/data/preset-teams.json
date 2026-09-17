@@ -818,7 +818,9 @@
         "element": "土",
         "style": "技伤流",
         "power": "T0.5",
-        "scene": []
+        "scene": [
+          "单体环境"
+        ]
       },
       "chars": [
         "sipakela",
@@ -877,8 +879,8 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1789631752942
+      "updatedAt": 1789631755376
     }
   ],
-  "updatedAt": "2026-09-17T07:55:52.943Z"
+  "updatedAt": "2026-09-17T07:55:55.589Z"
 }
