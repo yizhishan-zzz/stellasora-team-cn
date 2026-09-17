@@ -667,7 +667,7 @@
       "presetCode": "AAAAjwAAAIkAAAB7zHADDAAwBsNsAKAGwAwA",
       "description": "",
       "tags": {
-        "element": "",
+        "element": "风",
         "style": "",
         "power": "",
         "scene": []
@@ -729,8 +729,8 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1789629297369
+      "updatedAt": 1789629300200
     }
   ],
-  "updatedAt": "2026-09-17T07:14:57.369Z"
+  "updatedAt": "2026-09-17T07:15:00.200Z"
 }
