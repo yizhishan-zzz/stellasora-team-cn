@@ -227,7 +227,7 @@
       "id": "t_mu0tr7r6gdhq",
       "name": "多娜单c",
       "presetCode": "AAAAfwAAAIIAAACgUYADEbDNgCBsADAAw2wG",
-      "description": "双辅助玩法，对充能效率的要求较高，强度还是很不错的",
+      "description": "双辅助玩法，对充能效率的要求较高，强度还是很不错的\n参考了星塔攻略组的预设。网站链接：https://www.bilibili.com/opus/1227477781824143396?spm_id_from=333.1387.0.0&spm_id_from=333.1369.0.0",
       "tags": {
         "element": "水",
         "style": "技伤流",
@@ -295,7 +295,7 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1789365324126
+      "updatedAt": 1789631303694
     },
     {
       "id": "t_mu0txu1m3ygg",
@@ -810,5 +810,5 @@
       "updatedAt": 1789631089119
     }
   ],
-  "updatedAt": "2026-09-17T07:47:26.707Z"
+  "updatedAt": "2026-09-17T07:48:23.694Z"
 }
