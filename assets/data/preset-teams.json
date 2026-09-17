@@ -665,7 +665,7 @@
       "id": "t_mu56udt3x22t",
       "name": "新配队",
       "presetCode": "AAAAjwAAAIkAAAB7zHADDAAwBsNsAKAGwAwA",
-      "description": "",
+      "description": "旧风队的上位，强度还行能说得过去（本人已打了20万，00风影00埃利诺），但不如风队技伤（薇洛风队）\n参考了星塔攻略组的预设，网站链接：",
       "tags": {
         "element": "风",
         "style": "普攻流",
@@ -731,8 +731,8 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1789629308822
+      "updatedAt": 1789629626363
     }
   ],
-  "updatedAt": "2026-09-17T07:15:08.822Z"
+  "updatedAt": "2026-09-17T07:20:26.363Z"
 }
