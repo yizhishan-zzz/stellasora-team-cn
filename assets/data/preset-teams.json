@@ -152,7 +152,7 @@
       "id": "t_mu0tjjadk9jf",
       "name": "千都世印记",
       "presetCode": "AAAAkAAAAKAAAABrkDDHbADNhsAABsGGDGAD",
-      "description": "无多娜可选，强度只能排到T1",
+      "description": "无多娜可选，强度只能排到T1\n参考了星塔攻略组的预设。网站链接：https://www.bilibili.com/opus/1227477781824143396?spm_id_from=333.1387.0.0&spm_id_from=333.1369.0.0",
       "tags": {
         "element": "水",
         "style": "印记流",
@@ -221,7 +221,7 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1789365034375
+      "updatedAt": 1789631323267
     },
     {
       "id": "t_mu0tr7r6gdhq",
@@ -810,5 +810,5 @@
       "updatedAt": 1789631089119
     }
   ],
-  "updatedAt": "2026-09-17T07:48:26.022Z"
+  "updatedAt": "2026-09-17T07:48:43.268Z"
 }
