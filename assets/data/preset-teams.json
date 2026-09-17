@@ -826,9 +826,9 @@
         "kelnxc"
       ],
       "mainPatterns": [
-        null,
-        null,
-        null
+        "p036",
+        "p091",
+        "p008"
       ],
       "mainBackup": [
         null,
@@ -877,8 +877,8 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1789631598996
+      "updatedAt": 1789631641643
     }
   ],
-  "updatedAt": "2026-09-17T07:53:21.758Z"
+  "updatedAt": "2026-09-17T07:54:01.643Z"
 }
