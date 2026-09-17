@@ -813,7 +813,7 @@
       "id": "t_mu58fqzsqvbc",
       "name": "新配队",
       "presetCode": "AAAAjAAAAJwAAACfzbAbAADBgBgNhpGAAGAw",
-      "description": "参考了星塔攻略组的预设，网站链接：",
+      "description": "参考了星塔攻略组的预设，网站链接：https://www.bilibili.com/opus/1209308579811557377?spm_id_from=333.1369.0.0",
       "tags": {
         "element": "土",
         "style": "技伤流",
@@ -879,8 +879,8 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1789631853337
+      "updatedAt": 1789631875841
     }
   ],
-  "updatedAt": "2026-09-17T07:57:33.337Z"
+  "updatedAt": "2026-09-17T07:57:55.841Z"
 }
