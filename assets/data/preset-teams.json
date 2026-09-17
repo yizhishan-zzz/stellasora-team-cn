@@ -817,7 +817,7 @@
       "tags": {
         "element": "土",
         "style": "技伤流",
-        "power": "",
+        "power": "T0.5",
         "scene": []
       },
       "chars": [
@@ -877,8 +877,8 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1789631745375
+      "updatedAt": 1789631752942
     }
   ],
-  "updatedAt": "2026-09-17T07:55:45.376Z"
+  "updatedAt": "2026-09-17T07:55:52.943Z"
 }
