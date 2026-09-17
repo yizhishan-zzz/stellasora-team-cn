@@ -374,7 +374,7 @@
       "id": "t_mu0vsbh0uzny",
       "name": "猫眼绝招流",
       "presetCode": "AAAAcgAAAJ4AAAB+MAADDbbCABgMBmwwGGAA",
-      "description": "猫眼的次选玩法，强度没那么高，可做过渡使用",
+      "description": "猫眼的次选玩法，强度没那么高，可做过渡使用\n参考了星塔攻略组的预设，网站链接：https://www.bilibili.com/opus/1219678516310704128?spm_id_from=333.1369.0.0",
       "tags": {
         "element": "火",
         "style": "绝招流",
@@ -440,7 +440,7 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1789369188647
+      "updatedAt": 1789631244650
     },
     {
       "id": "t_mu0zw5yee52i",
@@ -810,5 +810,5 @@
       "updatedAt": 1789631089119
     }
   ],
-  "updatedAt": "2026-09-17T07:47:05.235Z"
+  "updatedAt": "2026-09-17T07:47:24.650Z"
 }
