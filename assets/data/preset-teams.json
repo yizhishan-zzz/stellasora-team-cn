@@ -1114,9 +1114,9 @@
         "kesaite"
       ],
       "mainPatterns": [
-        null,
-        null,
-        null
+        "p048",
+        "p049",
+        "p018"
       ],
       "mainBackup": [
         null,
@@ -1165,8 +1165,8 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1789692154054
+      "updatedAt": 1789692180885
     }
   ],
-  "updatedAt": "2026-09-18T00:42:36.584Z"
+  "updatedAt": "2026-09-18T00:43:00.886Z"
 }
