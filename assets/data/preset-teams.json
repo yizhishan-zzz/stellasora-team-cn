@@ -1173,7 +1173,7 @@
       "id": "t_mu6sidludx12",
       "name": "乙叶单c技伤流",
       "presetCode": "AAAAhwAAAJEAAACOzAAAAAAwBtgNgG2GwAwA",
-      "description": "这个队难抓（极度不满足877抓法，雾语潜能多了是正常的，还有雾语）\n参考了星塔攻略组的预设，网页链接：https://www.bilibili.com/opus/1191877205925298194?spm_id_from=333.1369.0.0\n老配队了，希望能帮助能用得上的人",
+      "description": "这个队难抓（极度不满足877抓法，雾语潜能多了是正常的，还有雾语不用拉技能，刷纹章）\n参考了星塔攻略组的预设，网页链接：https://www.bilibili.com/opus/1191877205925298194?spm_id_from=333.1369.0.0\n老配队了，希望能帮助能用得上的人",
       "tags": {
         "element": "暗",
         "style": "技伤流",
@@ -1237,7 +1237,7 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1789726152749
+      "updatedAt": 1789728095053
     },
     {
       "id": "t_mu6sy1snmo3e",
@@ -1386,5 +1386,5 @@
       "updatedAt": 1789727941826
     }
   ],
-  "updatedAt": "2026-09-18T10:40:16.497Z"
+  "updatedAt": "2026-09-18T10:41:35.054Z"
 }
