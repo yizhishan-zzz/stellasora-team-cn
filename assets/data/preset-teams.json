@@ -77,7 +77,7 @@
     {
       "id": "t_mu0qk9bzj8qf",
       "name": "千都世多娜双c",
-      "presetCode": "AAAAkAAAAKAAAACCMAYnYAAwBsBsBs2AIGwA",
+      "presetCode": "AAAAkAAAAKAAAACCMAbHYAAwBsBsBs2AIGwA",
       "description": "纯纯的版本T0，跨属也不在话下，buff比命长，打boss前记得先用千都世主控技叠buff\n参考了星塔攻略组的预设，网站链接：https://www.bilibili.com/opus/1227477781824143396?spm_id_from=333.1387.0.0&spm_id_from=333.1369.0.0\n不清楚攻略组的流波幻舞为啥要点到6，有多的点镜水归潮会更好",
       "tags": {
         "element": "水",
@@ -146,7 +146,7 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1789692900893
+      "updatedAt": 1789692903029
     },
     {
       "id": "t_mu0tjjadk9jf",
@@ -1170,5 +1170,5 @@
       "updatedAt": 1789692578227
     }
   ],
-  "updatedAt": "2026-09-18T00:55:00.893Z"
+  "updatedAt": "2026-09-18T00:55:03.385Z"
 }
