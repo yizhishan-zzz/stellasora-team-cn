@@ -1243,7 +1243,7 @@
       "id": "t_mu6sy1snmo3e",
       "name": "风影夏花风队",
       "presetCode": "AAAAjwAAAIUAAAB7zbAEDAAwANtsAKGGwAwA",
-      "description": "",
+      "description": "这个队主要是夏花在打伤害（夏花是标准的32潜能），但整体鉴定为区，早期风队是区，妥妥的四不像（一个打普攻一个打技伤），风影玩技伤流伤害上限，手感，总伤害均不如此队，故不推荐。",
       "tags": {
         "element": "风",
         "style": "技伤流",
@@ -1310,8 +1310,8 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1789726643156
+      "updatedAt": 1789726807450
     }
   ],
-  "updatedAt": "2026-09-18T10:17:23.157Z"
+  "updatedAt": "2026-09-18T10:20:07.451Z"
 }
