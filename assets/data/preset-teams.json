@@ -1173,7 +1173,7 @@
       "id": "t_mu6sidludx12",
       "name": "乙叶单c技伤流",
       "presetCode": "AAAAhwAAAJEAAACOzAAAAAAwBtgNgG2GwAwA",
-      "description": "",
+      "description": "这个队难抓（极度不满足877抓法）\n参考了星塔攻略组的预设，网页链接：",
       "tags": {
         "element": "暗",
         "style": "技伤流",
@@ -1237,8 +1237,8 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1789725899576
+      "updatedAt": 1789725994527
     }
   ],
-  "updatedAt": "2026-09-18T10:05:01.856Z"
+  "updatedAt": "2026-09-18T10:06:34.527Z"
 }
