@@ -1177,7 +1177,7 @@
       "tags": {
         "element": "暗",
         "style": "技伤流",
-        "power": "",
+        "power": "T2",
         "scene": []
       },
       "chars": [
@@ -1235,8 +1235,8 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1789725896143
+      "updatedAt": 1789725898166
     }
   ],
-  "updatedAt": "2026-09-18T10:04:56.678Z"
+  "updatedAt": "2026-09-18T10:04:59.624Z"
 }
