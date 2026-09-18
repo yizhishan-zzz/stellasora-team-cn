@@ -1029,7 +1029,7 @@
       "id": "t_mu67yxaazd23",
       "name": "新配队",
       "presetCode": "AAAAbgAAAJEAAACOzNgYAAYwBhsAAG2AwAww",
-      "description": "",
+      "description": "\n参考了星塔攻略组的预设。网页链接：https://www.bilibili.com/opus/1191877205925298194?spm_id_from=333.1369.0.0",
       "tags": {
         "element": "暗",
         "style": "技伤流",
@@ -1095,8 +1095,8 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1789691453426
+      "updatedAt": 1789691509204
     }
   ],
-  "updatedAt": "2026-09-18T00:30:53.426Z"
+  "updatedAt": "2026-09-18T00:31:49.204Z"
 }
