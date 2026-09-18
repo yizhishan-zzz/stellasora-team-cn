@@ -1024,7 +1024,55 @@
       ],
       "isRecommended": false,
       "updatedAt": 1789663302960
+    },
+    {
+      "id": "t_mu67yxaazd23",
+      "name": "新配队",
+      "presetCode": "",
+      "description": "",
+      "tags": {
+        "element": "",
+        "style": "",
+        "power": "",
+        "scene": []
+      },
+      "chars": [
+        null,
+        null,
+        null
+      ],
+      "mainPatterns": [
+        null,
+        null,
+        null
+      ],
+      "mainBackup": [
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "subPatterns": [
+        null,
+        null,
+        null
+      ],
+      "subBackup": [
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "pots": [
+        {},
+        {},
+        {}
+      ],
+      "isRecommended": false,
+      "updatedAt": 1789691264002
     }
   ],
-  "updatedAt": "2026-09-17T16:41:45.194Z"
+  "updatedAt": "2026-09-18T00:27:44.002Z"
 }
