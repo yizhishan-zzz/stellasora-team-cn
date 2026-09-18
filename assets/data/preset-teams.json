@@ -1388,7 +1388,7 @@
     {
       "id": "t_mu6tzxwwmy0a",
       "name": "初代土印记",
-      "presetCode": "",
+      "presetCode": "AAAAnAAAAGsAAACVMYEbPAbBgABgBmAAGwYA",
       "description": "参考了星塔攻略组的预设，网页链接：https://www.bilibili.com/opus/1165164205862551561?spm_id_from=333.1369.0.0",
       "tags": {
         "element": "",
@@ -1431,8 +1431,8 @@
         {}
       ],
       "isRecommended": false,
-      "updatedAt": 1789728292760
+      "updatedAt": 1789728377408
     }
   ],
-  "updatedAt": "2026-09-18T10:44:52.761Z"
+  "updatedAt": "2026-09-18T10:46:17.408Z"
 }
