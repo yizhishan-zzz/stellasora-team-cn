@@ -1320,7 +1320,7 @@
       "tags": {
         "element": "土",
         "style": "印记流",
-        "power": "",
+        "power": "T0.5",
         "scene": []
       },
       "chars": [
@@ -1381,8 +1381,8 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1789727505328
+      "updatedAt": 1789727507031
     }
   ],
-  "updatedAt": "2026-09-18T10:31:46.123Z"
+  "updatedAt": "2026-09-18T10:31:48.432Z"
 }
