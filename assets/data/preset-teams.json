@@ -1027,7 +1027,7 @@
     },
     {
       "id": "t_mu67yxaazd23",
-      "name": "新配队",
+      "name": "翡冷翠乙叶双技伤",
       "presetCode": "AAAAbgAAAJEAAACOzNgYAAYwBhsAAG2AwAww",
       "description": "打不会动的boss强度有T1.5。其余状况均为T2强度（花玲实装之后翡冷翠真成路边了）\n参考了星塔攻略组的预设。网页链接：https://www.bilibili.com/opus/1191877205925298194?spm_id_from=333.1369.0.0",
       "tags": {
@@ -1095,8 +1095,8 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1789691616831
+      "updatedAt": 1789691651665
     }
   ],
-  "updatedAt": "2026-09-18T00:33:36.831Z"
+  "updatedAt": "2026-09-18T00:34:11.665Z"
 }
