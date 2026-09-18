@@ -1246,7 +1246,7 @@
       "description": "",
       "tags": {
         "element": "",
-        "style": "",
+        "style": "技伤流",
         "power": "T2",
         "scene": [
           "单体环境"
@@ -1287,8 +1287,8 @@
         {}
       ],
       "isRecommended": false,
-      "updatedAt": 1789726524820
+      "updatedAt": 1789726540924
     }
   ],
-  "updatedAt": "2026-09-18T10:15:26.526Z"
+  "updatedAt": "2026-09-18T10:15:40.924Z"
 }
