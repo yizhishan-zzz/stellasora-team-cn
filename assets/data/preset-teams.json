@@ -1104,7 +1104,7 @@
       "description": "",
       "tags": {
         "element": "暗",
-        "style": "",
+        "style": "绝招流",
         "power": "",
         "scene": []
       },
@@ -1165,8 +1165,8 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1789692291636
+      "updatedAt": 1789692293290
     }
   ],
-  "updatedAt": "2026-09-18T00:44:51.636Z"
+  "updatedAt": "2026-09-18T00:44:53.363Z"
 }
