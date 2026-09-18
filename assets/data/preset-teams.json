@@ -1318,7 +1318,7 @@
       "presetCode": "AAAAnAAAAJ8AAACVMYEbPAaRgABsMGAAGwYA",
       "description": "",
       "tags": {
-        "element": "",
+        "element": "土",
         "style": "",
         "power": "",
         "scene": []
@@ -1381,8 +1381,8 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1789727495226
+      "updatedAt": 1789727503783
     }
   ],
-  "updatedAt": "2026-09-18T10:31:39.690Z"
+  "updatedAt": "2026-09-18T10:31:43.783Z"
 }
