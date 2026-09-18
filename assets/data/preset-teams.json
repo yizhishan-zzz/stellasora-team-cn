@@ -883,7 +883,7 @@
     },
     {
       "id": "t_mu58viry5m5h",
-      "name": "斯帕克拉土印记",
+      "name": "斯帕克拉土印记（第三代）",
       "presetCode": "AAAAnAAAAIwAAACfwYEDbAbBsBgAAJGAAGww",
       "description": "比格芮更好的印记流（auto体验更佳），没新春科洛妮丝的换小骑士（缇莉娅，抓有关于印记增伤的潜能）\n参考了星塔攻略组的预设，网页链接：https://www.bilibili.com/opus/1209308579811557377?spm_id_from=333.1369.0.0",
       "tags": {
@@ -951,7 +951,7 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1789632684644
+      "updatedAt": 1789728014300
     },
     {
       "id": "t_mu5r6gdxxek6",
@@ -1386,5 +1386,5 @@
       "updatedAt": 1789727941826
     }
   ],
-  "updatedAt": "2026-09-18T10:39:03.837Z"
+  "updatedAt": "2026-09-18T10:40:14.301Z"
 }
