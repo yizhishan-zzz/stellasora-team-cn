@@ -1248,7 +1248,9 @@
         "element": "",
         "style": "",
         "power": "",
-        "scene": []
+        "scene": [
+          "单体环境"
+        ]
       },
       "chars": [
         null,
@@ -1285,8 +1287,8 @@
         {}
       ],
       "isRecommended": false,
-      "updatedAt": 1789726521213
+      "updatedAt": 1789726522878
     }
   ],
-  "updatedAt": "2026-09-18T10:15:21.214Z"
+  "updatedAt": "2026-09-18T10:15:24.273Z"
 }
