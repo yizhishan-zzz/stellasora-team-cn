@@ -1392,7 +1392,7 @@
       "description": "参考了星塔攻略组的预设，网页链接：https://www.bilibili.com/opus/1165164205862551561?spm_id_from=333.1369.0.0",
       "tags": {
         "element": "土",
-        "style": "",
+        "style": "印记流",
         "power": "",
         "scene": []
       },
@@ -1453,8 +1453,8 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1789728400187
+      "updatedAt": 1789728401842
     }
   ],
-  "updatedAt": "2026-09-18T10:46:40.187Z"
+  "updatedAt": "2026-09-18T10:46:42.750Z"
 }
