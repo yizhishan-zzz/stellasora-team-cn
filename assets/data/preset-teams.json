@@ -1404,9 +1404,9 @@
         "gerui"
       ],
       "mainPatterns": [
-        null,
-        null,
-        null
+        "p008",
+        "p011",
+        "p009"
       ],
       "mainBackup": [
         null,
@@ -1455,8 +1455,8 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1789728413469
+      "updatedAt": 1789728426203
     }
   ],
-  "updatedAt": "2026-09-18T10:46:54.535Z"
+  "updatedAt": "2026-09-18T10:47:06.204Z"
 }
