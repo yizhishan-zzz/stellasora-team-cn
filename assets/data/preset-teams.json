@@ -1101,7 +1101,7 @@
       "id": "t_mu68hqv3d4yc",
       "name": "翡冷翠绝招乙叶",
       "presetCode": "AAAAbgAAAJEAAACOzYAYAAbNsBgAAG2AwAww",
-      "description": "",
+      "description": "参考了星塔攻略组的预设，网页链接：",
       "tags": {
         "element": "暗",
         "style": "绝招流",
@@ -1167,8 +1167,8 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1789692467618
+      "updatedAt": 1789692481924
     }
   ],
-  "updatedAt": "2026-09-18T00:47:47.618Z"
+  "updatedAt": "2026-09-18T00:48:01.924Z"
 }
