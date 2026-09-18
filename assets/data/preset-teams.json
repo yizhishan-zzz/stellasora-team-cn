@@ -1106,7 +1106,9 @@
         "element": "暗",
         "style": "绝招流",
         "power": "T1.5",
-        "scene": []
+        "scene": [
+          "单体环境"
+        ]
       },
       "chars": [
         "feilengcui",
@@ -1165,8 +1167,8 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1789692295487
+      "updatedAt": 1789692297093
     }
   ],
-  "updatedAt": "2026-09-18T00:44:55.896Z"
+  "updatedAt": "2026-09-18T00:44:57.962Z"
 }
