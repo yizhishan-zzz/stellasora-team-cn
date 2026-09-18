@@ -1270,9 +1270,9 @@
         null
       ],
       "subPatterns": [
-        null,
-        null,
-        null
+        "p013",
+        "p047",
+        "p043"
       ],
       "subBackup": [
         null,
@@ -1310,8 +1310,8 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1789726601068
+      "updatedAt": 1789726607524
     }
   ],
-  "updatedAt": "2026-09-18T10:16:41.069Z"
+  "updatedAt": "2026-09-18T10:16:47.524Z"
 }
