@@ -1389,7 +1389,7 @@
       "id": "t_mu6tzxwwmy0a",
       "name": "初代土印记",
       "presetCode": "AAAAnAAAAGsAAACVMYEbPAbBgABgBmAAGwYA",
-      "description": "参考了星塔攻略组的预设，网页链接：https://www.bilibili.com/opus/1165164205862551561?spm_id_from=333.1369.0.0",
+      "description": "最初的土印记，从开服就很强，现在只要有环境，boss不多动就还能打\n参考了星塔攻略组的预设，网页链接：https://www.bilibili.com/opus/1165164205862551561?spm_id_from=333.1369.0.0",
       "tags": {
         "element": "土",
         "style": "印记流",
@@ -1455,8 +1455,8 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1789728463493
+      "updatedAt": 1789728522715
     }
   ],
-  "updatedAt": "2026-09-18T10:47:43.494Z"
+  "updatedAt": "2026-09-18T10:48:42.716Z"
 }
