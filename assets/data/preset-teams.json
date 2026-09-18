@@ -1032,7 +1032,7 @@
       "description": "",
       "tags": {
         "element": "暗",
-        "style": "",
+        "style": "技伤流",
         "power": "",
         "scene": []
       },
@@ -1093,8 +1093,8 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1789691380961
+      "updatedAt": 1789691382681
     }
   ],
-  "updatedAt": "2026-09-18T00:29:40.961Z"
+  "updatedAt": "2026-09-18T00:29:42.922Z"
 }
