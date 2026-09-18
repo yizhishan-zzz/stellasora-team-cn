@@ -1242,7 +1242,7 @@
     {
       "id": "t_mu6sy1snmo3e",
       "name": "风影夏花风队",
-      "presetCode": "",
+      "presetCode": "AAAAjwAAAIUAAAB7zbAEDAAwANtsAKGGwAwA",
       "description": "",
       "tags": {
         "element": "风",
@@ -1287,8 +1287,8 @@
         {}
       ],
       "isRecommended": false,
-      "updatedAt": 1789726542865
+      "updatedAt": 1789726548978
     }
   ],
-  "updatedAt": "2026-09-18T10:15:43.668Z"
+  "updatedAt": "2026-09-18T10:15:48.978Z"
 }
