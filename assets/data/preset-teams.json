@@ -1316,7 +1316,7 @@
       "id": "t_mu6tiimf5vve",
       "name": "二代土印记（小禾格芮春科）",
       "presetCode": "AAAAnAAAAJ8AAACVMYEbPAaRgABsMGAAGwYA",
-      "description": "",
+      "description": "土印记的强度很高，能快赶上花铃的双c暗队",
       "tags": {
         "element": "土",
         "style": "印记流",
@@ -1383,8 +1383,8 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1789727704726
+      "updatedAt": 1789727775098
     }
   ],
-  "updatedAt": "2026-09-18T10:35:04.726Z"
+  "updatedAt": "2026-09-18T10:36:15.099Z"
 }
