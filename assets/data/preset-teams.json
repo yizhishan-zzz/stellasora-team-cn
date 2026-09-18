@@ -1247,7 +1247,7 @@
       "tags": {
         "element": "",
         "style": "",
-        "power": "",
+        "power": "T2",
         "scene": [
           "单体环境"
         ]
@@ -1287,8 +1287,8 @@
         {}
       ],
       "isRecommended": false,
-      "updatedAt": 1789726522878
+      "updatedAt": 1789726524820
     }
   ],
-  "updatedAt": "2026-09-18T10:15:24.273Z"
+  "updatedAt": "2026-09-18T10:15:26.526Z"
 }
