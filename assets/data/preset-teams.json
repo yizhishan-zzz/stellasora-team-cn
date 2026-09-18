@@ -1178,7 +1178,9 @@
         "element": "暗",
         "style": "技伤流",
         "power": "T2",
-        "scene": []
+        "scene": [
+          "单体环境"
+        ]
       },
       "chars": [
         "wuyu",
@@ -1235,8 +1237,8 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1789725898166
+      "updatedAt": 1789725899576
     }
   ],
-  "updatedAt": "2026-09-18T10:04:59.624Z"
+  "updatedAt": "2026-09-18T10:05:01.856Z"
 }
