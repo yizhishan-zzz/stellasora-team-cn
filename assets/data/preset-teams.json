@@ -1033,7 +1033,7 @@
       "tags": {
         "element": "暗",
         "style": "技伤流",
-        "power": "T1.5",
+        "power": "T2",
         "scene": [
           "单体环境"
         ]
@@ -1095,8 +1095,8 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1789691509204
+      "updatedAt": 1789691510419
     }
   ],
-  "updatedAt": "2026-09-18T00:31:49.204Z"
+  "updatedAt": "2026-09-18T00:31:52.043Z"
 }
