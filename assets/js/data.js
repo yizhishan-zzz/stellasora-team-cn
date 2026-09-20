@@ -31,7 +31,11 @@ const DATA = {
   patterns: [],
   potentialCfg: null,
   presetTeams: [],
-  presetTeamsUpdatedAt: ''   // 数据文件里的 updatedAt，用于判断本地改动是否比线上新
+  presetTeamsUpdatedAt: '',  // 数据文件里的 updatedAt，用于判断本地改动是否比线上新
+  charSkills: {},            // 旅人技能（普攻/主控/援护/绝招）的文本与各级数值
+  charStats: {},             // 旅人各级基础数值 [等级, 生命, 攻击, 防御]
+  potentialLevels: {},       // 潜能各级数值与等级上限
+  discSkills: {}             // 秘纹各级数值与音符表
 };
 
 // 只加载页面真正用到的数据（teams.json / records.json 是旧占位数据，已归档不再加载）
@@ -39,7 +43,11 @@ const DATA_FILES = {
   characters: 'assets/data/characters.json',
   patterns: 'assets/data/patterns.json',
   potentialCfg: 'assets/data/potential-cfg.json',
-  presetTeams: 'assets/data/preset-teams.json'
+  presetTeams: 'assets/data/preset-teams.json',
+  charSkills: 'assets/data/character-skills.json',
+  charStats: 'assets/data/character-stats.json',
+  potentialLevels: 'assets/data/potential-levels.json',
+  discSkills: 'assets/data/disc-skills.json'
 };
 
 async function loadData() {
@@ -53,6 +61,7 @@ async function loadData() {
   for (const [key, json] of entries) {
     if (key === 'potentialCfg') DATA.potentialCfg = json;
     else if (key === 'presetTeams') { DATA.presetTeams = json.teams || []; DATA.presetTeamsUpdatedAt = json.updatedAt || ''; }
+    else if (key === 'charSkills' || key === 'charStats' || key === 'potentialLevels' || key === 'discSkills') DATA[key] = json;
     else DATA[key] = json[key];
   }
 }

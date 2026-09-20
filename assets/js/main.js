@@ -129,11 +129,11 @@ const HOME_TEAMS_PER_ELEMENT = 6;
 
 // ============ 通用：适用场合标签 ============
 // 队伍标签的可选项（流派 / 强度 / 适用场合）
-const STYLE_OPTIONS = ['普攻流', '技伤流', '绝招流', '印记流'];
+const STYLE_OPTIONS = ['普攻流', '技伤流', '绝招流', '印记流', '仆从流', '混伤流'];
 const POWER_OPTIONS = ['T0', 'T0.5', 'T1', 'T1.5', 'T2', 'T2.5', 'T3'];
 const SCENE_OPTIONS = ['单体环境', '群体环境', '新手向'];
 function styleIcoCls(v) {
-  return { '普攻流': 'style-normal', '技伤流': 'style-skill', '绝招流': 'style-ult', '印记流': 'style-mark' }[v] || 'style-normal';
+  return { '普攻流': 'style-normal', '技伤流': 'style-skill', '绝招流': 'style-ult', '印记流': 'style-mark', '仆从流': 'style-minion', '混伤流': 'style-mixed' }[v] || 'style-normal';
 }
 function powerIcoCls(v) { return 'power-' + String(v || '').toLowerCase().replace('.', ''); }
 function styleIcon(v) { return '<i class="tag-ico style ' + styleIcoCls(v) + '"></i>'; }
@@ -205,6 +205,35 @@ function renderCharacters() {
 }
 
 // ============ 角色详情 ============
+// ===== 技能 / 数值 展示的公共辅助 =====
+// 把 desc 里的 &Param1& 等占位符替换成第 lv 级的数值
+function fillParams(desc, params, lv) {
+  return String(desc || '').replace(/&Param(\d+)&/g, (m, n) => {
+    const p = (params || [])[Number(n) - 1];
+    if (!p) return m;
+    const i = Math.max(0, Math.min(lv - 1, p.length - 1));
+    return '<b class="pv">' + escapeHtml(String(p[i])) + '</b>';
+  });
+}
+// 参数列表最多有几级（不同参数长度不同，取最长的）
+function maxLevelOf(params) {
+  let n = 1;
+  (params || []).forEach(p => { if (p && p.length > n) n = p.length; });
+  return n;
+}
+// 潜能：把 &Param1& 换成第 lv 级数值（数据来自 potential-levels.json）
+function potLevelHtml(p, lv) {
+  const pl = (DATA.potentialLevels || {})[p && p.potId];
+  if (!pl || !pl.params || !pl.params.length) return escapeHtml(p.desc || '');
+  return fillParams(p.desc, pl.params, lv);
+}
+function potMaxLevel(p) {
+  const pl = (DATA.potentialLevels || {})[p && p.potId];
+  const m = pl && pl.max ? pl.max : 0;
+  return m > 1 ? m : 6;
+}
+
+// ============ 角色详情 ============
 function renderCharacter() {
   const char = getCharById(getUrlParam('id'));
   const root = document.getElementById('content');
@@ -217,8 +246,49 @@ function renderCharacter() {
     ['攻击距离', char.attackType], ['中文CV', char.cvCn], ['日文CV', char.cvJp]
   ].filter(m => m[1]).map(m => '<div class="meta-item"><span class="meta-k">' + m[0] + '</span><span class="meta-v">' + escapeHtml(m[1]) + '</span></div>').join('');
 
+  // ===== 基础数值 ===== 等级滑条 + 生命/攻击/防御
+  const statRows = (DATA.charStats || {})[char.id] || [];
+  const maxLv = statRows.length ? statRows[statRows.length - 1][0] : 0;
+  const s0 = statRows[0] || null;
+  const statsHtml = maxLv
+    ? '<div class="lvctl">' +
+        '<span class="lvctl-k">等级</span>' +
+        '<input type="range" class="lvslider" id="charLv" min="1" max="' + maxLv + '" value="1" step="1">' +
+        '<b class="lvctl-v" id="charLvOut">1</b>' +
+      '</div>' +
+      '<div class="stat-row" id="charStats">' +
+        '<div class="stat-card"><span class="stat-k">生命</span><b class="stat-v" id="stHp">' + (s0 ? s0[1] : '-') + '</b></div>' +
+        '<div class="stat-card"><span class="stat-k">攻击</span><b class="stat-v" id="stAtk">' + (s0 ? s0[2] : '-') + '</b></div>' +
+        '<div class="stat-card"><span class="stat-k">防御</span><b class="stat-v" id="stDef">' + (s0 ? s0[3] : '-') + '</b></div>' +
+      '</div>'
+    : emptyHint('数值数据待补充');
 
-  // 潜能（按流派分组）
+  // ===== 技能 ===== 普攻 / 主控 / 援护 / 绝招，共用一个等级滑条
+  const sk = (DATA.charSkills || {})[char.id] || {};
+  const order = ['normalAtk', 'skill', 'supportSkill', 'ultimate'];
+  const skList = order.filter(k => sk[k]);
+  const skMax = skList.reduce((m, k) => Math.max(m, maxLevelOf(sk[k].params)), 1);
+  const skHtml = skList.length
+    ? '<div class="lvctl">' +
+        '<span class="lvctl-k">技能等级</span>' +
+        '<input type="range" class="lvslider" id="skillLv" min="1" max="' + skMax + '" value="1" step="1">' +
+        '<b class="lvctl-v" id="skillLvOut">1</b>' +
+      '</div>' +
+      skList.map(k => {
+        const s = sk[k];
+        return '<div class="skill-block">' +
+          '<div class="skill-head">' +
+            (s.icon ? '<span class="skill-ico ico-el-bg"><img src="assets/img/hd/skill/' + escapeHtml(s.icon) + '.webp" alt="" loading="lazy"></span>' : '') +
+            '<span class="skill-tag">' + escapeHtml(s.label) + '</span>' +
+            '<span class="skill-name">' + escapeHtml(s.name) + '</span>' +
+            (s.cd ? '<span class="skill-cd">CD ' + escapeHtml(s.cd) + '</span>' : '') +
+          '</div>' +
+          '<div class="skill-desc" data-sk="' + escapeHtml(s.desc) + '" data-pp="' + escapeHtml(JSON.stringify(s.params || [])) + '">' + fillParams(s.desc, s.params, 1) + '</div>' +
+        '</div>';
+      }).join('')
+    : emptyHint('技能数据待补充');
+
+  // ===== 潜能（按流派分组，显示各级数值）=====
   const flows = [];
   (char.potentials || []).forEach(p => {
     let f = flows.find(x => x.name === p.flow);
@@ -227,7 +297,18 @@ function renderCharacter() {
   });
   const potHtml = flows.length
     ? flows.map(f => '<div class="flow-block"><div class="flow-title">' + escapeHtml(f.name) + '</div>' +
-        f.items.map(p => '<div class="potential">' + (p.icon ? '<span class="pot-ico ' + potRarityCls(p) + '"><img class="potential-icon" src="' + escapeHtml(p.icon) + '" alt="" loading="lazy">' + potCornerHtml(p) + '</span>' : '') + '<div class="potential-body"><div class="potential-head"><span class="potential-name">' + escapeHtml(p.name) + '</span><span class="potential-type ' + (p.type === '核心潜能' ? 'type-core' : p.type === '彩潜能' ? 'type-rare' : 'type-common') + '">' + escapeHtml(p.type || '') + '</span></div><div class="potential-desc">' + escapeHtml(p.desc || '') + '</div></div></div>').join('') + '</div>').join('')
+        f.items.map(p => {
+          const pmax = potMaxLevel(p);
+          return '<div class="potential">' +
+            (p.icon ? '<span class="pot-ico ' + potRarityCls(p) + '"><img class="potential-icon" src="' + escapeHtml(p.icon) + '" alt="" loading="lazy">' + potCornerHtml(p) + '</span>' : '') +
+            '<div class="potential-body">' +
+              '<div class="potential-head"><span class="potential-name">' + escapeHtml(p.name) + '</span><span class="potential-type ' + (p.type === '核心潜能' ? 'type-core' : p.type === '彩潜能' ? 'type-rare' : 'type-common') + '">' + escapeHtml(p.type || '') + '</span>' +
+              (pmax > 1 ? '<span class="pot-lv", data-potid="' + escapeHtml(String(p.potId)) + '">Lv <b>1</b>/' + pmax + '</span>' : '') +
+              '</div>' +
+              '<div class="potential-desc" data-pot="' + escapeHtml(String(p.potId)) + '" data-desc="' + escapeHtml(p.desc || '') + '">' + potLevelHtml(p, 1) + '</div>' +
+            '</div>' +
+          '</div>';
+        }).join('') + '</div>').join('')
     : emptyHint('潜能数据待补充');
 
   root.innerHTML = `
@@ -235,7 +316,6 @@ function renderCharacter() {
       ${renderPortrait(char, 'detail-portrait')}
       <div class="detail-info">
         <h1 class="detail-name">${escapeHtml(char.name)}</h1>
-        
         <div class="badge-row">
           <span class="badge el-${char.element}">${elementName(char.element)}元素</span>
           <span class="badge role-${char.role}">${roleName(char.role)}</span>
@@ -244,8 +324,54 @@ function renderCharacter() {
         <div class="detail-meta">${meta}</div>
       </div>
     </div>
+    <section class="section"><h2 class="section-title">基础数值</h2>${statsHtml}</section>
+    <section class="section"><h2 class="section-title">技能</h2>${skHtml}</section>
     <section class="section"><h2 class="section-title">潜能</h2>${potHtml}</section>
   `;
+
+  // ===== 交互：三个滑条都是就地更新，不整页重绘 =====
+  const lvEl = document.getElementById('charLv');
+  if (lvEl) lvEl.addEventListener('input', () => {
+    const lv = Number(lvEl.value);
+    const out = document.getElementById('charLvOut');
+    if (out) out.textContent = lv;
+    const row = statRows[lv - 1] || statRows[statRows.length - 1];
+    if (row) {
+      const a = document.getElementById('stHp'), b = document.getElementById('stAtk'), c = document.getElementById('stDef');
+      if (a) a.textContent = row[1];
+      if (b) b.textContent = row[2];
+      if (c) c.textContent = row[3];
+    }
+  });
+
+  const skEl = document.getElementById('skillLv');
+  if (skEl) skEl.addEventListener('input', () => {
+    const lv = Number(skEl.value);
+    const out = document.getElementById('skillLvOut');
+    if (out) out.textContent = lv;
+    root.querySelectorAll('.skill-desc').forEach(el => {
+      let pp = [];
+      try { pp = JSON.parse(el.getAttribute('data-pp') || '[]'); } catch (e) {}
+      el.innerHTML = fillParams(el.getAttribute('data-sk'), pp, lv);
+    });
+  });
+
+  // 潜能等级：点击 Lv 标签循环切换 1..max（核心潜能固定 1 级，不参与）
+  root.querySelectorAll('.pot-lv').forEach(el => {
+    const potId = el.getAttribute('data-potid');
+    const pl = (DATA.potentialLevels || {})[potId];
+    if (!pl) return;
+    const pmax = pl.max > 1 ? pl.max : 6;
+    let lv = 1;
+    el.style.cursor = 'pointer';
+    el.title = '点击切换等级';
+    el.addEventListener('click', () => {
+      lv = lv >= pmax ? 1 : lv + 1;
+      el.innerHTML = 'Lv <b>' + lv + '</b>/' + pmax;
+      const d = root.querySelector('.potential-desc[data-pot="' + potId + '"]');
+      if (d) d.innerHTML = fillParams(d.getAttribute('data-desc'), pl.params, lv);
+    });
+  });
 }
 
 // ============ 配队方案（列表） ============
@@ -790,7 +916,7 @@ function renderTeam() {
       <section class="section">
         <h2 class="section-title">队伍简介</h2>
         ${isEdit
-          ? '<textarea class="team-desc-input" id="teamDesc" maxlength="500" placeholder="介绍这个队伍的玩法、适用场景、操作要点等（最多 500 字）">' + escapeHtml(t.description || '') + '</textarea><div class="desc-count"><span id="descCount">' + (t.description || '').length + '</span> / 500</div>'
+          ? '<textarea class="team-desc-input" id="teamDesc" maxlength="1000" placeholder="介绍这个队伍的玩法、适用场景、操作要点等（最多 1000 字）">' + escapeHtml(t.description || '') + '</textarea><div class="desc-count"><span id="descCount">' + (t.description || '').length + '</span> / 1000</div>'
           : (t.description ? '<div class="team-desc-view">' + escapeHtml(t.description).replace(/\n/g, '<br>') + '</div>' : '<div class="team-desc-view empty">暂无简介</div>')}
       </section>
       <section class="section">
@@ -1349,35 +1475,59 @@ function renderPattern() {
   const harmony = (p.harmony || []);
   const maxLevel = p.maxLevel || 5;
   const dupeMax = (melody.params && melody.params.length) || 6;
+  const ds = (DATA.discSkills || {})[p.id] || {};
+  const statRows = ds.stat || [];
+  const noteRows = ds.supportNote || [];
+
+  // 秘纹的等级 = 阶数（dupe），若等级表更长则用它的长度
+  const statMax = statRows.length || dupeMax;
 
   function renderTpl(tpl, paramStr) {
     if (!tpl) return '';
     const vals = String(paramStr || '').split(',');
-    return escapeHtml(tpl).replace(/\{(\d+)\}/g, (m, n) => '<span class="val">' + escapeHtml(vals[parseInt(n, 10) - 1] || '') + '</span>');
+    return escapeHtml(tpl).replace(/\{(\d+)\}/g, (m, n) => '<span class="pv">' + escapeHtml(vals[parseInt(n, 10) - 1] || '') + '</span>');
   }
   const buffRow = (buffs) => (buffs && buffs.length)
     ? '<div class="eff-buffs">' + buffs.map(b => '<img class="buff-icon" src="' + escapeHtml(b) + '" alt="" loading="lazy">').join('') + '</div>'
     : '';
+  const notesHtml = (row) => {
+    const ents = Object.entries(row || {});
+    if (!ents.length) return '<em class="note-empty">无音符需求</em>';
+    return ents.map(([n, c]) => '<span class="note-chip">' + noteIcon(n) + ' ×' + c + '</span>').join('');
+  };
+  // 基础数值格子
+  const statCells = (row) => {
+    const ents = Object.entries(row || {});
+    if (!ents.length) return '';
+    return '<div class="ds-grid">' + ents.map(([k, v]) =>
+      '<div class="ds-cell"><span class="ds-k">' + escapeHtml(k) + '</span><span class="ds-v">' + escapeHtml(String(v)) + '</span></div>'
+    ).join('') + '</div>';
+  };
+
+  const s0 = statRows[0] || null;
+  const n0 = noteRows[0] || null;
 
   const melodyHtml = melody.name ? `
+    <div class="lvctl">
+      <span class="lvctl-k">秘纹等级</span>
+      <input type="range" class="lvslider" id="dupeSlider" min="1" max="${statMax}" value="1" step="1">
+      <b class="lvctl-v" id="dupeVal">1</b>
+      <span class="tool-extra" id="dupeExtra">${melody.dupe && melody.dupe[0] != null ? '攻击 +' + melody.dupe[0] : ''}</span>
+    </div>
     <div class="eff-card">
-      ${melody.skillImg ? '<img loading="lazy" decoding="async" class="eff-icon" src="' + escapeHtml(melody.skillImg) + '" alt="">' : '<div class="eff-icon eff-icon-ph">♪</div>'}
+      ${melody.skillImg ? '<span class="eff-icon ico-el-bg"><img loading="lazy" decoding="async" src="' + escapeHtml(melody.skillImg) + '" alt=""></span>' : '<div class="eff-icon eff-icon-ph">♪</div>'}
       <div class="eff-body">
         <div class="eff-name">${escapeHtml(melody.name)}</div>
-        <div class="eff-toolbar">
-          <span class="tool-label">秘纹阶数</span>
-          <input type="range" id="dupeSlider" min="1" max="${dupeMax}" value="1">
-          <span class="tool-val" id="dupeVal">1</span>
-          <span class="tool-extra" id="dupeExtra">${melody.dupe && melody.dupe[0] != null ? '攻击 +' + melody.dupe[0] : ''}</span>
-        </div>
         <div class="eff-desc" id="melodyDesc">${renderTpl(melody.tpl, (melody.params || [])[0])}</div>
+        <div class="eff-notes" id="melodyNotes">${notesHtml(n0)}</div>
+        <div id="melodyStats">${statCells(s0)}</div>
         ${buffRow(melody.buffs)}
       </div>
     </div>` : emptyHint('主效果待补充');
 
   const harmonyCards = harmony.map((h, i) => `
     <div class="eff-card">
-      ${h.skillImg ? '<img loading="lazy" decoding="async" class="eff-icon" src="' + escapeHtml(h.skillImg) + '" alt="">' : '<div class="eff-icon eff-icon-ph">♪</div>'}
+      ${h.skillImg ? '<span class="eff-icon ico-el-bg"><img loading="lazy" decoding="async" src="' + escapeHtml(h.skillImg) + '" alt=""></span>' : '<div class="eff-icon eff-icon-ph">♪</div>'}
       <div class="eff-body">
         <div class="eff-name">${escapeHtml(h.name || '')}</div>
         <div class="eff-toolbar">
@@ -1386,7 +1536,7 @@ function renderPattern() {
           <span class="tool-val hVal">1</span>
         </div>
         <div class="eff-desc harmony-desc" data-params="${escapeHtml((h.params || []).join('|'))}" data-tpl="${escapeHtml(h.tpl || '')}">${renderTpl(h.tpl, (h.params || [])[0])}</div>
-        <div class="eff-notes harmony-notes" data-levels="${escapeHtml(JSON.stringify(h.levels || []))}"></div>
+        <div class="eff-notes harmony-notes" data-levels="${escapeHtml(JSON.stringify((DATA.discSkills || {})[p.id] && (DATA.discSkills[p.id][i === 0 ? 'h1' : 'h2']) ? (DATA.discSkills[p.id][i === 0 ? 'h1' : 'h2']).levels || [] : (h.levels || [])))}"></div>
         ${buffRow(h.buffs)}
       </div>
     </div>`).join('');
@@ -1394,7 +1544,7 @@ function renderPattern() {
 
   root.innerHTML = `
     <div class="detail-head">
-      ${p.portrait ? '<img loading="lazy" decoding="async" class="pattern-big" src="' + escapeHtml(p.portrait) + '" alt="' + escapeHtml(p.name) + '">' : ''}
+      ${p.portrait ? '<span class="pattern-big ico-el-bg"><img loading="lazy" decoding="async" src="' + escapeHtml(p.portrait) + '" alt="' + escapeHtml(p.name) + '"></span>' : ''}
       <div class="detail-info">
         <h1 class="detail-name">${escapeHtml(p.name)}</h1>
         <div class="badge-row">${renderStars(p.rarity)}${elBadge}</div>
@@ -1405,17 +1555,28 @@ function renderPattern() {
     <section class="section"><h2 class="section-title">Harmony · 协奏效果</h2>${harmonyHtml}</section>
   `;
 
+  // 拖动：同时更新文字数值、音符需求、基础数值
   const dupeSlider = document.getElementById('dupeSlider');
   if (dupeSlider) {
     dupeSlider.addEventListener('input', () => {
       const lv = parseInt(dupeSlider.value, 10);
-      document.getElementById('dupeVal').textContent = lv;
+      const i = Math.min(lv - 1, statMax - 1);
+      const setTxt = (id, v) => { const e = document.getElementById(id); if (e) e.textContent = v; };
+      setTxt('dupeVal', lv);
       const ex = document.getElementById('dupeExtra');
-      if (ex && melody.dupe) { const dv = melody.dupe[Math.min(lv - 1, melody.dupe.length - 1)]; ex.textContent = dv != null ? '攻击 +' + dv : ''; }
+      if (ex) {
+        const dv = melody.dupe ? melody.dupe[Math.min(i, melody.dupe.length - 1)] : null;
+        ex.textContent = dv != null ? '攻击 +' + dv : '';
+      }
       const md = document.getElementById('melodyDesc');
-      if (md) md.innerHTML = renderTpl(melody.tpl, (melody.params || [])[lv - 1]);
+      if (md) md.innerHTML = renderTpl(melody.tpl, (melody.params || [])[i]);
+      const mn = document.getElementById('melodyNotes');
+      if (mn) mn.innerHTML = notesHtml(noteRows[Math.min(i, noteRows.length - 1)]);
+      const ms = document.getElementById('melodyStats');
+      if (ms) ms.innerHTML = statCells(statRows[Math.min(i, statRows.length - 1)]);
     });
   }
+
   root.querySelectorAll('.hSlider').forEach(slider => {
     const update = () => {
       const lv = parseInt(slider.value, 10);
@@ -1425,9 +1586,10 @@ function renderPattern() {
       const params = (desc.dataset.params || '').split('|');
       desc.innerHTML = renderTpl(desc.dataset.tpl, params[lv - 1] || params[0]);
       const notes = card.querySelector('.harmony-notes');
-      const levels = JSON.parse(notes.dataset.levels || '[]');
+      let levels = [];
+      try { levels = JSON.parse(notes.dataset.levels || '[]'); } catch (e) {}
       const cur = levels[Math.min(lv - 1, levels.length - 1)] || {};
-      notes.innerHTML = Object.entries(cur).map(([n, c]) => '<span class="note-chip">' + noteIcon(n) + ' ×' + c + '</span>').join('') || '<em class="note-empty">无音符需求</em>';
+      notes.innerHTML = notesHtml(cur);
     };
     update();
     slider.addEventListener('input', update);

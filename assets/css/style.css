@@ -731,3 +731,167 @@ button { font-family: inherit; }
   font-size: 12px; color: var(--text-muted);
 }
 .site-footer .site-note { margin: 0; font-size: 12px; color: var(--text-muted); }
+
+/* ===== 等级滑条（基础数值 / 技能 / 秘纹共用）===== */
+.lvctl {
+  display: flex; align-items: center; gap: 12px;
+  margin: 0 0 14px; padding: 10px 14px;
+  background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-sm);
+}
+.lvctl-k { font-size: 13px; color: var(--text-muted); flex: 0 0 auto; }
+.lvslider { flex: 1 1 auto; min-width: 80px; accent-color: var(--accent-strong); cursor: pointer; height: 20px; }
+.lvctl-v { font-size: 15px; color: var(--accent-strong); min-width: 30px; text-align: right; flex: 0 0 auto; }
+
+/* ===== 基础数值卡片 ===== */
+.stat-row { display: flex; gap: 12px; flex-wrap: wrap; }
+.stat-card {
+  flex: 1 1 120px; min-width: 100px;
+  background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-sm);
+  padding: 12px 16px; display: flex; flex-direction: column; gap: 4px;
+}
+.stat-k { font-size: 12px; color: var(--text-muted); }
+.stat-v { font-size: 20px; color: var(--text); }
+
+/* ===== 技能区块 ===== */
+.skill-block {
+  background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-sm);
+  padding: 14px 16px; margin-bottom: 12px;
+}
+.skill-head { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; flex-wrap: wrap; }
+.skill-ico {
+  width: 40px; height: 40px; border-radius: 10px; flex: 0 0 auto;
+  background: var(--accent-soft, rgba(75,80,130,.12));
+  border: 1px solid var(--border);
+  display: inline-flex; align-items: center; justify-content: center; overflow: hidden;
+}
+.skill-ico img { width: 34px; height: 34px; object-fit: contain; }
+.skill-tag {
+  font-size: 11px; padding: 2px 8px; border-radius: 6px;
+  background: var(--accent-strong); color: #fff; flex: 0 0 auto;
+}
+.skill-name { font-size: 15px; font-weight: 600; color: var(--text); }
+.skill-cd { font-size: 12px; color: var(--text-muted); margin-left: auto; }
+.skill-desc { font-size: 13px; line-height: 1.8; color: var(--text-secondary); }
+.skill-desc .pv { color: #ec6d21; font-weight: 600; }
+
+/* ===== 潜能 / 秘纹：数值强调 + 等级标签 ===== */
+.pv { color: #ec6d21; font-weight: 600; }
+.pot-lv {
+  font-size: 11px; color: var(--text-muted); margin-left: 8px;
+  border: 1px solid var(--border); border-radius: 5px; padding: 1px 6px; white-space: nowrap;
+}
+.pot-lv b { color: var(--accent-strong); }
+
+/* ===== 秘纹数值：图标格子 + 元素底色层 ===== */
+.ds-grid { display: flex; flex-wrap: wrap; gap: 10px; margin: 10px 0 0; }
+.ds-cell {
+  position: relative; min-width: 92px; padding: 8px 10px; border-radius: 8px;
+  background: var(--card); border: 1px solid var(--border);
+  display: flex; flex-direction: column; gap: 2px;
+}
+.ds-k { font-size: 11px; color: var(--text-muted); }
+.ds-v { font-size: 15px; font-weight: 600; color: var(--text); }
+/* 元素底色层：#00FFE9，半透明铺在图标下面 */
+.ico-el-bg { position: relative; display: inline-flex; align-items: center; justify-content: center; border-radius: 10px; }
+.ico-el-bg::before {
+  content: ""; position: absolute; inset: 0; border-radius: inherit;
+  background: #00FFE9; opacity: .28; pointer-events: none;
+}
+.ico-el-bg img { position: relative; z-index: 1; }
+
+/* ============================================================
+   手机端适配
+   目标：小屏上不横向溢出、图片不夸张、内容单列、可点区域够大
+   ============================================================ */
+
+/* 通用：防止任何元素撑出横向滚动 */
+html, body { max-width: 100%; overflow-x: hidden; }
+img { max-width: 100%; height: auto; }
+
+@media (max-width: 820px) {
+  /* 详情页主图：限制尺寸，别占满整屏 */
+  .detail-head { flex-direction: column; align-items: center; text-align: center; gap: 14px; }
+  .detail-portrait, .detail-portrait img { width: 140px !important; height: 180px !important; }
+  .detail-name { font-size: 22px; }
+  .detail-info { width: 100%; }
+  .detail-meta { justify-content: center; }
+  .badge-row, .pattern-attrs { justify-content: center; }
+
+  /* 秘纹大图 */
+  .pattern-big, .pattern-big img { width: 150px !important; height: 150px !important; }
+
+  /* 数值卡 / 技能块 */
+  .stat-row { gap: 8px; }
+  .stat-card { flex: 1 1 30%; min-width: 0; padding: 10px 12px; }
+  .stat-v { font-size: 17px; }
+  .lvctl { padding: 8px 12px; gap: 8px; }
+  .lvslider { min-width: 60px; }
+  .skill-block { padding: 12px; }
+  .skill-ico { width: 34px; height: 34px; }
+  .skill-ico img { width: 28px; height: 28px; }
+  .skill-desc { font-size: 12.5px; line-height: 1.75; }
+
+  /* 潜能 / 效果卡：图标缩小，文字占更多宽 */
+  .potential { gap: 10px; }
+  .pot-ico { width: 46px; height: 46px; }
+  .potential-icon { width: 38px; height: 38px; }
+  .potential-desc { font-size: 12.5px; line-height: 1.75; }
+  .eff-card { flex-direction: column; gap: 10px; }
+  .eff-icon { width: 52px !important; height: 52px !important; }
+  .eff-desc { font-size: 12.5px; line-height: 1.75; }
+  .ds-grid { gap: 8px; }
+  .ds-cell { flex: 1 1 40%; min-width: 0; }
+
+  /* 配队卡片：图片与文字排版 */
+  .team-card { padding: 12px; }
+  .ut-slots { gap: 6px; }
+  .ut-slot img { width: 40px; height: 40px; }
+  .build-char { width: 100%; }
+  .slot-row { gap: 8px; }
+  .slot-row .slot { width: 64px; }
+  .slot-row .slot img { width: 56px; height: 56px; }
+
+  /* 图鉴网格：两列更合适 */
+  .grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 10px; }
+  .grid.teams { grid-template-columns: 1fr; }
+  .char-card img, .pattern-card img { max-height: 160px; object-fit: contain; }
+
+  /* 筛选栏：允许横向滚动，别挤成一团 */
+  .filter-bar { overflow-x: auto; -webkit-overflow-scrolling: touch; padding-bottom: 4px; }
+  .filter-row { flex-wrap: nowrap; }
+  .filter-row .chip { flex: 0 0 auto; }
+
+  /* 英雄区 */
+  .hero { padding: 30px 16px; }
+  .hero-title { font-size: 24px; }
+  .hero-sub { font-size: 13px; }
+  .hero-actions { flex-direction: column; gap: 10px; }
+  .hero-actions .btn, .hero-actions .btn-secondary { width: 100%; text-align: center; }
+
+  /* 配队详情页的编辑区 */
+  .preset-box { flex-direction: column; align-items: stretch; gap: 8px; }
+  .preset-input { width: 100%; }
+  .preset-box .copy-btn { width: 100%; }
+  .tag-edit { flex-direction: column; gap: 12px; }
+  .team-desc-input { min-height: 120px; }
+  .lv-ctl { flex-wrap: wrap; }
+
+  /* 页脚 */
+  .site-footer { padding: 20px 14px 26px; }
+  .site-footer .site-disclaimer { font-size: 11px; line-height: 1.75; text-align: left; }
+}
+
+@media (max-width: 560px) {
+  .container { padding: 12px 10px 50px; }
+  .detail-portrait, .detail-portrait img { width: 120px !important; height: 156px !important; }
+  .pattern-big, .pattern-big img { width: 120px !important; height: 120px !important; }
+  .stat-card { flex: 1 1 45%; }
+  .stat-v { font-size: 16px; }
+  .grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .page-title { font-size: 20px; }
+  .section-title { font-size: 15px; }
+  .hero-title { font-size: 21px; }
+  .pot-ico { width: 40px; height: 40px; }
+  .potential-icon { width: 32px; height: 32px; }
+  .eff-icon { width: 46px !important; height: 46px !important; }
+}
