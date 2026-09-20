@@ -227,17 +227,35 @@ function potData(char, p) {
   const byChar = all[char && char.id];
   return (byChar && p) ? byChar[p.potId] : null;
 }
-// 潜能：把 &Param1& 换成第 lv 级数值
+// 潜能描述高亮：把「39%/44%/.../131%」这样的各级数值，按当前等级取一个并标橙
+function potHighlightDesc(desc, params, lv) {
+  const text = String(desc || '');
+  // 从 params 里挑出「数值数组」（长度 > 1 且首项含 % 或是纯数字）
+  const lists = (params || []).filter(a => Array.isArray(a) && a.length > 1 && /^[0-9.]+%?$/.test(String(a[0])));
+  if (!lists.length) return escapeHtml(text);
+  let idx = 0;
+  return text.replace(/[0-9.]+%(?:\/[0-9.]+%)+/g, (seq) => {
+    const arr = lists[idx++] || [];
+    if (!arr.length) return escapeHtml(seq);
+    const i = Math.max(0, Math.min(lv - 1, arr.length - 1));
+    return '<b class="pv">' + escapeHtml(String(arr[i])) + '</b>';
+  }).replace(/&Param(\d+)&/g, (m, n) => {
+    const a = (params || [])[Number(n) - 1];
+    if (!a) return m;
+    const i = Math.max(0, Math.min(lv - 1, a.length - 1));
+    return '<b class="pv">' + escapeHtml(String(a[i])) + '</b>';
+  });
+}
+// 潜能：按等级显示描述（带橙字高亮）
 function potLevelHtml(char, p, lv) {
   const pl = potData(char, p);
   if (!pl || !pl.params || !pl.params.length) return escapeHtml(p.desc || '');
-  return fillParams(p.desc, pl.params, lv);
+  return potHighlightDesc(p.desc, pl.params, lv);
 }
-// 潜能的等级上限：核心 13 级 / 普通 9 级 / 单值 1 级
+// 潜能的等级上限：核心 13 级，其他 9 级
 function potMaxLevel(char, p) {
-  // 按游戏内规则：核心潜能满级 10 级，其余潜能满级 6 级
   const isCore = p && (p.type === '核心潜能' || (p.flow && p.flow.indexOf('核心') >= 0));
-  return isCore ? 10 : 6;
+  return isCore ? 13 : 9;
 }
 // 潜能预设等级：初始全部 1 级，满级时核心 13 级、普通 9 级
 function potPresetLevel(p, mode) {
@@ -546,13 +564,9 @@ function renderCharacter() {
   // ===== 潜能：主控 / 援护 切换 + 等级点击 ===== 
 
   function bindPotLevels(scope) {
-    // 按潜能类型给上限：核心潜能 10 级，其余 6 级
+    // 等级上限：核心潜能 13 级，其他 9 级
     const potOf = (potId) => (char.potentials || []).find(x => String(x.potId) === String(potId)) || null;
-    const capOf = (potId) => {
-      const p = potOf(potId);
-      const isCore = p && (p.type === '核心潜能' || (p.flow && p.flow.indexOf('核心') >= 0));
-      return isCore ? 10 : 6;
-    };
+    const capOf = (potId) => potMaxLevel(char, potOf(potId));
     const lvOf = (potId) => {
       const el = scope.querySelector('.plv-v[data-pot="' + potId + '"]');
       return el ? (parseInt(el.textContent, 10) || 1) : 1;
@@ -565,7 +579,17 @@ function renderCharacter() {
       const v = scope.querySelector('.plv-v[data-pot="' + potId + '"]');
       if (v) v.textContent = lv;
       const dl = scope.querySelector('.potential-desc[data-pot="' + potId + '"]');
-      if (dl) dl.innerHTML = fillParams(dl.getAttribute('data-desc'), pl.params, lv);
+      if (dl) dl.innerHTML = potHighlightDesc(dl.getAttribute('data-desc'), pl.params, lv);
+    };
+    // 预设按钮高亮：跟当前等级状态同步
+    const syncQuick = () => {
+      const vs = Array.prototype.slice.call(scope.querySelectorAll('.plv-v'));
+      const allInit = vs.length > 0 && vs.every(v => (parseInt(v.textContent, 10) || 1) === 1);
+      const allMax = vs.length > 0 && vs.every(v => (parseInt(v.textContent, 10) || 1) === capOf(v.getAttribute('data-pot')));
+      scope.querySelectorAll('.pot-quick').forEach(b => {
+        const m = b.getAttribute('data-mode');
+        b.classList.toggle('on', (m === 'init' && allInit) || (m === 'max' && allMax));
+      });
     };
     // 左右箭头
     scope.querySelectorAll('.plv-btn').forEach(btn => {
@@ -576,6 +600,7 @@ function renderCharacter() {
         const pid = btn.getAttribute('data-pot');
         const step = parseInt(btn.getAttribute('data-step'), 10) || 1;
         setLv(pid, lvOf(pid) + step);
+        syncQuick();
       });
     });
     // 初始 / 满级：一键设置全部潜能等级
@@ -588,8 +613,10 @@ function renderCharacter() {
           const pid = v.getAttribute('data-pot');
           setLv(pid, mode === 'init' ? 1 : capOf(pid));
         });
+        syncQuick();
       });
     });
+    syncQuick();
   }
   bindPotLevels(root);
 
@@ -1734,7 +1761,11 @@ function renderPattern() {
     ];
     return '<div class="ds-grid">' + cells.join('') + '</div>';
   };
-  const tierBonus = (i) => (melody.dupe ? melody.dupe[Math.min(i, melody.dupe.length - 1)] : 0);
+  // 阶数加成的额外攻击：1 阶不加，2 阶起按 dupe 累加
+  const tierBonus = (i) => {
+    if (!melody.dupe || i < 1) return 0;
+    return melody.dupe[Math.min(i, melody.dupe.length - 1)] || 0;
+  };
   const s0 = statRows[0] || [];
   const n0 = noteRows[0] || null;
 
