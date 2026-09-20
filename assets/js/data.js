@@ -48,7 +48,8 @@ const DATA = {
   charSkills: {},            // 旅人技能（普攻/主控/援护/绝招）的文本与各级数值
   charStats: {},             // 旅人各级基础数值 [等级, 生命, 攻击, 防御]
   potentialLevels: {},       // 潜能各级数值与等级上限
-  discSkills: {}             // 秘纹各级数值与音符表
+  discSkills: {},            // 秘纹各级数值与音符表
+  dict: {}                   // 翻译字典（英文 → 中文）
 };
 
 // 数据文件表：每个文件 40~530 KB，按页面按需加载（首屏能省一大半）
@@ -60,11 +61,13 @@ const DATA_FILES = {
   charSkills:      'assets/data/character-skills.json',
   charStats:       'assets/data/character-stats.json',
   potentialLevels: 'assets/data/potential-levels.json',
-  discSkills:      'assets/data/disc-skills.json'
+  discSkills:      'assets/data/disc-skills.json',
+  dict:            'assets/data/dict.json'
 };
 
 // 每个页面真正需要的数据（rest = 基础数据，所有页面都要）
-const BASE_DATA = ['characters', 'patterns', 'presetTeams'];
+// dict 很小（53 KB）且每个页面都可能用到，所以归入基础数据
+const BASE_DATA = ['characters', 'patterns', 'presetTeams', 'dict'];
 const PAGE_DATA = {
   home:       ['characters', 'patterns', 'presetTeams'],
   characters: ['characters'],                                  // 卡片只用 characters
@@ -76,7 +79,10 @@ const PAGE_DATA = {
 };
 function dataKeysForPage() {
   const pg = (document.body && document.body.dataset && document.body.dataset.page) || 'home';
-  return PAGE_DATA[pg] || BASE_DATA;
+  const need = (PAGE_DATA[pg] || BASE_DATA).slice();
+  // 基础数据（含翻译字典）每个页面都要，避免漏加载
+  BASE_DATA.forEach(function (k) { if (need.indexOf(k) < 0) need.push(k); });
+  return need;
 }
 
 async function loadData() {
@@ -93,7 +99,7 @@ async function loadData() {
   for (const [key, json] of entries) {
     if (key === 'potentialCfg') DATA.potentialCfg = json;
     else if (key === 'presetTeams') { DATA.presetTeams = json.teams || []; DATA.presetTeamsUpdatedAt = json.updatedAt || ''; }
-    else if (key === 'charSkills' || key === 'charStats' || key === 'potentialLevels' || key === 'discSkills') DATA[key] = json;
+    else if (key === 'charSkills' || key === 'charStats' || key === 'potentialLevels' || key === 'discSkills' || key === 'dict') DATA[key] = json;
     else DATA[key] = json[key];
   }
 }

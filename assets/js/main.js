@@ -217,7 +217,8 @@ function fillParams(desc, params, lv) {
     const p = (params || [])[Number(n) - 1];
     if (!p) return m;
     const i = Math.max(0, Math.min(lv - 1, p.length - 1));
-    return '<b class="pv">' + escapeHtml(String(p[i])) + '</b>';
+    // 参数值可能是英文标签（如 Ultimate Crit Rate），翻成中文
+    return '<b class="pv">' + escapeHtml(tr(String(p[i]))) + '</b>';
   });
 }
 // 参数列表最多有几级（不同参数长度不同，取最长的）
@@ -243,12 +244,12 @@ function potHighlightDesc(desc, params, lv) {
     const arr = lists[idx++] || [];
     if (!arr.length) return escapeHtml(seq);
     const i = Math.max(0, Math.min(lv - 1, arr.length - 1));
-    return '<b class="pv">' + escapeHtml(String(arr[i])) + '</b>';
+    return '<b class="pv">' + escapeHtml(tr(String(arr[i]))) + '</b>';
   }).replace(/&Param(\d+)&/g, (m, n) => {
     const a = (params || [])[Number(n) - 1];
     if (!a) return m;
     const i = Math.max(0, Math.min(lv - 1, a.length - 1));
-    return '<b class="pv">' + escapeHtml(String(a[i])) + '</b>';
+    return '<b class="pv">' + escapeHtml(tr(String(a[i]))) + '</b>';
   });
 }
 // 潜能：按等级显示描述（带橙字高亮）
@@ -283,7 +284,37 @@ const STAT_CN = {
   'Ventus DMG': '风元素伤害', 'Lux DMG': '光元素伤害', 'Umbra DMG': '暗元素伤害',
   'DMG': '伤害加成', 'ATK%': '攻击力', 'HP%': '生命值'
 };
-function statLabel(k) { return STAT_CN[k] || k; }
+// 数值字段名：先查内置表，再查翻译字典
+function statLabel(k) { return STAT_CN[k] || tr(k); }
+
+// ===== 翻译字典（英文 → 中文）=====
+// 数据里有些数值/标记用英文（如 ATK、Skill DMG、Dark Burn），这里统一翻成中文。
+// 字典由 tools/build-dict.js 生成：自动抽取游戏内中英名配对 + 手工维护的属性标签。
+//
+// 三级匹配（从长到短）：
+//   1) 整串命中字典 → 直接返回
+//   2) 文本里含字典中的完整词组 → 替换该词组（先长后短，避免部分匹配）
+//   3) 仍剩英文单词 → 按单词表兜底（用于「绝招暴击 Rate」这种半英半中的写法）
+let _dictKeys = null;
+function tr(s) {
+  const text = String(s == null ? '' : s).trim();
+  if (!text) return text;
+  const d = DATA.dict || {};
+  if (d[text]) return d[text];
+  if (!/[A-Za-z]/.test(text)) return text;
+  if (!_dictKeys) _dictKeys = Object.keys(d).sort(function (a, b) { return b.length - a.length; });
+  let out = text;
+  // 词组替换（长词优先）
+  _dictKeys.forEach(function (k) {
+    if (k.length < 4) return;
+    if (out.indexOf(k) >= 0) out = out.split(k).join(d[k]);
+  });
+  // 单词兜底
+  if (/[A-Za-z]/.test(out)) {
+    out = out.replace(/[A-Za-z][A-Za-z']*/g, function (w) { return d[w] || w; });
+  }
+  return out;
+}
 function renderCharacter() {
 
   const char = getCharById(getUrlParam('id'));
@@ -378,7 +409,7 @@ function renderCharacter() {
 
             '<span class="skill-name">' + escapeHtml(s.name) + '</span>' +
 
-            (s.cd ? '<span class="skill-cd">CD ' + escapeHtml(s.cd) + '</span>' : '') +
+            (s.cd ? '<span class="skill-cd">冷却 ' + escapeHtml(String(s.cd).replace(/s$/, '秒')) + '</span>' : '') +
 
           '</div>' +
 
@@ -1772,7 +1803,9 @@ function renderPattern() {
       if (v == null || v === '') return;
       // 只有攻击列吃阶数加成
       if (k === 'ATK' && bonus) v = Number(v) + Number(bonus);
-      cells.push('<div class="ds-cell"><span class="ds-k">' + escapeHtml(label) + '</span><span class="ds-v">' + escapeHtml(String(v)) + '</span></div>');
+      // 数值也可能是英文标签，翻成中文
+      const shown = (typeof v === 'string') ? tr(v) : v;
+      cells.push('<div class="ds-cell"><span class="ds-k">' + escapeHtml(label) + '</span><span class="ds-v">' + escapeHtml(String(shown)) + '</span></div>');
     });
     if (!cells.length) return '';
     return '<div class="ds-grid">' + cells.join('') + '</div>';
@@ -1815,7 +1848,7 @@ function renderPattern() {
     (h.skillImg ? '<span class="eff-icon ' + elCls + '"><img loading="lazy" decoding="async" src="' + escapeHtml(h.skillImg) + '" alt=""></span>' : '<div class="eff-icon eff-icon-ph">♪</div>'),
     '<div class="eff-body">',
     '<div class="eff-name">' + escapeHtml(h.name || '') + '</div>',
-    '<div class="eff-toolbar"><span class="tool-label">Harmony 等级</span>',
+    '<div class="eff-toolbar"><span class="tool-label">协奏等级</span>',
     '<input type="range" class="hSlider" min="1" max="' + ((h.params || []).length || tierMax) + '" value="1" data-idx="' + i + '">',
     '<span class="tool-val hVal">1</span></div>',
     '<div class="eff-desc harmony-desc" data-params="' + escapeHtml((h.params || []).join('|')) + '" data-tpl="' + escapeHtml(h.tpl || '') + '">' + renderTpl(h.tpl, (h.params || [])[0]) + '</div>',
@@ -1832,8 +1865,8 @@ function renderPattern() {
     '<div class="badge-row">' + renderStars(p.rarity) + elBadge + '</div>',
     '<div class="pattern-attrs">' + attrItems.map(a => '<span class="attr-chip">' + escapeHtml(a) + '</span>').join('') + '</div>',
     '</div></div>',
-    '<section class="section"><h2 class="section-title">Melody · 主效果</h2>' + melodyHtml + '</section>',
-    '<section class="section"><h2 class="section-title">Harmony · 协奏效果</h2>' + harmonyHtml + '</section>'
+    '<section class="section"><h2 class="section-title">主效果</h2>' + melodyHtml + '</section>',
+    '<section class="section"><h2 class="section-title">协奏效果</h2>' + harmonyHtml + '</section>'
   ].join('');
 
   const refreshStats = () => {
