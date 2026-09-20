@@ -65,6 +65,28 @@ function thumbOf(url) {
   return String(url).replace('img/hd/', 'img/thumb/');
 }
 
+// 缩略图先显示（加载快），原图在后台懒加载完成后自动替换（不影响观感）
+function upgradeThumbs(scope) {
+  const root = scope || document;
+  const imgs = root.querySelectorAll ? root.querySelectorAll('img[src*="img/thumb/"]') : [];
+  Array.prototype.forEach.call(imgs, (img) => {
+    if (img.getAttribute('data-hd')) return;
+    img.setAttribute('data-hd', '1');
+    const hd = img.getAttribute('src').replace('img/thumb/', 'img/hd/');
+    const pre = new Image();
+    pre.loading = 'lazy';
+    pre.decoding = 'async';
+    pre.onload = () => {
+      if (pre.naturalWidth) {
+        img.setAttribute('src', hd);
+        img.removeAttribute('data-hd');
+      }
+    };
+    pre.onerror = () => {};
+    pre.src = hd;
+  });
+}
+
 function renderPortrait(char, cls, opts) {
   const o = opts || {};
   if (char.portrait) {
