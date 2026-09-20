@@ -221,135 +221,46 @@ function maxLevelOf(params) {
   (params || []).forEach(p => { if (p && p.length > n) n = p.length; });
   return n;
 }
-// 潜能：把 &Param1& 换成第 lv 级数值（数据来自 potential-levels.json）
-function potLevelHtml(p, lv) {
-  const pl = (DATA.potentialLevels || {})[p && p.potId];
+// 潜能数据是按 旅人id -> 潜能id 两层存的
+function potData(char, p) {
+  const all = DATA.potentialLevels || {};
+  const byChar = all[char && char.id];
+  return (byChar && p) ? byChar[p.potId] : null;
+}
+// 潜能：把 &Param1& 换成第 lv 级数值
+function potLevelHtml(char, p, lv) {
+  const pl = potData(char, p);
   if (!pl || !pl.params || !pl.params.length) return escapeHtml(p.desc || '');
   return fillParams(p.desc, pl.params, lv);
 }
-function potMaxLevel(p) {
-  const pl = (DATA.potentialLevels || {})[p && p.potId];
+// 潜能的等级上限：核心 13 级 / 普通 9 级 / 单值 1 级
+function potMaxLevel(char, p) {
+  const pl = potData(char, p);
   const m = pl && pl.max ? pl.max : 0;
-  return m > 1 ? m : 6;
+  return m > 0 ? m : 1;
+}
+// 潜能预设等级：初始全部 1 级，满级时核心 13 级、普通 9 级
+function potPresetLevel(p, mode) {
+  if (mode === 'init') return 1;
+  const type = p && p.type === '核心潜能' ? 'core' : 'normal';
+  return type === 'core' ? 13 : 9;
+}
+// 只对确实有 13 / 9 级数据的潜能生效，回退到该潜能实际上限
+function potClamp(p, lv) {
+  const m = potMaxLevel(char, p);
+  return Math.max(1, Math.min(lv, m));
 }
 
-// ============ 角色详情 ============
-// ===== 技能 / 数值 展示的公共辅助 =====
-
-// 把 desc 里的 &Param1& 等占位符替换成第 lv 级的数值
-
-function fillParams(desc, params, lv) {
-
-  return String(desc || '').replace(/&Param(\d+)&/g, (m, n) => {
-
-    const p = (params || [])[Number(n) - 1];
-
-    if (!p) return m;
-
-    const i = Math.max(0, Math.min(lv - 1, p.length - 1));
-
-    return '<b class="pv">' + escapeHtml(String(p[i])) + '</b>';
-
-  });
-
-}
-
-// 参数列表最多有几级（不同参数长度不同，取最长的）
-
-function maxLevelOf(params) {
-
-  let n = 1;
-
-  (params || []).forEach(p => { if (p && p.length > n) n = p.length; });
-
-  return n;
-
-}
-
-// 潜能：把 &Param1& 换成第 lv 级数值（数据来自 potential-levels.json）
-
-function potLevelHtml(p, lv) {
-
-  const pl = (DATA.potentialLevels || {})[p && p.potId];
-
-  if (!pl || !pl.params || !pl.params.length) return escapeHtml(p.desc || '');
-
-  return fillParams(p.desc, pl.params, lv);
-
-}
-
-function potMaxLevel(p) {
-
-  const pl = (DATA.potentialLevels || {})[p && p.potId];
-
-  const m = pl && pl.max ? pl.max : 0;
-
-  return m > 1 ? m : 6;
-
-}
-
-
-
-// ============ 角色详情 ============
-
-// ===== 技能 / 数值 展示的公共辅助 =====
-
-// 把 desc 里的 &Param1& 等占位符替换成第 lv 级的数值
-
-function fillParams(desc, params, lv) {
-
-  return String(desc || '').replace(/&Param(\d+)&/g, (m, n) => {
-
-    const p = (params || [])[Number(n) - 1];
-
-    if (!p) return m;
-
-    const i = Math.max(0, Math.min(lv - 1, p.length - 1));
-
-    return '<b class="pv">' + escapeHtml(String(p[i])) + '</b>';
-
-  });
-
-}
-
-// 参数列表最多有几级（不同参数长度不同，取最长的）
-
-function maxLevelOf(params) {
-
-  let n = 1;
-
-  (params || []).forEach(p => { if (p && p.length > n) n = p.length; });
-
-  return n;
-
-}
-
-// 潜能：把 &Param1& 换成第 lv 级数值（数据来自 potential-levels.json）
-
-function potLevelHtml(p, lv) {
-
-  const pl = (DATA.potentialLevels || {})[p && p.potId];
-
-  if (!pl || !pl.params || !pl.params.length) return escapeHtml(p.desc || '');
-
-  return fillParams(p.desc, pl.params, lv);
-
-}
-
-function potMaxLevel(p) {
-
-  const pl = (DATA.potentialLevels || {})[p && p.potId];
-
-  const m = pl && pl.max ? pl.max : 0;
-
-  return m > 1 ? m : 6;
-
-}
-
-
-
-// ============ 角色详情 ============
-
+// 数值字段的中文名（ATK / HP / DEF 等）
+const STAT_CN = {
+  'ATK': '攻击', 'HP': '生命', 'DEF': '防御',
+  'Crit Rate': '暴击率', 'Crit DMG': '暴击伤害',
+  'Resilience Break Efficiency': '韧性击破效率', 'VUL Exploit': '易伤增幅',
+  'Ignis DMG': '火元素伤害', 'Aqua DMG': '水元素伤害', 'Terra DMG': '土元素伤害',
+  'Ventus DMG': '风元素伤害', 'Lux DMG': '光元素伤害', 'Umbra DMG': '暗元素伤害',
+  'DMG': '伤害加成', 'ATK%': '攻击力', 'HP%': '生命值'
+};
+function statLabel(k) { return STAT_CN[k] || k; }
 function renderCharacter() {
 
   const char = getCharById(getUrlParam('id'));
@@ -494,21 +405,21 @@ function renderCharacter() {
 
   const potCard = (p) => {
 
-    const pmax = potMaxLevel(p);
+    const pmax = potMaxLevel(char, p);
 
     return '<div class="potential">' +
 
-      (p.icon ? '<span class="pot-ico ' + potRarityCls(p) + ' ico-el el-' + escapeHtml(char.element || 'none') + '"><img class="potential-icon" src="' + escapeHtml(p.icon) + '" alt="" loading="lazy">' + potCornerHtml(p) + '</span>' : '') +
+      (p.icon ? '<span class="pot-ico ' + potRarityCls(p) + '"><img class="potential-icon" src="' + escapeHtml(p.icon) + '" alt="" loading="lazy">' + potCornerHtml(p) + '</span>' : '') +
 
       '<div class="potential-body">' +
 
         '<div class="potential-head"><span class="potential-name">' + escapeHtml(p.name) + '</span><span class="potential-type ' + (p.type === '核心潜能' ? 'type-core' : p.type === '彩潜能' ? 'type-rare' : 'type-common') + '">' + escapeHtml(p.type || '') + '</span>' +
 
-        (pmax > 1 ? '<span class="pot-lv" data-potid="' + escapeHtml(String(p.potId)) + '">Lv <b>1</b>/' + pmax + '</span>' : '') +
+        (pmax > 1 ? '<span class="pot-lv"><button type="button" class="plv-btn" data-pot="' + escapeHtml(String(p.potId)) + '" data-step="-1">◀</button><b class="plv-v" data-pot="' + escapeHtml(String(p.potId)) + '">1</b><span class="plv-max">/' + pmax + '</span><button type="button" class="plv-btn" data-pot="' + escapeHtml(String(p.potId)) + '" data-step="1">▶</button></span>' : '') +
 
         '</div>' +
 
-        '<div class="potential-desc" data-pot="' + escapeHtml(String(p.potId)) + '" data-desc="' + escapeHtml(p.desc || '') + '">' + potLevelHtml(p, 1) + '</div>' +
+        '<div class="potential-desc" data-pot="' + escapeHtml(String(p.potId)) + '" data-desc="' + escapeHtml(p.desc || '') + '">' + potLevelHtml(char, p, 1) + '</div>' +
 
       '</div>' +
 
@@ -528,7 +439,11 @@ function renderCharacter() {
 
   const potHtml = allPots.length
 
-    ? '<div class="side-tabs">' +
+    ? '<div class="pot-tools">' +
+        '<button type="button" class="pot-quick" data-mode="init">初始</button>' +
+        '<button type="button" class="pot-quick" data-mode="max">满级</button>' +
+        '<span class="pot-tools-hint">潜能的 ◀ ▶ 可单独调整等级</span>' +
+      '<div class="side-tabs">' +
 
         '<button type="button" class="side-tab on" data-side="main">主控</button>' +
 
@@ -635,67 +550,60 @@ function renderCharacter() {
   // ===== 潜能：主控 / 援护 切换 + 等级点击 ===== 
 
   function bindPotLevels(scope) {
-
-    scope.querySelectorAll('.pot-lv').forEach(el => {
-
-      if (el.getAttribute('data-bound')) return;
-
-      el.setAttribute('data-bound', '1');
-
-      const potId = el.getAttribute('data-potid');
-
-      const pl = (DATA.potentialLevels || {})[potId];
-
+    // 每个潜能的当前等级（默认 1 级）
+    const lvOf = (potId) => {
+      const el = scope.querySelector('.plv-v[data-pot="' + potId + '"]');
+      return el ? (parseInt(el.textContent, 10) || 1) : 1;
+    };
+    const setLv = (potId, lv) => {
+      const pl = ((DATA.potentialLevels || {})[char.id] || {})[potId];
       if (!pl) return;
-
-      const pmax = pl.max > 1 ? pl.max : 6;
-
-      let lv = 1;
-
-      el.style.cursor = 'pointer';
-
-      el.title = '点击切换等级';
-
-      el.addEventListener('click', () => {
-
-        lv = lv >= pmax ? 1 : lv + 1;
-
-        el.innerHTML = 'Lv <b>' + lv + '</b>/' + pmax;
-
-        const d = scope.querySelector('.potential-desc[data-pot="' + potId + '"]');
-
-        if (d) d.innerHTML = fillParams(d.getAttribute('data-desc'), pl.params, lv);
-
+      const pmax = pl.max > 0 ? pl.max : 1;
+      lv = Math.max(1, Math.min(lv, pmax));
+      const v = scope.querySelector('.plv-v[data-pot="' + potId + '"]');
+      if (v) v.textContent = lv;
+      const dl = scope.querySelector('.potential-desc[data-pot="' + potId + '"]');
+      if (dl) dl.innerHTML = fillParams(dl.getAttribute('data-desc'), pl.params, lv);
+    };
+    // 左右箭头
+    scope.querySelectorAll('.plv-btn').forEach(btn => {
+      if (btn.getAttribute('data-bound')) return;
+      btn.setAttribute('data-bound', '1');
+      btn.addEventListener('click', (ev) => {
+        ev.stopPropagation();
+        const pid = btn.getAttribute('data-pot');
+        const step = parseInt(btn.getAttribute('data-step'), 10) || 1;
+        setLv(pid, lvOf(pid) + step);
       });
-
     });
-
+    // 初始 / 满级 按钮（对整个潜能面板生效）
+    scope.querySelectorAll('.pot-quick').forEach(btn => {
+      if (btn.getAttribute('data-bound')) return;
+      btn.setAttribute('data-bound', '1');
+      btn.addEventListener('click', () => {
+        const mode = btn.getAttribute('data-mode');
+        scope.querySelectorAll('.plv-v').forEach(v => {
+          const pid = v.getAttribute('data-pot');
+          const pl = ((DATA.potentialLevels || {})[char.id] || {})[pid];
+          if (!pl) return;
+          const pmax = pl.max > 0 ? pl.max : 1;
+          setLv(pid, mode === 'init' ? 1 : pmax);
+        });
+      });
+    });
   }
-
   bindPotLevels(root);
 
-
-
   root.querySelectorAll('.side-tab').forEach(btn => {
-
     btn.addEventListener('click', () => {
-
       root.querySelectorAll('.side-tab').forEach(b => b.classList.toggle('on', b === btn));
-
       const pane = document.getElementById('potPane');
-
       if (pane) {
-
         pane.innerHTML = renderPotPane(btn.getAttribute('data-side'));
-
         bindPotLevels(pane);
-
       }
-
     });
-
   });
-
 }
 
 // ============ 配队方案（列表） ============
@@ -1821,12 +1729,21 @@ function renderPattern() {
     if (!ents.length) return '<em class="note-empty">无音符需求</em>';
     return ents.map(([n, c]) => { const k = noteKeyFromEn(n) || n; return '<span class="note-chip" title="' + escapeHtml(noteName(k)) + '">' + noteIcon(k) + ' ×' + c + '</span>'; }).join('');
   };
-  const statCells = (row) => {
+  // 数值格子；bonus 传入时，额外显示一个「阶数加成」格
+  const statCells = (row, bonus) => {
     const ents = Object.entries(row || {});
-    if (!ents.length) return '';
-    return '<div class="ds-grid">' + ents.map(([k, v]) =>
-      '<div class="ds-cell"><span class="ds-k">' + escapeHtml(k) + '</span><span class="ds-v">' + escapeHtml(String(v)) + '</span></div>'
-    ).join('') + '</div>';
+    const cells = ents.map(([k, v]) =>
+      '<div class="ds-cell"><span class="ds-k">' + escapeHtml(statLabel(k)) + '</span><span class="ds-v">' + escapeHtml(String(v)) + '</span></div>'
+    );
+    if (bonus != null) cells.push('<div class="ds-cell ds-cell-bonus"><span class="ds-k">阶数加成</span><span class="ds-v">攻击 +' + escapeHtml(String(bonus)) + '</span></div>');
+    if (!cells.length) return '';
+    return '<div class="ds-grid">' + cells.join('') + '</div>';
+  };
+  // 当前阶数对应的攻击加成（阶数滑条的值）
+  const curBonus = () => {
+    const s = document.getElementById('tierSlider');
+    const t = s ? parseInt(s.value, 10) : 1;
+    return melody.dupe ? melody.dupe[Math.min(t - 1, melody.dupe.length - 1)] : null;
   };
 
   const s0 = statRows[0] || null;
@@ -1842,7 +1759,7 @@ function renderPattern() {
       <span class="lvctl-k">秘纹阶数</span>
       <input type="range" class="lvslider" id="tierSlider" min="1" max="${tierMax}" value="1" step="1">
       <b class="lvctl-v" id="tierOut">1</b>
-      <span class="tool-extra" id="tierAtk"></span>
+
     </div>
     <div class="eff-card">
       ${melody.skillImg ? '<span class="eff-icon ' + elCls + '"><img loading="lazy" decoding="async" src="' + escapeHtml(melody.skillImg) + '" alt=""></span>' : '<div class="eff-icon eff-icon-ph">♪</div>'}
@@ -1851,7 +1768,7 @@ function renderPattern() {
         <div class="eff-desc" id="melodyDesc">${renderTpl(melody.tpl, (melody.params || [])[0])}</div>
         <div class="eff-notes" id="melodyNotes">${notesHtml(n0)}</div>
         <div class="eff-split"></div>
-        <div id="melodyStats">${statCells(s0)}</div>
+        <div id="melodyStats">${statCells(s0, melody.dupe ? melody.dupe[0] : null)}</div>
         ${buffRow(melody.buffs)}
       </div>
     </div>` : emptyHint('主效果待补充');
@@ -1894,7 +1811,7 @@ function renderPattern() {
       const i = Math.min(lv - 1, statRows.length - 1);
       const out = document.getElementById('lvOut'); if (out) out.textContent = lv;
       const ms = document.getElementById('melodyStats');
-      if (ms) ms.innerHTML = statCells(statRows[i]);
+      if (ms) ms.innerHTML = statCells(statRows[i], curBonus());
     });
   }
 
@@ -1905,10 +1822,12 @@ function renderPattern() {
       const t = parseInt(tierSlider.value, 10);
       const i = Math.min(t - 1, tierMax - 1);
       const out = document.getElementById('tierOut'); if (out) out.textContent = t;
-      const atk = document.getElementById('tierAtk');
-      if (atk) {
+      // 阶数加成（攻击 +XXX）合并显示在数值格子里
+      const ms = document.getElementById('melodyStats');
+      if (ms) {
         const dv = melody.dupe ? melody.dupe[Math.min(i, melody.dupe.length - 1)] : null;
-        atk.textContent = dv != null ? '攻击 +' + dv : '';
+        const lvIdx = Math.min(parseInt(lvSlider ? lvSlider.value : 1, 10) - 1, statRows.length - 1);
+        ms.innerHTML = statCells(statRows[lvIdx], dv);
       }
       const md = document.getElementById('melodyDesc');
       if (md) md.innerHTML = renderTpl(melody.tpl, (melody.params || [])[i]);
