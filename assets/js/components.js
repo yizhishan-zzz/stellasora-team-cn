@@ -65,8 +65,21 @@ function thumbOf(url) {
   return String(url).replace('img/hd/', 'img/thumb/');
 }
 
-// 缩略图先显示（加载快），原图在后台懒加载完成后自动替换（不影响观感）
+// 手机端用缩略图省流量、电脑端直接用原图（电脑上缩略图观感差）
+let _isMobile = null;
+function isMobileClient() {
+  if (_isMobile !== null) return _isMobile;
+  const ua = (typeof navigator !== 'undefined' && navigator.userAgent) || '';
+  const touch = (typeof navigator !== 'undefined' && navigator.maxTouchPoints > 0) || false;
+  _isMobile = /Android|iPhone|iPad|iPod|Mobile|Windows Phone|HarmonyOS/i.test(ua) ||
+              (touch && (typeof window !== 'undefined' && window.innerWidth <= 820));
+  return _isMobile;
+}
+
+// 手机端：缩略图先显示（加载快），原图在后台加载完成后自动替换（无需刷新）
+// 电脑端：直接返回，不处理
 function upgradeThumbs(scope) {
+  if (!isMobileClient()) return;
   const root = scope || document;
   const imgs = root.querySelectorAll ? root.querySelectorAll('img[src*="img/thumb/"]') : [];
   Array.prototype.forEach.call(imgs, (img) => {
@@ -74,7 +87,7 @@ function upgradeThumbs(scope) {
     img.setAttribute('data-hd', '1');
     const hd = img.getAttribute('src').replace('img/thumb/', 'img/hd/');
     const pre = new Image();
-    pre.loading = 'lazy';
+    // 不设 loading=lazy：这是后台预取，要立刻开始下载原图
     pre.decoding = 'async';
     pre.onload = () => {
       if (pre.naturalWidth) {
@@ -90,7 +103,8 @@ function upgradeThumbs(scope) {
 function renderPortrait(char, cls, opts) {
   const o = opts || {};
   if (char.portrait) {
-    const src = o.thumb ? thumbOf(char.portrait) : char.portrait;
+    // 手机端用缩略图（之后自动升级为原图）；电脑端直接加载原图
+    const src = (o.thumb && isMobileClient()) ? thumbOf(char.portrait) : char.portrait;
     const dim = ' width="' + (o.w || 256) + '" height="' + (o.h || 256) + '"';
     const load = o.priority ? ' fetchpriority="high"' : ' loading="lazy" decoding="async"';
     return '<img class="' + (cls || '') + '" src="' + escapeHtml(src) + '" alt="' + escapeHtml(char.name) + '"' + dim + load + '>';
@@ -144,7 +158,7 @@ function renderPatternCard(p) {
   const elBadge = elIcon(p.element || 'none');
   return `
     <a class="pattern-card" href="pattern.html?id=${p.id}">
-      ${p.portrait ? '<div class="pattern-card-media"><img class="pattern-img" src="' + escapeHtml(thumbOf(p.portrait)) + '" alt="" width="256" height="256" loading="lazy" decoding="async"></div>' : ''}
+      ${p.portrait ? '<div class="pattern-card-media"><img class="pattern-img" src="' + escapeHtml(isMobileClient() ? thumbOf(p.portrait) : p.portrait) + '" alt="" width="256" height="256" loading="lazy" decoding="async"></div>' : ''}
       <div class="pattern-card-body">
         <div class="pattern-card-head">
           ${renderStars(p.rarity)}
@@ -164,7 +178,7 @@ function renderPresetTeamCard(t) {
     ? '<span class="ut-char" title="' + escapeHtml(x.name) + '">' + renderPortrait(x, 'ut-char-img', { thumb: true, w: 160, h: 160 }) + '</span>'
     : '<span class="ut-char ut-empty">+</span>').join('');
   const patSlots = (arr, cls) => arr.map(p => p
-    ? '<span class="ut-pat ' + cls + '">' + (p.portrait ? '<img loading="lazy" decoding="async" src="' + escapeHtml(thumbOf(p.portrait)) + '" alt="" width="96" height="96">' : '') + '</span>'
+    ? '<span class="ut-pat ' + cls + '">' + (p.portrait ? '<img loading="lazy" decoding="async" src="' + escapeHtml(isMobileClient() ? thumbOf(p.portrait) : p.portrait) + '" alt="" width="96" height="96">' : '') + '</span>'
     : '<span class="ut-pat ut-empty ' + cls + '"></span>').join('');
   const potTotal = (t.pots || []).reduce((s, p) => s + Object.values(p || {}).reduce((a, v) => a + (typeof v === 'number' ? v : 0), 0), 0);
   const tg = t.tags || {};
