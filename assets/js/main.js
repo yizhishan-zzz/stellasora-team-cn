@@ -1760,13 +1760,21 @@ function renderPattern() {
     if (!ents.length) return '<em class="note-empty">无音符需求</em>';
     return ents.map(([n, c]) => { const k = noteKeyFromEn(n) || n; return '<span class="note-chip" title="' + escapeHtml(noteName(k)) + '">' + noteIcon(k) + ' ×' + c + '</span>'; }).join('');
   };
+  // 数值格子：按数据里的真实字段名显示（5星 = 攻击/元素伤害，4·3星 = 生命/攻击）
+  const statKeys = ds.statKeys || [];
   const statCells = (row, bonus) => {
     const vals = Array.isArray(row) ? row : [];
-    if (!vals.length) return '';
-    const cells = [
-      '<div class="ds-cell"><span class="ds-k">攻击</span><span class="ds-v">' + escapeHtml(String(Number(vals[0] || 0) + Number(bonus || 0))) + '</span></div>',
-      '<div class="ds-cell"><span class="ds-k">' + escapeHtml(dmgKey) + '</span><span class="ds-v">' + escapeHtml(String(vals[1] || '')) + '</span></div>'
-    ];
+    if (!vals.length || !statKeys.length) return '';
+    const cells = [];
+    statKeys.forEach((k, idx) => {
+      const label = statLabel(k);
+      let v = vals[idx];
+      if (v == null || v === '') return;
+      // 只有攻击列吃阶数加成
+      if (k === 'ATK' && bonus) v = Number(v) + Number(bonus);
+      cells.push('<div class="ds-cell"><span class="ds-k">' + escapeHtml(label) + '</span><span class="ds-v">' + escapeHtml(String(v)) + '</span></div>');
+    });
+    if (!cells.length) return '';
     return '<div class="ds-grid">' + cells.join('') + '</div>';
   };
   // 阶数加成的额外攻击：1 阶不加，2 阶起按 dupe 累加
