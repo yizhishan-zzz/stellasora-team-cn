@@ -5,6 +5,7 @@
  *   1) 潜能图标      icon/potential/<ss-data icon>_A.webp    → assets/img/hd/potential/
  *   2) 秘纹效果图    icon/discskill/<disc.mainSkill.icon>.webp → assets/img/hd/discskill/
  *   3) 秘纹 buff 图  icon/buff/<disc.mainSkill.buffIcon>.webp  → assets/img/hd/buff/
+*   4) 旅人技能图标 icon/skill/<char.skill.icon>.webp          → assets/img/hd/charskill/
  *
  * 需要先跑 tools/fetch-data.ps1（或 更新数据.bat 第 1 步）拿到 ss-data。
  *
@@ -29,7 +30,8 @@ const RAW = 'https://raw.githubusercontent.com/AutumnVN/ssassets/refs/heads/main
 const OUT = {
   potential: path.join(ROOT, 'assets/img/hd/potential'),
   skill: path.join(ROOT, 'assets/img/hd/discskill'),
-  buff: path.join(ROOT, 'assets/img/hd/buff')
+  buff: path.join(ROOT, 'assets/img/hd/buff'),
+  charskill: path.join(ROOT, 'assets/img/hd/charskill')
 };
 const MIN_BYTES = 200;
 const CONCURRENCY = 12;
@@ -38,7 +40,7 @@ const RETRY = 2;
 const args = process.argv.slice(2);
 const opt = {
   force: args.includes('--force'),
-  types: (args.find(a => a.startsWith('--type=')) || '--type=potential,skill,buff').split('=')[1].split(',').map(s => s.trim()).filter(Boolean),
+  types: (args.find(a => a.startsWith('--type=')) || '--type=potential,skill,buff,charskill').split('=')[1].split(',').map(s => s.trim()).filter(Boolean),
   limit: parseInt((args.find(a => a.startsWith('--limit=')) || '--limit=0').split('=')[1], 10) || 0
 };
 
@@ -82,6 +84,21 @@ function collect() {
           seenB.add(b);
           list.push({ type: 'buff', name: b, src: 'export/assets/assetbundles/icon/buff/' + b + '.webp', out: path.join(OUT.buff, b + '.webp') });
         }
+      }
+    }
+  }
+  if (opt.types.includes('charskill')) {
+    const f = path.join(SS, 'character.json');
+    need(f, '请先运行 node tools/fetch-data.js 下载 ss-data');
+    const chars = rd(f);
+    const seen = new Set();
+    for (const id in chars) {
+      const c = chars[id];
+      for (const k of ['normalAtk', 'skill', 'supportSkill', 'ultimate']) {
+        const ic = c[k] && c[k].icon;
+        if (!ic || seen.has(ic)) continue;
+        seen.add(ic);
+        list.push({ type: 'charskill', name: ic, src: 'export/assets/assetbundles/icon/skill/' + ic + '.webp', out: path.join(OUT.charskill, ic + '.webp') });
       }
     }
   }
