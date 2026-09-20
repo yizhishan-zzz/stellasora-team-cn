@@ -567,6 +567,8 @@ function renderCharacter() {
     // 等级上限：核心潜能 13 级，其他 9 级
     const potOf = (potId) => (char.potentials || []).find(x => String(x.potId) === String(potId)) || null;
     const capOf = (potId) => potMaxLevel(char, potOf(potId));
+    // 满级预设：核心 10 级 / 其他 6 级（与上限 13/9 是两回事）
+    const presetCapOf = (potId) => { const pp = potOf(potId); return pp && (pp.type === '核心潜能' || (pp.flow && pp.flow.indexOf('核心') >= 0)) ? 10 : 6; };
     const lvOf = (potId) => {
       const el = scope.querySelector('.plv-v[data-pot="' + potId + '"]');
       return el ? (parseInt(el.textContent, 10) || 1) : 1;
@@ -585,7 +587,7 @@ function renderCharacter() {
     const syncQuick = () => {
       const vs = Array.prototype.slice.call(scope.querySelectorAll('.plv-v'));
       const allInit = vs.length > 0 && vs.every(v => (parseInt(v.textContent, 10) || 1) === 1);
-      const allMax = vs.length > 0 && vs.every(v => (parseInt(v.textContent, 10) || 1) === capOf(v.getAttribute('data-pot')));
+      const allMax = vs.length > 0 && vs.every(v => (parseInt(v.textContent, 10) || 1) === presetCapOf(v.getAttribute('data-pot')));
       scope.querySelectorAll('.pot-quick').forEach(b => {
         const m = b.getAttribute('data-mode');
         b.classList.toggle('on', (m === 'init' && allInit) || (m === 'max' && allMax));
@@ -611,7 +613,7 @@ function renderCharacter() {
         const mode = btn.getAttribute('data-mode');
         scope.querySelectorAll('.plv-v').forEach(v => {
           const pid = v.getAttribute('data-pot');
-          setLv(pid, mode === 'init' ? 1 : capOf(pid));
+          setLv(pid, mode === 'init' ? 1 : presetCapOf(pid));
         });
         syncQuick();
       });
