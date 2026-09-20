@@ -938,10 +938,10 @@ function renderUserTeamCard(t) {
   const mains = [0,1,2].map(i => (t.mainPatterns && t.mainPatterns[i]) ? getPatternById(t.mainPatterns[i]) : null);
   const subs = [0,1,2].map(i => (t.subPatterns && t.subPatterns[i]) ? getPatternById(t.subPatterns[i]) : null);
   const charSlots = chars.map(c => c
-    ? '<span class="ut-char" title="' + escapeHtml(c.name) + '">' + renderPortrait(c, 'ut-char-img') + '</span>'
+    ? '<span class="ut-char" title="' + escapeHtml(c.name) + '">' + renderPortrait(c, 'ut-char-img', { thumb: true, w: 160, h: 160 }) + '</span>'
     : '<span class="ut-char ut-empty">+</span>').join('');
   const patSlots = (arr, cls) => arr.map(p => p
-    ? '<span class="ut-pat ' + cls + '">' + (p.portrait ? '<img loading="lazy" decoding="async" src="' + escapeHtml(p.portrait) + '" alt="">' : '') + '</span>'
+    ? '<span class="ut-pat ' + cls + '">' + (p.portrait ? '<img loading="lazy" decoding="async" src="' + escapeHtml(thumbOf(p.portrait)) + '" alt="" width="96" height="96">' : '') + '</span>'
     : '<span class="ut-pat ut-empty ' + cls + '"></span>').join('');
   const filled = chars.filter(Boolean).length;
   const potTotal = (t.pots || []).reduce((sum, p) => {
