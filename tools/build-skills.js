@@ -133,6 +133,8 @@ function splitParams(params) {
     const raw = d.stat || [];
     const keys = raw.length ? Object.keys(raw[0]) : [];
     const toRow = (o) => keys.map(k => o[k]);
+    // 只有纯数字的列才参与突破合并；带百分号的列保持原值，否则 Number 会得到 NaN
+    const numFlags = keys.map(k => raw.every(o => typeof o[k] === 'number'));
     const rowsM = [];
     const incOf = (cur, prev, ki) => Number(cur[keys[ki]] || 0) - Number(prev[keys[ki]] || 0);
     for (let i = 0; i < raw.length; i++) {
@@ -156,7 +158,13 @@ function splitParams(params) {
       }
       if (isBreak && rowsM.length) {
         const baseRow = rowsM[rowsM.length - 1];
-        rowsM[rowsM.length - 1] = baseRow.map((v, idx) => (idx === 0 ? v : Number(v) + Number(cur[keys[idx]] || 0)));
+        const curRow = toRow(cur);
+        rowsM[rowsM.length - 1] = baseRow.map(function (v, idx) {
+          if (idx === 0) return v;
+          if (!numFlags[idx]) return v;
+          const add = Number(curRow[idx]);
+          return Number.isFinite(add) ? (Number(v) + add) : v;
+        });
       } else {
         rowsM.push(toRow(cur));
       }
