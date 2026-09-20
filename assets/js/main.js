@@ -97,7 +97,6 @@ function setupListPage(defs, data, renderItem, gridId, countId, emptyId) {
     grid.innerHTML = list.map(renderItem).join('');
     grid.style.display = list.length ? '' : 'none';
     // 先显示缩略图，原图在后台懒加载完成后自动替换
-    if (typeof upgradeThumbs === 'function') upgradeThumbs(grid);
     empty.hidden = list.length > 0;
   }
   render();
@@ -180,7 +179,6 @@ function renderHome() {
       const all = byEl[e] || [];
       const shown = all.slice(0, HOME_TEAMS_PER_ELEMENT);
       grid.innerHTML = shown.map(t => t.isRecommended ? renderPresetTeamCard(t) : renderUserTeamCard(t)).join('');
-      if (typeof upgradeThumbs === 'function') upgradeThumbs(grid);
       const more = document.getElementById('elMore');
       if (more) {
         const rest = all.length - shown.length;
@@ -195,8 +193,6 @@ function renderHome() {
     if (firstEl) showEl(firstEl);
   }
   document.getElementById('hotChars').innerHTML = DATA.characters.slice().sort((a,b)=>(b.sid||0)-(a.sid||0)).slice(0, 8).map(renderCharCard).join('');
-  // 缩略图先显示，原图后台懒加载完成后自动替换
-  if (typeof upgradeThumbs === 'function') { upgradeThumbs(document.getElementById('hotTeams')); upgradeThumbs(document.getElementById('hotChars')); }
 }
 
 // ============ 角色图鉴 ============
@@ -946,7 +942,6 @@ function renderTeams() {
     grid.style.display = '';
     empty.hidden = true;
     grid.innerHTML = list.map(t => t.isRecommended ? renderPresetTeamCard(t) : renderUserTeamCard(t)).join('');
-    if (typeof upgradeThumbs === 'function') upgradeThumbs(grid);
     if (!(typeof isAdmin === 'function' && isAdmin())) return;
     grid.querySelectorAll('.team-del').forEach(b => b.addEventListener('click', ev => {
       ev.preventDefault(); ev.stopPropagation();
@@ -975,10 +970,10 @@ function renderUserTeamCard(t) {
   const mains = [0,1,2].map(i => (t.mainPatterns && t.mainPatterns[i]) ? getPatternById(t.mainPatterns[i]) : null);
   const subs = [0,1,2].map(i => (t.subPatterns && t.subPatterns[i]) ? getPatternById(t.subPatterns[i]) : null);
   const charSlots = chars.map(c => c
-    ? '<span class="ut-char" title="' + escapeHtml(c.name) + '">' + renderPortrait(c, 'ut-char-img', { thumb: isMobileClient(), w: 160, h: 160 }) + '</span>'
+    ? '<span class="ut-char" title="' + escapeHtml(c.name) + '">' + renderPortrait(c, 'ut-char-img') + '</span>'
     : '<span class="ut-char ut-empty">+</span>').join('');
   const patSlots = (arr, cls) => arr.map(p => p
-    ? '<span class="ut-pat ' + cls + '">' + (p.portrait ? '<img loading="lazy" decoding="async" src="' + escapeHtml(isMobileClient() ? thumbOf(p.portrait) : p.portrait) + '" alt="" width="96" height="96">' : '') + '</span>'
+    ? '<span class="ut-pat ' + cls + '">' + (p.portrait ? '<img loading="lazy" decoding="async" src="' + escapeHtml(p.portrait) + '" alt="">' : '') + '</span>'
     : '<span class="ut-pat ut-empty ' + cls + '"></span>').join('');
   const filled = chars.filter(Boolean).length;
   const potTotal = (t.pots || []).reduce((sum, p) => {
