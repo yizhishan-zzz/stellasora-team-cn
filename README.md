@@ -31,7 +31,7 @@
 ### 配队方案
 - 3 名上场旅人（前排 / 后排可选潜能范围不同，核心潜能限选 2 个、固定 1 级）
 - 3 主位秘纹 + 3 辅位秘纹，各带 5 个备选；**四组之间互斥**，同一本秘纹不会重复出现
-- 队伍标签：元素 / 流派 / 强度 / 适用场合（单体 · 群体）
+- 队伍标签：元素 / 流派 / 强度 / 适用场合（单体 · 群体 · 新手向）
 - 列表页可按标签筛选；首页概览按属性分块，每块最多 6 个并按强度排序
 - 备选秘纹支持单个删除
 
@@ -127,31 +127,33 @@ node tools/serve.js      # 或双击 tools/启动服务器.bat
 
 ```
 stella_sora_network/
-|-- 7 个 html 页面          index / characters / character / patterns / pattern / teams / team
-|
-|-- assets/
-|   |-- css/style.css      全站样式
-|   |-- js/                6 个脚本
-|   |   |-- auth.js          管理员鉴权
-|   |   |-- data.js          数据加载器与常量
-|   |   |-- teams-store.js   配队读写（本机写文件 / 线上写仓库）
-|   |   |-- github-store.js  通过 GitHub 接口提交
-|   |   |-- components.js    公共组件
-|   |   '-- main.js          路由与各页渲染
-|   |-- data/              5 个 JSON（缺一个整站报错）
-|   |-- img/               hd/ 高清素材：旅人头像 / 秘纹立绘 / 潜能图标 / 效果图 / buff 图
-|   '-- fonts/             MiSans + MiSansLatin（已子集化）
-|
-|-- tools/                 本机工具脚本
-|   |-- 启动服务器.bat       启动本地服务器
-|   |-- 更新数据.bat         一键更新游戏数据
-|   |-- 推送到GitHub.bat     推送并发布
-|   |-- 检查数据.bat         数据体检
-|   |-- serve.js / fetch-data.js / build-data.js / download-*.js / subset-fonts.js
-|   '-- check-images.html    图片自检页
-|
-'-- 过往资源/              归档（不参与运行、不上传）
-```
+├── 7 个 html 页面          index / characters / character / patterns / pattern / teams / team
+├── favicon.ico            浏览器标签页图标
+├── robots.txt             爬虫规则（含 sitemap 声明）
+├── sitemap.xml            站点地图（7 个页面）
+├── _headers               Cloudflare Pages 缓存与安全策略
+├── README.md              本文件
+├── 6f9cd0fd....txt        IndexNow 验证文件（必须在根目录，勿删）
+│
+├── assets/                站点资源
+│   ├── css/style.css      全站样式
+│   ├── js/                6 个脚本（auth / data / teams-store / github-store / components / main）
+│   ├── data/              5 个 JSON（缺一个整站报错）
+│   ├── img/hd/            高清素材（头像 / 立绘 / 潜能图标 / 效果图 / buff）
+│   ├── img/ui/            属性 / 星级 / 音符图标
+│   └── fonts/             MiSans + MiSansLatin（已子集化，约 1.1 MB）
+│
+├── tools/                 工具脚本（不参与运行）
+│   ├── 一键更新并发布.bat   出新旅人时一键更新+推送
+│   ├── 更新数据.bat         只更新数据与图片
+│   ├── 推送到GitHub.bat     推送（自动合并云端配队）
+│   ├── 启动服务器.bat       本地预览 http://localhost:8080
+│   ├── 检查数据.bat         数据体检
+│   ├── 压缩图片.bat         图片压缩
+│   └── *.js                 各脚本的实现
+│
+├── 文档/                  密码备忘（不上传）
+└── 过往资源/              归档（不上传，可整包移出项目）
 
 </details>
 

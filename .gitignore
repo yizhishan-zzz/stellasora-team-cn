@@ -1,9 +1,11 @@
-# ===== NEVER upload =====
+# ===== 绝对不上传 =====
+文档/
 admin/
 密码备忘*.txt
 *password*.txt
+*密码*.txt
 
-# ===== local / temp =====
+# ===== 本地 / 临时 =====
 assets/data/_backup/
 assets/fonts/_original/
 tools/ss-data/
@@ -17,6 +19,6 @@ _tmppip/
 Thumbs.db
 .DS_Store
 
-# ===== archives (kept locally, not published) =====
+# ===== 归档（本地保留，不发布）=====
 过往资源/
 过往文件/
