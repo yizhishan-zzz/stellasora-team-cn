@@ -235,9 +235,9 @@ function potLevelHtml(char, p, lv) {
 }
 // 潜能的等级上限：核心 13 级 / 普通 9 级 / 单值 1 级
 function potMaxLevel(char, p) {
-  const pl = potData(char, p);
-  const m = pl && pl.max ? pl.max : 0;
-  return m > 0 ? m : 1;
+  // 按游戏内规则：核心潜能满级 10 级，其余潜能满级 6 级
+  const isCore = p && (p.type === '核心潜能' || (p.flow && p.flow.indexOf('核心') >= 0));
+  return isCore ? 10 : 6;
 }
 // 潜能预设等级：初始全部 1 级，满级时核心 13 级、普通 9 级
 function potPresetLevel(p, mode) {
@@ -438,21 +438,17 @@ function renderCharacter() {
   };
 
   const potHtml = allPots.length
-
-    ? '<div class="pot-tools">' +
-        '<button type="button" class="pot-quick" data-mode="init">初始</button>' +
-        '<button type="button" class="pot-quick" data-mode="max">满级</button>' +
-        '<span class="pot-tools-hint">潜能的 ◀ ▶ 可单独调整等级</span>' +
-      '<div class="side-tabs">' +
-
-        '<button type="button" class="side-tab on" data-side="main">主控</button>' +
-
-        '<button type="button" class="side-tab" data-side="sub">援护</button>' +
-
+    ? '<div class="pot-head">' +
+        '<div class="side-tabs">' +
+          '<button type="button" class="side-tab on" data-side="main">主控</button>' +
+          '<button type="button" class="side-tab" data-side="sub">援护</button>' +
+        '</div>' +
+        '<div class="pot-tools">' +
+          '<button type="button" class="pot-quick" data-mode="init">初始</button>' +
+          '<button type="button" class="pot-quick" data-mode="max">满级</button>' +
+        '</div>' +
       '</div>' +
-
       '<div id="potPane">' + renderPotPane('main') + '</div>'
-
     : emptyHint('潜能数据待补充');
 
 
@@ -550,7 +546,13 @@ function renderCharacter() {
   // ===== 潜能：主控 / 援护 切换 + 等级点击 ===== 
 
   function bindPotLevels(scope) {
-    // 每个潜能的当前等级（默认 1 级）
+    // 按潜能类型给上限：核心潜能 10 级，其余 6 级
+    const potOf = (potId) => (char.potentials || []).find(x => String(x.potId) === String(potId)) || null;
+    const capOf = (potId) => {
+      const p = potOf(potId);
+      const isCore = p && (p.type === '核心潜能' || (p.flow && p.flow.indexOf('核心') >= 0));
+      return isCore ? 10 : 6;
+    };
     const lvOf = (potId) => {
       const el = scope.querySelector('.plv-v[data-pot="' + potId + '"]');
       return el ? (parseInt(el.textContent, 10) || 1) : 1;
@@ -558,8 +560,8 @@ function renderCharacter() {
     const setLv = (potId, lv) => {
       const pl = ((DATA.potentialLevels || {})[char.id] || {})[potId];
       if (!pl) return;
-      const pmax = pl.max > 0 ? pl.max : 1;
-      lv = Math.max(1, Math.min(lv, pmax));
+      const cap = capOf(potId);
+      lv = Math.max(1, Math.min(lv, cap));
       const v = scope.querySelector('.plv-v[data-pot="' + potId + '"]');
       if (v) v.textContent = lv;
       const dl = scope.querySelector('.potential-desc[data-pot="' + potId + '"]');
@@ -576,7 +578,7 @@ function renderCharacter() {
         setLv(pid, lvOf(pid) + step);
       });
     });
-    // 初始 / 满级 按钮（对整个潜能面板生效）
+    // 初始 / 满级：一键设置全部潜能等级
     scope.querySelectorAll('.pot-quick').forEach(btn => {
       if (btn.getAttribute('data-bound')) return;
       btn.setAttribute('data-bound', '1');
@@ -584,10 +586,7 @@ function renderCharacter() {
         const mode = btn.getAttribute('data-mode');
         scope.querySelectorAll('.plv-v').forEach(v => {
           const pid = v.getAttribute('data-pot');
-          const pl = ((DATA.potentialLevels || {})[char.id] || {})[pid];
-          if (!pl) return;
-          const pmax = pl.max > 0 ? pl.max : 1;
-          setLv(pid, mode === 'init' ? 1 : pmax);
+          setLv(pid, mode === 'init' ? 1 : capOf(pid));
         });
       });
     });
@@ -1708,13 +1707,10 @@ function renderPattern() {
   const ds = (DATA.discSkills || {})[p.id] || {};
   const statRows = ds.stat || [];
   const noteRows = ds.supportNote || [];
-
-  // 秘纹有两个维度：
-  //   等级（lv）  1..statRows.length —— 决定基础数值（攻击 / 属性伤害）
-  //   阶数（tier）1..p.maxLevel     —— 决定主效果数值、音符需求、攻击加成
-  const lvMax = statRows.length || p.maxLevel || 5;
+  const lvMax = statRows.length || 90;
   const tierMax = p.maxLevel || (melody.params ? melody.params.length : 5);
   const elCls = 'ico-el el-' + escapeHtml(p.element || 'none');
+  const dmgKey = (p.element && p.element !== 'none') ? elementName(p.element) + '元素伤害' : '伤害加成';
 
   function renderTpl(tpl, paramStr) {
     if (!tpl) return '';
@@ -1729,114 +1725,93 @@ function renderPattern() {
     if (!ents.length) return '<em class="note-empty">无音符需求</em>';
     return ents.map(([n, c]) => { const k = noteKeyFromEn(n) || n; return '<span class="note-chip" title="' + escapeHtml(noteName(k)) + '">' + noteIcon(k) + ' ×' + c + '</span>'; }).join('');
   };
-  // 数值格子；bonus 传入时，额外显示一个「阶数加成」格
   const statCells = (row, bonus) => {
-    const ents = Object.entries(row || {});
-    const cells = ents.map(([k, v]) =>
-      '<div class="ds-cell"><span class="ds-k">' + escapeHtml(statLabel(k)) + '</span><span class="ds-v">' + escapeHtml(String(v)) + '</span></div>'
-    );
-    if (bonus != null) cells.push('<div class="ds-cell ds-cell-bonus"><span class="ds-k">阶数加成</span><span class="ds-v">攻击 +' + escapeHtml(String(bonus)) + '</span></div>');
-    if (!cells.length) return '';
+    const vals = Array.isArray(row) ? row : [];
+    if (!vals.length) return '';
+    const cells = [
+      '<div class="ds-cell"><span class="ds-k">攻击</span><span class="ds-v">' + escapeHtml(String(Number(vals[0] || 0) + Number(bonus || 0))) + '</span></div>',
+      '<div class="ds-cell"><span class="ds-k">' + escapeHtml(dmgKey) + '</span><span class="ds-v">' + escapeHtml(String(vals[1] || '')) + '</span></div>'
+    ];
     return '<div class="ds-grid">' + cells.join('') + '</div>';
   };
-  // 当前阶数对应的攻击加成（阶数滑条的值）
-  const curBonus = () => {
-    const s = document.getElementById('tierSlider');
-    const t = s ? parseInt(s.value, 10) : 1;
-    return melody.dupe ? melody.dupe[Math.min(t - 1, melody.dupe.length - 1)] : null;
-  };
-
-  const s0 = statRows[0] || null;
+  const tierBonus = (i) => (melody.dupe ? melody.dupe[Math.min(i, melody.dupe.length - 1)] : 0);
+  const s0 = statRows[0] || [];
   const n0 = noteRows[0] || null;
 
-  const melodyHtml = melody.name ? `
-    <div class="lvctl">
-      <span class="lvctl-k">秘纹等级</span>
-      <input type="range" class="lvslider" id="lvSlider" min="1" max="${lvMax}" value="1" step="1">
-      <b class="lvctl-v" id="lvOut">1</b>
-    </div>
-    <div class="lvctl">
-      <span class="lvctl-k">秘纹阶数</span>
-      <input type="range" class="lvslider" id="tierSlider" min="1" max="${tierMax}" value="1" step="1">
-      <b class="lvctl-v" id="tierOut">1</b>
+  const melodyHtml = melody.name ? [
+    '<div class="lvctl"><span class="lvctl-k">秘纹等级</span>',
+    '<input type="range" class="lvslider" id="lvSlider" min="1" max="' + lvMax + '" value="1" step="1">',
+    '<b class="lvctl-v" id="lvOut">1</b></div>',
+    '<div class="lvctl"><span class="lvctl-k">秘纹阶数</span>',
+    '<input type="range" class="lvslider" id="tierSlider" min="1" max="' + tierMax + '" value="1" step="1">',
+    '<b class="lvctl-v" id="tierOut">1</b></div>',
+    '<div class="eff-card">',
+    (melody.skillImg ? '<span class="eff-icon ' + elCls + '"><img loading="lazy" decoding="async" src="' + escapeHtml(melody.skillImg) + '" alt=""></span>' : '<div class="eff-icon eff-icon-ph">♪</div>'),
+    '<div class="eff-body">',
+    '<div class="eff-name">' + escapeHtml(melody.name) + '</div>',
+    '<div class="eff-desc" id="melodyDesc">' + renderTpl(melody.tpl, (melody.params || [])[0]) + '</div>',
+    '<div class="eff-notes" id="melodyNotes">' + notesHtml(n0) + '</div>',
+    '<div class="eff-split"></div>',
+    '<div id="melodyStats">' + statCells(s0, tierBonus(0)) + '</div>',
+    buffRow(melody.buffs),
+    '</div></div>'
+  ].join('') : emptyHint('主效果待补充');
 
-    </div>
-    <div class="eff-card">
-      ${melody.skillImg ? '<span class="eff-icon ' + elCls + '"><img loading="lazy" decoding="async" src="' + escapeHtml(melody.skillImg) + '" alt=""></span>' : '<div class="eff-icon eff-icon-ph">♪</div>'}
-      <div class="eff-body">
-        <div class="eff-name">${escapeHtml(melody.name)}</div>
-        <div class="eff-desc" id="melodyDesc">${renderTpl(melody.tpl, (melody.params || [])[0])}</div>
-        <div class="eff-notes" id="melodyNotes">${notesHtml(n0)}</div>
-        <div class="eff-split"></div>
-        <div id="melodyStats">${statCells(s0, melody.dupe ? melody.dupe[0] : null)}</div>
-        ${buffRow(melody.buffs)}
-      </div>
-    </div>` : emptyHint('主效果待补充');
-
-  const harmonyCards = harmony.map((h, i) => `
-    <div class="eff-card">
-      ${h.skillImg ? '<span class="eff-icon ' + elCls + '"><img loading="lazy" decoding="async" src="' + escapeHtml(h.skillImg) + '" alt=""></span>' : '<div class="eff-icon eff-icon-ph">♪</div>'}
-      <div class="eff-body">
-        <div class="eff-name">${escapeHtml(h.name || '')}</div>
-        <div class="eff-toolbar">
-          <span class="tool-label">Harmony 等级</span>
-          <input type="range" class="hSlider" min="1" max="${(h.params || []).length || tierMax}" value="1" data-idx="${i}">
-          <span class="tool-val hVal">1</span>
-        </div>
-        <div class="eff-desc harmony-desc" data-params="${escapeHtml((h.params || []).join('|'))}" data-tpl="${escapeHtml(h.tpl || '')}">${renderTpl(h.tpl, (h.params || [])[0])}</div>
-        <div class="eff-notes harmony-notes" data-levels="${escapeHtml(JSON.stringify(h.levels || []))}"></div>
-        ${buffRow(h.buffs)}
-      </div>
-    </div>`).join('');
+  const harmonyCards = harmony.map((h, i) => [
+    '<div class="eff-card">',
+    (h.skillImg ? '<span class="eff-icon ' + elCls + '"><img loading="lazy" decoding="async" src="' + escapeHtml(h.skillImg) + '" alt=""></span>' : '<div class="eff-icon eff-icon-ph">♪</div>'),
+    '<div class="eff-body">',
+    '<div class="eff-name">' + escapeHtml(h.name || '') + '</div>',
+    '<div class="eff-toolbar"><span class="tool-label">Harmony 等级</span>',
+    '<input type="range" class="hSlider" min="1" max="' + ((h.params || []).length || tierMax) + '" value="1" data-idx="' + i + '">',
+    '<span class="tool-val hVal">1</span></div>',
+    '<div class="eff-desc harmony-desc" data-params="' + escapeHtml((h.params || []).join('|')) + '" data-tpl="' + escapeHtml(h.tpl || '') + '">' + renderTpl(h.tpl, (h.params || [])[0]) + '</div>',
+    '<div class="eff-notes harmony-notes" data-levels="' + escapeHtml(JSON.stringify(h.levels || [])) + '"></div>',
+    buffRow(h.buffs),
+    '</div></div>'
+  ].join('')).join('');
   const harmonyHtml = harmony.length ? harmonyCards : emptyHint('协奏效果待补充');
 
-  root.innerHTML = `
-    <div class="detail-head">
-      ${p.portrait ? '<span class="pattern-big ' + elCls + '"><img loading="lazy" decoding="async" src="' + escapeHtml(p.portrait) + '" alt="' + escapeHtml(p.name) + '"></span>' : ''}
-      <div class="detail-info">
-        <h1 class="detail-name">${escapeHtml(p.name)}</h1>
-        <div class="badge-row">${renderStars(p.rarity)}${elBadge}</div>
-        <div class="pattern-attrs">${attrItems.map(a => '<span class="attr-chip">' + escapeHtml(a) + '</span>').join('')}</div>
-      </div>
-    </div>
-    <section class="section"><h2 class="section-title">Melody · 主效果</h2>${melodyHtml}</section>
-    <section class="section"><h2 class="section-title">Harmony · 协奏效果</h2>${harmonyHtml}</section>
-  `;
+  root.innerHTML = [
+    '<div class="detail-head">',
+    (p.portrait ? '<span class="pattern-big ' + elCls + '"><img loading="lazy" decoding="async" src="' + escapeHtml(p.portrait) + '" alt="' + escapeHtml(p.name) + '"></span>' : ''),
+    '<div class="detail-info"><h1 class="detail-name">' + escapeHtml(p.name) + '</h1>',
+    '<div class="badge-row">' + renderStars(p.rarity) + elBadge + '</div>',
+    '<div class="pattern-attrs">' + attrItems.map(a => '<span class="attr-chip">' + escapeHtml(a) + '</span>').join('') + '</div>',
+    '</div></div>',
+    '<section class="section"><h2 class="section-title">Melody · 主效果</h2>' + melodyHtml + '</section>',
+    '<section class="section"><h2 class="section-title">Harmony · 协奏效果</h2>' + harmonyHtml + '</section>'
+  ].join('');
 
-  // 等级滑条：只改基础数值
+  const refreshStats = () => {
+    const ms = document.getElementById('melodyStats');
+    if (!ms) return;
+    const lvEl = document.getElementById('lvSlider');
+    const tEl = document.getElementById('tierSlider');
+    const lv = lvEl ? parseInt(lvEl.value, 10) : 1;
+    const tt = tEl ? parseInt(tEl.value, 10) : 1;
+    ms.innerHTML = statCells(statRows[Math.min(lv - 1, statRows.length - 1)], tierBonus(tt - 1));
+  };
+
   const lvSlider = document.getElementById('lvSlider');
-  if (lvSlider) {
-    lvSlider.addEventListener('input', () => {
-      const lv = parseInt(lvSlider.value, 10);
-      const i = Math.min(lv - 1, statRows.length - 1);
-      const out = document.getElementById('lvOut'); if (out) out.textContent = lv;
-      const ms = document.getElementById('melodyStats');
-      if (ms) ms.innerHTML = statCells(statRows[i], curBonus());
-    });
-  }
+  if (lvSlider) lvSlider.addEventListener('input', () => {
+    const lv = parseInt(lvSlider.value, 10);
+    const out = document.getElementById('lvOut'); if (out) out.textContent = lv;
+    const i = Math.min(lv - 1, statRows.length - 1);
+    const mn = document.getElementById('melodyNotes');
+    if (mn) mn.innerHTML = notesHtml(noteRows[Math.min(i, noteRows.length - 1)]);
+    refreshStats();
+  });
 
-  // 阶数滑条：改主效果数值、音符需求、攻击加成
   const tierSlider = document.getElementById('tierSlider');
-  if (tierSlider) {
-    const applyTier = () => {
-      const t = parseInt(tierSlider.value, 10);
-      const i = Math.min(t - 1, tierMax - 1);
-      const out = document.getElementById('tierOut'); if (out) out.textContent = t;
-      // 阶数加成（攻击 +XXX）合并显示在数值格子里
-      const ms = document.getElementById('melodyStats');
-      if (ms) {
-        const dv = melody.dupe ? melody.dupe[Math.min(i, melody.dupe.length - 1)] : null;
-        const lvIdx = Math.min(parseInt(lvSlider ? lvSlider.value : 1, 10) - 1, statRows.length - 1);
-        ms.innerHTML = statCells(statRows[lvIdx], dv);
-      }
-      const md = document.getElementById('melodyDesc');
-      if (md) md.innerHTML = renderTpl(melody.tpl, (melody.params || [])[i]);
-      const mn = document.getElementById('melodyNotes');
-      if (mn) mn.innerHTML = notesHtml(noteRows[Math.min(i, noteRows.length - 1)]);
-    };
-    applyTier();
-    tierSlider.addEventListener('input', applyTier);
-  }
+  if (tierSlider) tierSlider.addEventListener('input', () => {
+    const t = parseInt(tierSlider.value, 10);
+    const i = Math.min(t - 1, tierMax - 1);
+    const out = document.getElementById('tierOut'); if (out) out.textContent = t;
+    const md = document.getElementById('melodyDesc');
+    if (md) md.innerHTML = renderTpl(melody.tpl, (melody.params || [])[i]);
+    refreshStats();
+  });
 
   root.querySelectorAll('.hSlider').forEach(slider => {
     const update = () => {
