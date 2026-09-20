@@ -287,7 +287,7 @@ for (const sid of Object.keys(discBin)) {
     },
     harmony: [],                                    // ss-data 不提供协奏效果，需要人工补
     notes: notesFromSupportNote(d.supportNote),
-    maxLevel: 5,
+    maxLevel: (params.length || 6),   // 阶数 = 主效果参数组数（一般是 6）
     gkId: null,
     sid: Number(sid)
   });

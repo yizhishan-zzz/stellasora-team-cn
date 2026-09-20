@@ -1764,9 +1764,10 @@ function renderPattern() {
     return '<div class="ds-grid">' + cells.join('') + '</div>';
   };
   // 阶数加成的额外攻击：1 阶不加，2 阶起按 dupe 累加
-  const tierBonus = (i) => {
-    if (!melody.dupe || i < 1) return 0;
-    return melody.dupe[Math.min(i, melody.dupe.length - 1)] || 0;
+  // 阶数加成：1 阶不加，2 阶起用 dupe 数组（dupe[0]=2阶 … dupe[4]=6阶）
+  const tierBonus = (tier) => {
+    if (!melody.dupe || tier < 2) return 0;
+    return melody.dupe[Math.min(tier - 2, melody.dupe.length - 1)] || 0;
   };
   const s0 = statRows[0] || [];
   const n0 = noteRows[0] || null;
@@ -1785,7 +1786,7 @@ function renderPattern() {
     '<div class="eff-desc" id="melodyDesc">' + renderTpl(melody.tpl, (melody.params || [])[0]) + '</div>',
     '<div class="eff-notes" id="melodyNotes">' + notesHtml(n0) + '</div>',
     '<div class="eff-split"></div>',
-    '<div id="melodyStats">' + statCells(s0, tierBonus(0)) + '</div>',
+    '<div id="melodyStats">' + statCells(s0, tierBonus(1)) + '</div>',
     buffRow(melody.buffs),
     '</div></div>'
   ].join('') : emptyHint('主效果待补充');
@@ -1823,7 +1824,7 @@ function renderPattern() {
     const tEl = document.getElementById('tierSlider');
     const lv = lvEl ? parseInt(lvEl.value, 10) : 1;
     const tt = tEl ? parseInt(tEl.value, 10) : 1;
-    ms.innerHTML = statCells(statRows[Math.min(lv - 1, statRows.length - 1)], tierBonus(tt - 1));
+    ms.innerHTML = statCells(statRows[Math.min(lv - 1, statRows.length - 1)], tierBonus(tt));
   };
 
   const lvSlider = document.getElementById('lvSlider');

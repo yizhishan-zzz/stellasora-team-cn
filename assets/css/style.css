@@ -958,3 +958,6 @@ img { max-width: 100%; height: auto; }
 /* 初始 / 满级 按钮：当前状态高亮 */
 .pot-quick.on { background: var(--accent-strong); border-color: var(--accent-strong); color: #fff; }
 .pot-quick.on:hover { filter: brightness(1.1); }
+
+/* 总等级提示（突破 × 10 + 等级） */
+.lvctl-total { font-size: 12px; color: var(--text-muted); margin-left: 6px; white-space: nowrap; }
