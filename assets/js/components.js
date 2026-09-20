@@ -105,9 +105,9 @@ function renderPortrait(char, cls, opts) {
   if (char.portrait) {
     // 手机端用缩略图（之后自动升级为原图）；电脑端直接加载原图
     const src = (o.thumb && isMobileClient()) ? thumbOf(char.portrait) : char.portrait;
-    const dim = ' width="' + (o.w || 256) + '" height="' + (o.h || 256) + '"';
+    // 不加 width/height 属性：尺寸完全交给 CSS（容器有 aspect-ratio，不会抖动）
     const load = o.priority ? ' fetchpriority="high"' : ' loading="lazy" decoding="async"';
-    return '<img class="' + (cls || '') + '" src="' + escapeHtml(src) + '" alt="' + escapeHtml(char.name) + '"' + dim + load + '>';
+    return '<img class="' + (cls || '') + '" src="' + escapeHtml(src) + '" alt="' + escapeHtml(char.name) + '"' + load + '>';
   }
   return '<div class="' + (cls || '') + ' portrait-fallback el-' + (char.element || 'none') + '">' + escapeHtml((char.name || '?').charAt(0)) + '</div>';
 }
@@ -158,7 +158,7 @@ function renderPatternCard(p) {
   const elBadge = elIcon(p.element || 'none');
   return `
     <a class="pattern-card" href="pattern.html?id=${p.id}">
-      ${p.portrait ? '<div class="pattern-card-media"><img class="pattern-img" src="' + escapeHtml(isMobileClient() ? thumbOf(p.portrait) : p.portrait) + '" alt="" width="256" height="256" loading="lazy" decoding="async"></div>' : ''}
+      ${p.portrait ? '<div class="pattern-card-media"><img class="pattern-img" src="' + escapeHtml(isMobileClient() ? thumbOf(p.portrait) : p.portrait) + '" alt="" loading="lazy" decoding="async"></div>' : ''}
       <div class="pattern-card-body">
         <div class="pattern-card-head">
           ${renderStars(p.rarity)}
@@ -178,7 +178,7 @@ function renderPresetTeamCard(t) {
     ? '<span class="ut-char" title="' + escapeHtml(x.name) + '">' + renderPortrait(x, 'ut-char-img', { thumb: true, w: 160, h: 160 }) + '</span>'
     : '<span class="ut-char ut-empty">+</span>').join('');
   const patSlots = (arr, cls) => arr.map(p => p
-    ? '<span class="ut-pat ' + cls + '">' + (p.portrait ? '<img loading="lazy" decoding="async" src="' + escapeHtml(isMobileClient() ? thumbOf(p.portrait) : p.portrait) + '" alt="" width="96" height="96">' : '') + '</span>'
+    ? '<span class="ut-pat ' + cls + '">' + (p.portrait ? '<img loading="lazy" decoding="async" src="' + escapeHtml(isMobileClient() ? thumbOf(p.portrait) : p.portrait) + '" alt="">' : '') + '</span>'
     : '<span class="ut-pat ut-empty ' + cls + '"></span>').join('');
   const potTotal = (t.pots || []).reduce((s, p) => s + Object.values(p || {}).reduce((a, v) => a + (typeof v === 'number' ? v : 0), 0), 0);
   const tg = t.tags || {};

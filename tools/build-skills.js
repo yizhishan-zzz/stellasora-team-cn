@@ -127,31 +127,42 @@ function splitParams(params) {
     if (!p.sid) return;
     const d = discBin[String(p.sid)];
     if (!d) return;
-    // 秘纹数值表：90 个基础级 + 8 个突破级，突破级的数值累加到前一级
+    // 秘纹数值表：90 个基础级 + 8 个突破级（突破级数值累加到前一级）
+    // 注意：字段随星级不同 —— 5星是 [ATK, 元素伤害]，4/3星是 [HP, ATK]
+    // 所以这里保留字段名，交给前端按名字显示
     const raw = d.stat || [];
+    const keys = raw.length ? Object.keys(raw[0]) : [];
+    const toRow = (o) => keys.map(k => o[k]);
     const rowsM = [];
+    const incOf = (cur, prev, ki) => Number(cur[keys[ki]] || 0) - Number(prev[keys[ki]] || 0);
     for (let i = 0; i < raw.length; i++) {
       const cur = raw[i];
       const prevRow = raw[i - 1];
+      // 突破级判定：用「数值增量明显大于常规增量」来判断
       let isBreak = false;
       if (prevRow) {
-        const dCur = Number(cur.ATK) - Number(prevRow.ATK);
-        let dNorm = 4;
-        for (let k = 1; k < i; k++) {
-          const dd = Number(raw[k].ATK) - Number(raw[k - 1].ATK);
-          if (dd > 0 && dd < 10) { dNorm = dd; break; }
+        // 取有增量的那一列作为参考（5星是 ATK，4/3星是 HP）
+        let ki = 0, best = 0;
+        keys.forEach((k, x) => { const v = Number(cur[k] || 0); if (v > best) { best = v; ki = x; } });
+        const dCur = incOf(cur, prevRow, ki);
+        // 常规增量取前几项的中位数近似（跳过首项）
+        let dNorm = 0;
+        for (let k = 1; k < i && k < 6; k++) {
+          const dd = incOf(raw[k], raw[k - 1], ki);
+          if (dd > 0) { dNorm = dd; break; }
         }
-        isBreak = dCur >= 10 && dCur > dNorm * 2;
+        if (!dNorm) dNorm = 1;
+        isBreak = dCur >= dNorm * 3;
       }
       if (isBreak && rowsM.length) {
         const baseRow = rowsM[rowsM.length - 1];
-        const keys = Object.keys(cur);
-        rowsM[rowsM.length - 1] = baseRow.map((v, idx) => idx === 0 ? v : (Number(v) + Number(cur[keys[idx]] || 0)));
+        rowsM[rowsM.length - 1] = baseRow.map((v, idx) => (idx === 0 ? v : Number(v) + Number(cur[keys[idx]] || 0)));
       } else {
-        rowsM.push(Object.keys(cur).map(k => cur[k]));
+        rowsM.push(toRow(cur));
       }
     }
-    const one = { stat: rowsM, supportNote: d.supportNote || null, upgrades: (d.upgrade || []).length, dupeAtk: (d.dupe || []).map(x => x.ATK) };
+    // 第一列是数值主项（5星=元素伤害那种百分比的反而是第二列），按「数值最大的列」当主项排序
+    const one = { stat: rowsM, statKeys: keys, supportNote: d.supportNote || null, upgrades: (d.upgrade || []).length, dupeAtk: (d.dupe || []).map(x => x.ATK) };
     const ms = d.mainSkill || {};
     one.main = { name: ms.nameCN || '', params: splitParams(ms.params) };
     [['secondarySkill1', 'h1'], ['secondarySkill2', 'h2']].forEach(([k, key]) => {
