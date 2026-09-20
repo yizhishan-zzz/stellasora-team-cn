@@ -58,9 +58,20 @@ function noteIcon(id) {
   return '<img loading="lazy" decoding="async" class="note-icon" src="assets/img/ui/note-' + id + '.png" alt="' + noteName(id) + '">';
 }
 
-function renderPortrait(char, cls) {
+// 列表用缩略图：assets/img/hd/xxx/yyy.webp -> assets/img/thumb/xxx/yyy.webp
+// （立绘/头像的原图是详情页用的大图，列表里缩小显示，用缩略图省 76~82% 流量）
+function thumbOf(url) {
+  if (!url) return url;
+  return String(url).replace('img/hd/', 'img/thumb/');
+}
+
+function renderPortrait(char, cls, opts) {
+  const o = opts || {};
   if (char.portrait) {
-    return '<img class="' + (cls || '') + '" src="' + escapeHtml(char.portrait) + '" alt="' + escapeHtml(char.name) + '" loading="lazy">';
+    const src = o.thumb ? thumbOf(char.portrait) : char.portrait;
+    const dim = ' width="' + (o.w || 256) + '" height="' + (o.h || 256) + '"';
+    const load = o.priority ? ' fetchpriority="high"' : ' loading="lazy" decoding="async"';
+    return '<img class="' + (cls || '') + '" src="' + escapeHtml(src) + '" alt="' + escapeHtml(char.name) + '"' + dim + load + '>';
   }
   return '<div class="' + (cls || '') + ' portrait-fallback el-' + (char.element || 'none') + '">' + escapeHtml((char.name || '?').charAt(0)) + '</div>';
 }
@@ -97,7 +108,7 @@ function renderCharCard(char) {
   ].join('');
   return `
     <a class="char-card" href="character.html?id=${char.id}">
-      <div class="char-card-media">${renderPortrait(char, 'char-portrait')}${renderStars(char.rarity)}</div>
+      <div class="char-card-media">${renderPortrait(char, 'char-portrait', { thumb: true, w: 256, h: 256 })}${renderStars(char.rarity)}</div>
       <div class="char-card-body">
         <div class="char-card-name">${escapeHtml(char.name)}</div>
         <div class="char-card-meta">${meta}</div>
@@ -111,7 +122,7 @@ function renderPatternCard(p) {
   const elBadge = elIcon(p.element || 'none');
   return `
     <a class="pattern-card" href="pattern.html?id=${p.id}">
-      ${p.portrait ? '<div class="pattern-card-media"><img class="pattern-img" src="' + escapeHtml(p.portrait) + '" alt="" loading="lazy"></div>' : ''}
+      ${p.portrait ? '<div class="pattern-card-media"><img class="pattern-img" src="' + escapeHtml(thumbOf(p.portrait)) + '" alt="" width="256" height="256" loading="lazy" decoding="async"></div>' : ''}
       <div class="pattern-card-body">
         <div class="pattern-card-head">
           ${renderStars(p.rarity)}
@@ -128,10 +139,10 @@ function renderPresetTeamCard(t) {
   const mains = [0,1,2].map(i => (t.mainPatterns && t.mainPatterns[i]) ? getPatternById(t.mainPatterns[i]) : null);
   const subs = [0,1,2].map(i => (t.subPatterns && t.subPatterns[i]) ? getPatternById(t.subPatterns[i]) : null);
   const charSlots = chars.map(x => x
-    ? '<span class="ut-char" title="' + escapeHtml(x.name) + '">' + renderPortrait(x, 'ut-char-img') + '</span>'
+    ? '<span class="ut-char" title="' + escapeHtml(x.name) + '">' + renderPortrait(x, 'ut-char-img', { thumb: true, w: 160, h: 160 }) + '</span>'
     : '<span class="ut-char ut-empty">+</span>').join('');
   const patSlots = (arr, cls) => arr.map(p => p
-    ? '<span class="ut-pat ' + cls + '">' + (p.portrait ? '<img loading="lazy" decoding="async" src="' + escapeHtml(p.portrait) + '" alt="">' : '') + '</span>'
+    ? '<span class="ut-pat ' + cls + '">' + (p.portrait ? '<img loading="lazy" decoding="async" src="' + escapeHtml(thumbOf(p.portrait)) + '" alt="" width="96" height="96">' : '') + '</span>'
     : '<span class="ut-pat ut-empty ' + cls + '"></span>').join('');
   const potTotal = (t.pots || []).reduce((s, p) => s + Object.values(p || {}).reduce((a, v) => a + (typeof v === 'number' ? v : 0), 0), 0);
   const tg = t.tags || {};
