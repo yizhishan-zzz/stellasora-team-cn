@@ -86,9 +86,13 @@ function splitParams(params) {
     ['mainCore', 'mainNormal', 'common', 'supportCore', 'supportNormal'].forEach(g => {
       (s.potential[g] || []).forEach(p => {
         const meta = potBin[String(p.id)] || {};
+        const sp = splitParams(p.params);
+        // 等级上限 = 参数里最长的那个（核心潜能 13 级，普通潜能 9 级）
+        let maxLv = 1;
+        sp.forEach(x => { if (x.length > maxLv) maxLv = x.length; });
         one[p.id] = {
-          params: splitParams(p.params),
-          max: meta.MaxLevel || null,
+          params: sp,
+          max: maxLv,
           group: g,
           desc: clean(p.descCN) || null
         };
@@ -106,7 +110,14 @@ function splitParams(params) {
     const s = charBin[String(c.sid)];
     if (!s || !Array.isArray(s.stat)) return;
     // 每级一组，只留三个数，用数组存
-    stats[c.id] = s.stat.map(r => [r.Level, r.HP, r.ATK, r.DEF]);
+    // 去重：数据里最高级会重复一次（Lv90 与 Lv91 数值相同）
+    // 数据里最高级重复了一次（Lv91 与 Lv90 数值完全相同），去重后上限 = 90
+    const rows = s.stat.map(r => [r.Level, r.HP, r.ATK, r.DEF]);
+    if (rows.length > 1) {
+      const a = rows[rows.length - 1], b = rows[rows.length - 2];
+      if (a[1] === b[1] && a[2] === b[2] && a[3] === b[3]) rows.pop();
+    }
+    stats[c.id] = rows;
   });
   wr(path.join(OUT, 'character-stats.json'), stats);
 
