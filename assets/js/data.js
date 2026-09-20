@@ -51,21 +51,40 @@ const DATA = {
   discSkills: {}             // 秘纹各级数值与音符表
 };
 
-// 只加载页面真正用到的数据（teams.json / records.json 是旧占位数据，已归档不再加载）
+// 数据文件表：每个文件 40~530 KB，按页面按需加载（首屏能省一大半）
 const DATA_FILES = {
-  characters: 'assets/data/characters.json',
-  patterns: 'assets/data/patterns.json',
-  potentialCfg: 'assets/data/potential-cfg.json',
-  presetTeams: 'assets/data/preset-teams.json',
-  charSkills: 'assets/data/character-skills.json',
-  charStats: 'assets/data/character-stats.json',
+  characters:      'assets/data/characters.json',
+  patterns:        'assets/data/patterns.json',
+  potentialCfg:    'assets/data/potential-cfg.json',
+  presetTeams:     'assets/data/preset-teams.json',
+  charSkills:      'assets/data/character-skills.json',
+  charStats:       'assets/data/character-stats.json',
   potentialLevels: 'assets/data/potential-levels.json',
-  discSkills: 'assets/data/disc-skills.json'
+  discSkills:      'assets/data/disc-skills.json'
 };
 
+// 每个页面真正需要的数据（rest = 基础数据，所有页面都要）
+const BASE_DATA = ['characters', 'patterns', 'presetTeams'];
+const PAGE_DATA = {
+  home:       ['characters', 'patterns', 'presetTeams'],
+  characters: ['characters'],                                  // 卡片只用 characters
+  character:  ['characters', 'charSkills', 'charStats', 'potentialLevels'],
+  patterns:   ['patterns'],
+  pattern:    ['patterns', 'discSkills'],
+  teams:      ['characters', 'patterns', 'presetTeams'],       // 配队卡片要用
+  team:       ['characters', 'patterns', 'presetTeams', 'potentialCfg', 'potentialLevels', 'charSkills']
+};
+function dataKeysForPage() {
+  const pg = (document.body && document.body.dataset && document.body.dataset.page) || 'home';
+  return PAGE_DATA[pg] || BASE_DATA;
+}
+
 async function loadData() {
+  // 只加载当前页面需要的数据文件
+  const keys = dataKeysForPage();
   const entries = await Promise.all(
-    Object.entries(DATA_FILES).map(async ([key, url]) => {
+    keys.filter(k => DATA_FILES[k]).map(async (key) => {
+      const url = DATA_FILES[key];
       const resp = await fetch(url);
       if (!resp.ok) throw new Error('加载 ' + url + ' 失败: ' + resp.status);
       return [key, await resp.json()];
