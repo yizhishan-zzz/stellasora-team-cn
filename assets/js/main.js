@@ -890,7 +890,7 @@ function renderTeams() {
   // 每行把所有可选情况都列出来（和编辑页的选项一致）
   const FILTER_DEFS = [
     { key: 'element', label: '元素', get: t => (t.tags || {}).element || '', opts: Object.keys(ELEMENTS).map(k => ELEMENTS[k].name) },
-    { key: 'style', label: '流派', get: t => (t.tags || {}).style || '', opts: ['普攻流', '技伤流', '绝招流', '印记流'] },
+    { key: 'style', label: '流派', get: t => (t.tags || {}).style || '', opts: STYLE_OPTIONS },
     { key: 'power', label: '强度', get: t => (t.tags || {}).power || '', opts: ['T0', 'T0.5', 'T1', 'T1.5', 'T2', 'T2.5', 'T3'] },
     { key: 'scene', label: '适用场合', get: t => teamScenes(t)[0] || '', opts: TEAM_SCENES }
   ];

@@ -711,6 +711,9 @@ button { font-family: inherit; }
 .tag-ico.style-skill  { background: #4a9eff; }
 .tag-ico.style-ult    { background: #ff6b4a; }
 .tag-ico.style-mark   { background: #9b6bff; }
+/* 仆从流 / 混伤流（后加的流派，配色与其他流派区分开） */
+.tag-ico.style-minion { background: #2fc4b2; }
+.tag-ico.style-mixed  { background: #e05fa8; }
 /* 强度：字母徽标，颜色按档位 */
 .tag-ico.power { letter-spacing: .2px; }
 .tag-ico.power-t0  { background: #e0453a; }
