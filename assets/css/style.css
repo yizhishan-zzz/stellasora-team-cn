@@ -791,13 +791,7 @@ button { font-family: inherit; }
 }
 .ds-k { font-size: 11px; color: var(--text-muted); }
 .ds-v { font-size: 15px; font-weight: 600; color: var(--text); }
-/* 元素底色层：#00FFE9，半透明铺在图标下面 */
-.ico-el-bg { position: relative; display: inline-flex; align-items: center; justify-content: center; border-radius: 10px; }
-.ico-el-bg::before {
-  content: ""; position: absolute; inset: 0; border-radius: inherit;
-  background: #00FFE9; opacity: .28; pointer-events: none;
-}
-.ico-el-bg img { position: relative; z-index: 1; }
+
 
 /* ============================================================
    手机端适配
@@ -895,3 +889,32 @@ img { max-width: 100%; height: auto; }
   .potential-icon { width: 32px; height: 32px; }
   .eff-icon { width: 46px !important; height: 46px !important; }
 }
+
+/* ===== 图标底色：按角色/秘纹的元素用对应标准色 ===== */
+.ico-el { position: relative; display: inline-flex !important; align-items: center; justify-content: center; border-radius: 10px; }
+/* 底色铺在图标下方，用元素色的半透明版本 */
+.ico-el.el-water  { background: rgba(74, 158, 255, .30) !important; }
+.ico-el.el-fire   { background: rgba(255, 107, 74, .30) !important; }
+.ico-el.el-wind   { background: rgba(82, 200, 120, .30) !important; }
+.ico-el.el-earth  { background: rgba(212, 165, 66, .32) !important; }
+.ico-el.el-light  { background: rgba(255, 217, 102, .32) !important; }
+.ico-el.el-dark   { background: rgba(155, 107, 255, .32) !important; }
+.ico-el.el-none   { background: rgba(140, 140, 160, .22) !important; }
+/* 技能图标方块本身就有底色，别叠加两层 */
+.skill-ico.ico-el { border-radius: 10px; }
+
+/* 秘纹主效果里：数值区与上方内容的分隔线 */
+.eff-split { height: 1px; background: var(--border); margin: 12px 0; opacity: .7; }
+
+/* ===== 主控 / 援护 切换 ===== */
+.side-tabs {
+  display: inline-flex; gap: 4px; margin: 0 0 14px;
+  background: var(--card); border: 1px solid var(--border); border-radius: 9px; padding: 3px;
+}
+.side-tab {
+  border: 0; background: transparent; color: var(--text-muted);
+  font-size: 13px; padding: 6px 18px; border-radius: 7px; cursor: pointer;
+  font-family: inherit; transition: background .15s, color .15s;
+}
+.side-tab:hover { color: var(--text); }
+.side-tab.on { background: var(--accent-strong); color: #fff; }

@@ -25,6 +25,19 @@ const NOTE_TYPES = {
   burst: '暴发之音', water: '水之音', fire: '火之音', ultimate: '绝招之音', wind: '风之音'
 };
 
+// ss-data 里的音符英文名 -> 内部键（用于查图标与中文名）
+const NOTE_BY_EN = {
+  'Focus': 'focus', 'Stamina': 'stamina', 'Lux': 'light', 'Terra': 'earth',
+  'Luck': 'luck', 'Pummel': 'power', 'Skill': 'technique', 'Umbra': 'dark',
+  'Burst': 'burst', 'Aqua': 'water', 'Ignis': 'fire', 'Ultimate': 'ultimate', 'Ventus': 'wind'
+};
+// 'Melody of Luck' -> 'luck'
+function noteKeyFromEn(name) {
+  const m = /^Melody of ([A-Za-z]+)$/.exec(String(name || '').trim());
+  if (!m) return null;
+  return NOTE_BY_EN[m[1]] || null;
+}
+
 // ===== 全局数据容器 =====
 const DATA = {
   characters: [],
