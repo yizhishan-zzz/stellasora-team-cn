@@ -954,3 +954,7 @@ img { max-width: 100%; height: auto; }
   .pot-head { flex-direction: column; align-items: stretch; }
   .pot-head .pot-tools { justify-content: flex-end; }
 }
+
+/* 初始 / 满级 按钮：当前状态高亮 */
+.pot-quick.on { background: var(--accent-strong); border-color: var(--accent-strong); color: #fff; }
+.pot-quick.on:hover { filter: brightness(1.1); }
