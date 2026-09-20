@@ -28,6 +28,10 @@ async function init() {
   // 接数据源：本机文件 / 线上仓库 / 本地暂存
   // （加 typeof 防御：万一某个页面漏引 teams-store.js，也不至于整页渲染不出来）
   if (typeof initTeamStore === 'function') await initTeamStore();
+  // 预渲染内容：JS 已渲染出真实内容，把静态副本移除（爬虫看到的就是这些内容）
+  var pre = document.getElementById('prerender');
+  if (pre && pre.parentNode) pre.parentNode.removeChild(pre);
+
   if (routes[page]) routes[page]();
 }
 
