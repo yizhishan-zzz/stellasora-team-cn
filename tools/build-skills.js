@@ -127,7 +127,31 @@ function splitParams(params) {
     if (!p.sid) return;
     const d = discBin[String(p.sid)];
     if (!d) return;
-    const one = { stat: d.stat || null, supportNote: d.supportNote || null };
+    // 秘纹数值表：90 个基础级 + 8 个突破级（突破级要把数值加到前一级上）
+    const raw = d.stat || [];
+    const rowsM = [];
+    for (let i = 0; i < raw.length; i++) {
+      const cur = raw[i];
+      const prev = raw[i - 1];
+      // 判断这一项是不是突破级：与前一级的差值明显大于相邻常规差值（>=10）
+      let isBreak = false;
+      if (prev) {
+        const dCur = Number(cur.ATK) - Number(prev.ATK);
+        let dNorm = 4;
+        for (let k = 1; k < i; k++) {
+          const dd = Number(raw[k].ATK) - Number(raw[k - 1].ATK);
+          if (dd > 0 && dd < 10) { dNorm = dd; break; }
+        }
+        isBreak = dCur >= 10 && dCur > dNorm * 2;
+      }
+      if (isBreak && rowsM.length) {
+        const base = rowsM[rowsM.length - 1];
+        rowsM[rowsM.length - 1] = base.map((v, idx) => idx === 0 ? v : (Number(v) + Number(cur[Object.keys(cur)[idx]] || 0)));
+      } else {
+        rowsM.push(Object.keys(cur).map(k => cur[k]));
+      }
+    }
+    const one = { stat: rowsM, supportNote: d.supportNote || null };
     const ms = d.mainSkill || {};
     one.main = { name: ms.nameCN || '', params: splitParams(ms.params) };
     [['secondarySkill1', 'h1'], ['secondarySkill2', 'h2']].forEach(([k, key]) => {
