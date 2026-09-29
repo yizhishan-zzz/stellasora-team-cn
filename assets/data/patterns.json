@@ -9481,13 +9481,13 @@
     {
       "id": "p101",
       "name": "睡前童话",
-      "portrait": "assets/img/hd/outfit/outfit_214061.webp",
+      "portrait": "assets/img/hd/outfit/outfit_4061.webp",
       "rarity": 5,
       "element": "water",
       "funcs": [
-        "Skills",
-        "Mark",
-        "Element"
+        "技能",
+        "印记",
+        "元素"
       ],
       "melody": {
         "name": "睡前童话",
@@ -9512,7 +9512,38 @@
           "assets/img/hd/buff/Icon_DiscBuff_214061_Buff.webp"
         ]
       },
-      "harmony": [],
+      "harmony": [
+        {
+          "name": "空白绘本",
+          "tpl": "全队水系技能伤害提升{1}。 水系主控角色触发##水系印记#1018#后，获得当前「绘本」层数的「稚梦」：印记伤害提升{2}，持续{3}秒，可叠加10层",
+          "params": [
+            "4%,3%,8",
+            "8%,6%,8",
+            "12%,9%,8",
+            "16%,12%,8",
+            "20%,15%,8"
+          ],
+          "skillImg": "assets/img/hd/discskill/DiscSkill_4.webp",
+          "levels": null,
+          "buffs": [
+            "assets/img/hd/buff/Icon_CommonBuff_CritDamageUp.webp"
+          ]
+        },
+        {
+          "name": "稚梦遐想",
+          "tpl": "水系主控角色获得「稚梦」时，全队造成的水系伤害提升{1}，持续{2}秒。 「稚梦」满层时，自身技能暴击伤害提升{3}。",
+          "params": [
+            "10%,8,18%",
+            "20%,8,22.5%",
+            "30%,8,27%",
+            "40%,8,31.5%",
+            "50%,8,36%"
+          ],
+          "skillImg": "assets/img/hd/discskill/DiscSkill_12.webp",
+          "levels": null,
+          "buffs": []
+        }
+      ],
       "notes": [
         "luck",
         "water"
@@ -9524,13 +9555,13 @@
     {
       "id": "p102",
       "name": "美好，尽在昨日",
-      "portrait": "assets/img/hd/outfit/outfit_214062.webp",
+      "portrait": "assets/img/hd/outfit/outfit_4062.webp",
       "rarity": 5,
       "element": "water",
       "funcs": [
-        "Element",
-        "Mark",
-        "ATK"
+        "元素",
+        "印记",
+        "攻击"
       ],
       "melody": {
         "name": "美好，尽在昨日",
@@ -9555,7 +9586,38 @@
           "assets/img/hd/buff/Icon_DiscBuff_214062_Buff.webp"
         ]
       },
-      "harmony": [],
+      "harmony": [
+        {
+          "name": "昨日余光",
+          "tpl": "「希望」满层时，水系主控角色攻击力提升{1}，造成伤害时对目标附加「残愿」，持续{2}秒。 对附带「残愿」的目标，队伍内角色造成的水系技能伤害提升{3}。",
+          "params": [
+            "2.4%,3,2.5%",
+            "4.8%,3,5%",
+            "7.2%,3,7.5%",
+            "9.6%,3,10%",
+            "12%,3,12.5%"
+          ],
+          "skillImg": "assets/img/hd/discskill/DiscSkill_4.webp",
+          "levels": null,
+          "buffs": [
+            "assets/img/hd/buff/Icon_DiscBuff_214062_Debuff.webp"
+          ]
+        },
+        {
+          "name": "昔影所指",
+          "tpl": "水系主控角色附加「残愿」时，全队攻击力提升{1}，持续{2}秒。",
+          "params": [
+            "4%,5",
+            "8%,5",
+            "12%,5",
+            "16%,5",
+            "20%,5"
+          ],
+          "skillImg": "assets/img/hd/discskill/DiscSkill_1.webp",
+          "levels": null,
+          "buffs": []
+        }
+      ],
       "notes": [
         "power",
         "water"

@@ -232,21 +232,29 @@ function potData(char, p) {
 // 潜能描述高亮：把「39%/44%/.../131%」这样的各级数值，按当前等级取一个并标橙
 function potHighlightDesc(desc, params, lv) {
   const text = String(desc || '');
-  // 从 params 里挑出「数值数组」（长度 > 1 且首项含 % 或是纯数字）
+  // 数值数组：长度 > 1 且首项是数字/百分比，用来替换「1%/2%/3%」这种序列
   const lists = (params || []).filter(a => Array.isArray(a) && a.length > 1 && /^[0-9.]+%?$/.test(String(a[0])));
-  if (!lists.length) return escapeHtml(text);
-  let idx = 0;
-  return text.replace(/[0-9.]+%(?:\/[0-9.]+%)+/g, (seq) => {
-    const arr = lists[idx++] || [];
-    if (!arr.length) return escapeHtml(seq);
+  const pick = (arr) => {
+    if (!arr || !arr.length) return null;
     const i = Math.max(0, Math.min(lv - 1, arr.length - 1));
-    return '<b class="pv">' + escapeHtml(tr(String(arr[i]))) + '</b>';
-  }).replace(/&Param(\d+)&/g, (m, n) => {
-    const a = (params || [])[Number(n) - 1];
-    if (!a) return m;
-    const i = Math.max(0, Math.min(lv - 1, a.length - 1));
-    return '<b class="pv">' + escapeHtml(tr(String(a[i]))) + '</b>';
-  });
+    return tr(String(arr[i]));
+  };
+  // 两种占位符一起扫：斜杠数值序列、&ParamN&
+  // 不能因为「没有数值数组」就提前返回，否则 &ParamN& 会原样留在页面上
+  const RE = /[0-9.]+%(?:\/[0-9.]+%)+|&Param\d+&/g;
+  let out = '', last = 0, idx = 0, m;
+  while ((m = RE.exec(text)) !== null) {
+    out += escapeHtml(text.slice(last, m.index));
+    const tok = m[0];
+    const arr = tok.charAt(0) === '&'
+      ? (params || [])[Number(tok.replace(/\D/g, '')) - 1]
+      : lists[idx++];
+    const v = pick(arr);
+    out += (v == null || v === '') ? '' : '<b class="pv">' + escapeHtml(v) + '</b>';
+    last = RE.lastIndex;
+  }
+  out += escapeHtml(text.slice(last));
+  return out;
 }
 // 潜能：按等级显示描述（带橙字高亮）
 function potLevelHtml(char, p, lv) {
@@ -325,12 +333,10 @@ function renderCharacter() {
 
 
 
+  // 旅人信息：只保留「所属」和「攻击距离」（CV 等不再展示）
   const meta = [
-
-    ['所属', char.affiliation],
-
-    ['攻击距离', char.attackType], ['中文CV', char.cvCn], ['日文CV', char.cvJp]
-
+    ['所属', tr(char.affiliation)],
+    ['攻击距离', char.attackType]
   ].filter(m => m[1]).map(m => '<div class="meta-item"><span class="meta-k">' + m[0] + '</span><span class="meta-v">' + escapeHtml(m[1]) + '</span></div>').join('');
 
 
@@ -1851,7 +1857,10 @@ function renderPattern() {
     buffRow(h.buffs),
     '</div></div>'
   ].join('')).join('');
-  const harmonyHtml = harmony.length ? harmonyCards : emptyHint('协奏效果待补充');
+  // 3 星秘纹游戏里本来就没有协奏效果，不必提示"待补充"
+  const harmonyHtml = harmony.length
+    ? harmonyCards
+    : (Number(p.rarity) <= 3 ? '' : emptyHint('协奏效果待补充'));
 
   root.innerHTML = [
     '<div class="detail-head">',

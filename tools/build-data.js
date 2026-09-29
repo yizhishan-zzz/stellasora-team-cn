@@ -38,6 +38,21 @@ function potentialIcon(p, oldIcon) {
   const base = stripHash(oldIcon).split('/').pop();
   return base ? HD.potential + base + '_A.webp' : (oldIcon || null);
 }
+// 协奏效果：ss-data 的 secondarySkill1/2 里有完整中文描述和参数，直接生成
+function harmonyFromSec(sec) {
+  if (!sec) return null;
+  const tpl = cleanTpl(sec.descCN || sec.desc || '');
+  if (!tpl) return null;
+  return {
+    name: sec.nameCN || sec.name || '',
+    tpl: tpl,
+    params: String(sec.params || '').split('/').filter(Boolean),
+    skillImg: sec.icon ? hdIcon('skill', sec.icon, null) : null,
+    levels: null,
+    buffs: (sec.buffIcon || []).filter(v => v && v !== 'No Icon').map(v => hdIcon('buff', v, null))
+  };
+}
+
 // 秘纹效果图 / buff 图：优先用 ss-data 的图标名，否则从旧路径剥离哈希后缀
 function hdIcon(kind, baseName, oldPath) {
   const name = baseName || stripHash(oldPath).split('/').pop();
@@ -48,6 +63,41 @@ function hdIcon(kind, baseName, oldPath) {
 const EL = { Aqua: 'water', Ignis: 'fire', Ventus: 'wind', Terra: 'earth', Lux: 'light', Umbra: 'dark', None: 'none' };
 const CLS = { Vanguard: 'vanguard', Balanced: 'balanced', Support: 'support' };
 const ATK = { Melee: '近战', Ranged: '远程' };
+// 所属（势力）：ss-data 只给英文 force，这里映射成国服中文名
+const FORCE_CN = {
+  'Ashwind Clan': '灰风俱乐部',
+  'Baize Bureau': '白泽公署',
+  'Fenghuang Diner': '凤凰炒蛋',
+  'Freelance Trekker': '自由旅人',
+  'Goodwind Homecare': '谷风家政',
+  'Grace Imperium': '恩赐意志',
+  'Imperial Guard': '帝国卫队',
+  'Neo Grace Organization': '柔光会社',
+  'New Star Guild': '空白旅团',
+  'Petal Bloom': '花令旅团',
+  'Post Haste': '万送屋',
+  'Scarlet Sights Media': '绯瞳传讯',
+  'Trekker Association': '地理协会',
+  'United Harvest': '联合种业',
+  'White Cat Troupe': '白猫剧团',
+  'Yunji Studio': '云笈文化'
+};
+// 秘纹功能标签：ss-data 里混了英文标签，统一成中文
+const TAG_CN = {
+  'Skills': '技能', 'Skill': '技能', 'Mark': '印记', 'Element': '元素',
+  'ATK': '攻击', 'Attack': '攻击', 'Auto Attack': '普攻', 'Normal': '普攻',
+  'Ultimate': '绝招', 'Minion': '仆从', 'Defense': '防御', 'DEF': '防御',
+  'Shield': '护盾', 'Health': '生命', 'HP': '生命', 'Energy': '充能',
+  'Charge': '充能', 'Crit': '暴击伤害', 'Crit DMG': '暴击伤害',
+  'VUL': '易伤', 'DMG RES': '减伤', 'Verse': '共鸣', 'Resonate': '共鸣'
+};
+// 秘纹立绘 id：6 位 sid 去掉前导的 210000（214060 -> 4060、212006 -> 2006）
+function outfitIdOf(sid) {
+  const n = Number(sid);
+  if (!n) return String(sid);
+  // 6 位 sid（21xxxx）要去掉 210000 前缀：214060 -> 4060、212006 -> 2006
+  return String(n >= 210000 ? n - 210000 : n);
+}
 const FLOW = { mainCore: '前排核心', mainNormal: '前排特有', common: '通用', supportCore: '后排核心', supportNormal: '后排特有' };
 const isCore = k => k === 'mainCore' || k === 'supportCore';
 const NOTE = {
@@ -59,18 +109,39 @@ const NOTE = {
 };
 
 // 富文本清理
+// 源数据里会拖着调试残渣，例如：
+//   「……提升至5个。 Param1: &Param1& (ScriptParameterValue,CommonData)」
+// 统一在清洗阶段去掉，避免显示到页面上
+function stripDebugTail(s) {
+  let t = String(s || '');
+  // 去掉 "Param1: &Param1& (…)" 这类残渣（可能出现在末尾或多段）
+  t = t.replace(/\s*Param\d+\s*:[^\u0000-\u001f]*?(?=$|[\u000b\n])/g, ' ');
+  // 去掉 (ScriptParameterValue,CommonData) / (EffectValue…) 这类调试括注
+  t = t.replace(/\((?:ScriptParameterValue|CommonData|EffectValue|BuffValue|HitDamage|LaminatedNum|HiddenParam\d*|AttributeType\d*|OnceAdditionalAttribute[A-Za-z]*|EffectType[A-Za-z0-9]*)[^)]*\)/g, ' ');
+  return t;
+}
+
 function cleanTpl(s) {
-  return String(s || '')
+  return stripDebugTail(String(s || ''))
     .replace(/<color=[^>]*>/g, '').replace(/<\/color>/g, '')
     .replace(/[\u0000-\u001f]/g, ' ')
     .replace(/[ \t]{2,}/g, ' ').trim();
 }
 
 function clean(s) {
-  return String(s || '')
+  return stripDebugTail(String(s || ''))
     .replace(/<color=[^>]*>/g, '').replace(/<\/color>/g, '')
     .replace(/##([^#]*)#\d+#/g, (m, t) => (/^[「『"']/.test(t) ? t : '「' + t + '」'))
     .replace(/&Param\d+&/g, '')
+    .replace(/[\u0000-\u001f]/g, ' ')
+    .replace(/\s+/g, ' ').trim();
+}
+
+// 潜能描述专用：保留 &ParamN& 占位符（前端要按等级填数值），只清掉富文本标签与调试残渣
+function cleanKeepParams(s) {
+  return stripDebugTail(String(s || ''))
+    .replace(/<color=[^>]*>/g, '').replace(/<\/color>/g, '')
+    .replace(/##([^#]*)#\d+#/g, (m, t) => (/^[「『"']/.test(t) ? t : '「' + t + '」'))
     .replace(/[\u0000-\u001f]/g, ' ')
     .replace(/\s+/g, ' ').trim();
 }
@@ -137,6 +208,8 @@ for (const c of cj.characters) {
   if (EL[s.element]) c.element = EL[s.element];
   if (CLS[s.class]) c.role = CLS[s.class];
   if (ATK[s.attackType]) c.attackType = ATK[s.attackType];
+  // 所属：有中文映射就用中文（旧角色保留原值，避免被英文覆盖）
+  if (s.force) c.affiliation = FORCE_CN[s.force] || c.affiliation || s.force;
   if (!c.name) { const cn = charCN['Character.' + c.sid + '.1']; if (cn) c.name = cn; }
 
   const oldByName = {};
@@ -146,8 +219,9 @@ for (const c of cj.characters) {
     for (const p of ((s.potential || {})[key] || [])) {
       const nm = p.nameCN || p.name;
       const old = oldByName[nm];
-      const rawDesc = clean(potCN['Potential.' + p.id + '.2'] || potCN['Potential.' + p.id + '.1']);
-      const desc = (old && old.desc && old.desc.length > 10) ? old.desc : rawDesc;
+      // 用 cleanKeepParams：保留 &ParamN& 占位符，前端才能按等级显示具体数值
+      const rawDesc = cleanKeepParams(potCN['Potential.' + p.id + '.2'] || potCN['Potential.' + p.id + '.1']);
+      const desc = rawDesc || ((old && old.desc) || '');
       next.push({
         name: nm,
         flow: FLOW[key],
@@ -199,7 +273,7 @@ for (const sid of Object.keys(charBin)) {
     role: CLS[s.class] || null,
     rarity: s.star || null,
     attackType: ATK[s.attackType] || null,
-    affiliation: s.force || null,
+    affiliation: FORCE_CN[s.force] || s.force || null,
     birthday: s.birthday || null,
     cvCn: s.cnCv || null,
     cvJp: s.jpCv || null,
@@ -228,6 +302,8 @@ for (const p of pj.patterns) {
   if (!d) continue;
   p.rarity = d.star || p.rarity;
   if (EL[d.element]) p.element = EL[d.element];
+  // 立绘路径统一按规则重算（老秘纹算出来与原来一致，新秘纹修正 210000 前缀）
+  if (p.sid) p.portrait = 'assets/img/hd/outfit/outfit_' + outfitIdOf(p.sid) + '.webp';
   const ms = d.mainSkill || {};
   const params = ms.params ? String(ms.params).split('/') : [];
   p.melody = Object.assign({}, p.melody || {}, {
@@ -240,20 +316,31 @@ for (const p of pj.patterns) {
       ? ms.buffIcon.filter(v => v && v !== 'No Icon').map(v => hdIcon('buff', v, null))
       : (p.melody && p.melody.buffs) || [])
   });
-  // 协奏效果（Harmony）：文本来自旧抓取（ss-data 不提供），只把图标换高清源
+  // 功能标签：统一成中文（ss-data 里混了 Skills / Mark / Element / ATK 这类英文）
+  if (Array.isArray(d.tag) && d.tag.length) {
+    p.funcs = Array.from(new Set(d.tag.map(t => TAG_CN[t] || t))).slice(0, 4);
+  }
   if (Array.isArray(d.supportNote) && d.supportNote.length) {
     p.notes = Object.keys(d.supportNote[d.supportNote.length - 1]).map(k => NOTE[k]).filter(Boolean);
   }
+  // 协奏效果（Harmony）：ss-data 的 secondarySkill1/2 里就有中文描述与参数
   const secSkills = [d.secondarySkill1, d.secondarySkill2].filter(Boolean);
   if (Array.isArray(p.harmony) && p.harmony.length) {
-    p.harmony = p.harmony.map(h => {
-      const sec = secSkills.find(s => (s.nameCN || s.name) === h.name);
+    // 已有协奏：把图标换成高清源，并按需补上 ss-data 的中文描述
+    p.harmony = p.harmony.map((h, i) => {
+      const sec = secSkills.find(s => (s.nameCN || s.name) === h.name) || secSkills[i];
       const buffIcons = sec ? (sec.buffIcon || []).filter(v => v && v !== 'No Icon') : [];
+      const fresh = harmonyFromSec(sec);
       return Object.assign({}, h, {
+        tpl: (h.tpl && h.tpl.length > 4) ? h.tpl : ((fresh && fresh.tpl) || h.tpl),
+        params: (h.params && h.params.length) ? h.params : ((fresh && fresh.params) || []),
         skillImg: hdIcon('skill', sec && sec.icon, h.skillImg),
         buffs: buffIcons.length ? buffIcons.map(v => hdIcon('buff', v, null)) : (h.buffs || [])
       });
     });
+  } else if (secSkills.length) {
+    // 协奏为空：直接从 ss-data 生成（新秘纹走这条）
+    p.harmony = secSkills.map(harmonyFromSec).filter(Boolean);
   }
   pUpd++;
 }
@@ -269,11 +356,11 @@ for (const sid of Object.keys(discBin)) {
   const params = ms.params ? String(ms.params).split('/') : [];
   const pname = ms.nameCN || d.name || ('秘纹' + sid);
   const elKey = EL[d.element] || 'none';
-  const funcs = Array.isArray(d.tag) ? d.tag.slice(0, 4) : [];
+  const funcs = Array.from(new Set((Array.isArray(d.tag) ? d.tag : []).map(t => TAG_CN[t] || t))).slice(0, 4);
   pj.patterns.push({
     id: nextPatternId(usedPatIds),
     name: pname,
-    portrait: 'assets/img/hd/outfit/outfit_' + sid + '.webp',
+    portrait: 'assets/img/hd/outfit/outfit_' + outfitIdOf(sid) + '.webp',
     rarity: d.star || null,
     element: elKey,
     funcs: funcs,
@@ -285,7 +372,8 @@ for (const sid of Object.keys(discBin)) {
       dupe: (d.dupe || []).map(x => x.ATK).filter(v => v != null),
       buffs: (ms.buffIcon || []).filter(v => v && v !== 'No Icon').map(v => hdIcon('buff', v, null))
     },
-    harmony: [],                                    // ss-data 不提供协奏效果，需要人工补
+    // 协奏效果：ss-data 的 secondarySkill1/2 里有中文描述，直接生成
+    harmony: [d.secondarySkill1, d.secondarySkill2].filter(Boolean).map(harmonyFromSec).filter(Boolean),
     notes: notesFromSupportNote(d.supportNote),
     maxLevel: (params.length || 6),   // 阶数 = 主效果参数组数（一般是 6）
     gkId: null,
