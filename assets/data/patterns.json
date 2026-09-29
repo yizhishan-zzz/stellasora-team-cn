@@ -9524,7 +9524,28 @@
             "20%,15%,8"
           ],
           "skillImg": "assets/img/hd/discskill/DiscSkill_4.webp",
-          "levels": null,
+          "levels": [
+            {
+              "Melody of Pummel": 10,
+              "Melody of Aqua": 10
+            },
+            {
+              "Melody of Pummel": 25,
+              "Melody of Aqua": 25
+            },
+            {
+              "Melody of Pummel": 40,
+              "Melody of Aqua": 40
+            },
+            {
+              "Melody of Pummel": 55,
+              "Melody of Aqua": 55
+            },
+            {
+              "Melody of Pummel": 70,
+              "Melody of Aqua": 70
+            }
+          ],
           "buffs": [
             "assets/img/hd/buff/Icon_CommonBuff_CritDamageUp.webp"
           ]
@@ -9540,7 +9561,33 @@
             "50%,8,36%"
           ],
           "skillImg": "assets/img/hd/discskill/DiscSkill_12.webp",
-          "levels": null,
+          "levels": [
+            {
+              "Melody of Pummel": 15,
+              "Melody of Luck": 15,
+              "Melody of Aqua": 15
+            },
+            {
+              "Melody of Pummel": 30,
+              "Melody of Luck": 30,
+              "Melody of Aqua": 30
+            },
+            {
+              "Melody of Pummel": 45,
+              "Melody of Luck": 45,
+              "Melody of Aqua": 45
+            },
+            {
+              "Melody of Pummel": 60,
+              "Melody of Luck": 60,
+              "Melody of Aqua": 60
+            },
+            {
+              "Melody of Pummel": 75,
+              "Melody of Luck": 75,
+              "Melody of Aqua": 75
+            }
+          ],
           "buffs": []
         }
       ],
@@ -9598,7 +9645,28 @@
             "12%,3,12.5%"
           ],
           "skillImg": "assets/img/hd/discskill/DiscSkill_4.webp",
-          "levels": null,
+          "levels": [
+            {
+              "Melody of Skill": 10,
+              "Melody of Aqua": 10
+            },
+            {
+              "Melody of Skill": 25,
+              "Melody of Aqua": 25
+            },
+            {
+              "Melody of Skill": 40,
+              "Melody of Aqua": 40
+            },
+            {
+              "Melody of Skill": 55,
+              "Melody of Aqua": 55
+            },
+            {
+              "Melody of Skill": 70,
+              "Melody of Aqua": 70
+            }
+          ],
           "buffs": [
             "assets/img/hd/buff/Icon_DiscBuff_214062_Debuff.webp"
           ]
@@ -9614,7 +9682,33 @@
             "20%,5"
           ],
           "skillImg": "assets/img/hd/discskill/DiscSkill_1.webp",
-          "levels": null,
+          "levels": [
+            {
+              "Melody of Pummel": 15,
+              "Melody of Skill": 15,
+              "Melody of Aqua": 15
+            },
+            {
+              "Melody of Pummel": 30,
+              "Melody of Skill": 30,
+              "Melody of Aqua": 30
+            },
+            {
+              "Melody of Pummel": 45,
+              "Melody of Skill": 45,
+              "Melody of Aqua": 45
+            },
+            {
+              "Melody of Pummel": 60,
+              "Melody of Skill": 60,
+              "Melody of Aqua": 60
+            },
+            {
+              "Melody of Pummel": 75,
+              "Melody of Skill": 75,
+              "Melody of Aqua": 75
+            }
+          ],
           "buffs": []
         }
       ],
