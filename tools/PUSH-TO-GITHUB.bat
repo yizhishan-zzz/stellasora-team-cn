@@ -22,11 +22,18 @@ echo --- Step 1/5: merge cloud teams back into the local file ---
 node --use-system-ca tools\sync-teams-from-cloud.js
 if errorlevel 1 node tools\sync-teams-from-cloud.js
 echo.
-echo --- Step 2/5: check data files ---
+echo --- Step 2/5: check data files and bat scripts ---
 node tools\check-data.js
 if errorlevel 1 (
   echo.
   echo     [X] Data file is broken. Upload cancelled so the website stays working.
+  if /i not "%NOPAUSE%"=="nopause" pause
+  exit /b 1
+)
+node tools\bat-lint.js
+if errorlevel 1 (
+  echo.
+  echo     [X] Some .bat script is broken. Upload cancelled.
   if /i not "%NOPAUSE%"=="nopause" pause
   exit /b 1
 )
