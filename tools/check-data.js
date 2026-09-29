@@ -28,6 +28,22 @@ for (const f of files) {
     bad++;
   }
 }
+// 交叉检查：每名旅人都要有预设码配置
+// （缺配置时 preset 码会漏掉该旅人的潜能，还会让后续位错位，必须提前拦住）
+try {
+  const chars = JSON.parse(fs.readFileSync(path.join(DIR, 'characters.json'), 'utf8')).characters || [];
+  const cfg = JSON.parse(fs.readFileSync(path.join(DIR, 'potential-cfg.json'), 'utf8')).chars || {};
+  const miss = chars.filter(c => c.sid && !cfg[String(c.sid)]).map(c => c.name + '(sid ' + c.sid + ')');
+  if (miss.length) {
+    console.log('  [X] 预设码配置缺少 ' + miss.length + ' 名旅人：' + miss.join('、') + '  —— 预设码会漏潜能');
+    bad++;
+  } else {
+    console.log('  [OK] 预设码配置覆盖全部 ' + chars.length + ' 名旅人');
+  }
+} catch (e) {
+  console.log('  [X] 预设码配置交叉检查失败：' + e.message);
+  bad++;
+}
 console.log('');
 if (bad) {
   console.log('发现 ' + bad + ' 个文件有问题。修复办法：git checkout -- assets/data/ 还原，或告诉助手。');

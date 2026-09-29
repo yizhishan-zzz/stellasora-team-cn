@@ -387,6 +387,36 @@ for (const sid of Object.keys(discBin)) {
 
 wr(path.join(ROOT, 'assets/data/patterns.json'), pj);
 
+// ============ 预设码配置（potential-cfg.json）============
+// 注意：这个文件决定预设码的位布局，且已用真实预设码验证过 ——
+// 已有条目【绝对不能改动】，这里只为「没有配置的新旅人」补条目。
+const FLOW_KEY = { '前排核心': 'mainCore', '前排特有': 'mainNormal', '通用': 'common', '后排核心': 'assistCore', '后排特有': 'assistNormal' };
+const pcj = rd(path.join(ROOT, 'assets/data/potential-cfg.json'));
+pcj.chars = pcj.chars || {};
+pcj.pots = pcj.pots || {};
+let pcAdded = 0, potAdded = 0;
+for (const c of cj.characters) {
+  if (!c.sid) continue;
+  const groups = {};
+  for (const p of (c.potentials || [])) {
+    const k = FLOW_KEY[p.flow];
+    if (!k || p.potId == null) continue;
+    (groups[k] = groups[k] || []).push(p.potId);
+    if (pcj.pots[p.potId] !== p.name) {
+      if (pcj.pots[p.potId] == null) potAdded++;
+      pcj.pots[p.potId] = p.name;
+    }
+  }
+  const key = String(c.sid);
+  if (!pcj.chars[key] && Object.keys(groups).length) {
+    pcj.chars[key] = groups;
+    pcAdded++;
+    console.log('  [预设码配置] 新增 ' + c.name + ' (sid ' + key + '): ' + Object.keys(groups).map(g => g + '×' + groups[g].length).join(', '));
+  }
+}
+if (pcAdded || potAdded) wr(path.join(ROOT, 'assets/data/potential-cfg.json'), pcj);
+
 console.log('旅人更新:', cUpd, '| 新增旅人:', cAdded, '| 潜能描述变更:', potUpd);
+console.log('预设码配置:', Object.keys(pcj.chars).length, '名旅人（本次补', pcAdded, '名 / 潜能名', potAdded, '条）');
 console.log('秘纹更新:', pUpd, '| 新增秘纹:', pAdded, '| 秘纹总数:', pj.patterns.length);
 console.log('完成。');
