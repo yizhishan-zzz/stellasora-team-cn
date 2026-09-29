@@ -8,48 +8,44 @@ echo ==================================================
 echo   Stella Sora - update game data and assets
 echo ==================================================
 echo.
-echo   [1/10] fetch ss-data ........ characters / discs / potentials
-echo   [2/10] rebuild JSON ........ auto-add new characters / discs
-echo   [3/10] extract skills ...... skills / base stats / potential levels
-echo   [4/10] build translation ... EN to CN dictionary
-echo   [5/10] download icons ....... potential / disc / char skill / buff
-echo   [6/10] download images ...... portraits / outfits
-echo   [7/10] compress images ...... skip already processed
-echo   [8/10] build thumbnails ..... small images for lists
-echo   [9/9] data check + prerender
+echo   [1/8] fetch ss-data ........ characters / discs / potentials
+echo   [2/8] rebuild JSON ........ auto-add new characters / discs
+echo   [3/8] extract skills ...... skills / base stats / potential levels
+echo   [4/8] build translation ... EN to CN dictionary
+echo   [5/8] download icons ....... potential / disc / char skill / buff
+echo   [6/8] download images ...... portraits / outfits
+echo   [7/8] compress images ...... skip already processed
+echo   [8/8] check data + prerender
 echo.
 echo ==================================================
 echo.
-echo --- [1/10] fetch ss-data ---
+echo --- [1/8] fetch ss-data ---
 node --use-system-ca fetch-data.js
 if errorlevel 1 node fetch-data.js
 echo.
-echo --- [2/10] rebuild JSON ---
+echo --- [2/8] rebuild JSON ---
 node build-data.js
 if errorlevel 1 goto fail
 echo.
-echo --- [3/10] extract skills and stats ---
+echo --- [3/8] extract skills and stats ---
 node build-skills.js
 if errorlevel 1 goto fail
 echo.
-echo --- [4/10] build translation dictionary ---
+echo --- [4/8] build translation dictionary ---
 node build-dict.js
 echo.
-echo --- [5/10] download icons ---
+echo --- [5/8] download icons ---
 node --use-system-ca download-icons.js
 if errorlevel 1 node download-icons.js
 echo.
-echo --- [6/10] download images ---
+echo --- [6/8] download images ---
 node --use-system-ca download-hd.js
 if errorlevel 1 node download-hd.js
 echo.
-echo --- [7/10] compress images (skips already done) ---
+echo --- [7/8] compress images (skips already done) ---
 node --use-system-ca compress-images.js
 echo.
-echo --- [8/10] build thumbnails ---
-node build-thumbs.js
-echo.
-echo --- [9/9] check data + prerender ---
+echo --- [8/8] check data + prerender ---
 node check-data.js
 if errorlevel 1 goto fail
 node prerender.js

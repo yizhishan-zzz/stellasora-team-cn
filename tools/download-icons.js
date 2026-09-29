@@ -159,7 +159,8 @@ async function downloadOne(item, strict) {
   }
   if (relaxNoticeShown) console.log('[提示] 本机 HTTPS 证书链无法用系统根证书校验（常见于 DNS/代理接管），已改用放宽校验模式下载公开素材。');
 
-  const todo = opt.force ? list : list.filter(it => !(fs.existsSync(it.out) && fs.statSync(it.out).length >= MIN_BYTES));
+  // 注意用 .size（Node 的 stat 没有 .length，写错会导致每次都全量重下）
+  const todo = opt.force ? list : list.filter(it => !(fs.existsSync(it.out) && fs.statSync(it.out).size >= MIN_BYTES));
   const skipped = list.length - todo.length;
   console.log('待下载 ' + todo.length + ' 个（已存在跳过 ' + skipped + ' 个，共 ' + list.length + ' 个）');
 
