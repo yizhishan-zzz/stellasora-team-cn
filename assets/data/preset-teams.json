@@ -2830,6 +2830,68 @@
       ],
       "isRecommended": false,
       "updatedAt": 1790168223842
+    },
+    {
+      "id": "t_mumpbn8nsqqe",
+      "name": "新配队",
+      "presetCode": "AAAAiwAAAIIAAACgzbADAAbNgAAMADAGweYG",
+      "description": "",
+      "tags": {
+        "element": "",
+        "style": "",
+        "power": "",
+        "scene": []
+      },
+      "chars": [
+        "allie",
+        "duona",
+        "wlsh"
+      ],
+      "mainPatterns": [
+        null,
+        null,
+        null
+      ],
+      "mainBackup": [
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "subPatterns": [
+        null,
+        null,
+        null
+      ],
+      "subBackup": [
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "pots": [
+        {},
+        {
+          "离弦之箭": 1,
+          "残矢清算": 1,
+          "箭矢追击": 6,
+          "凝霜箭寒": 6,
+          "百步穿杨": 6,
+          "水波共鸣": 6,
+          "霜凝滞冻": 6
+        },
+        {
+          "水花飞溅": 1,
+          "激流覆岸": 1,
+          "劝诫依旧": 6,
+          "海风低徊": 6,
+          "风和浪暖": 6
+        }
+      ],
+      "isRecommended": false,
+      "updatedAt": 1790687903635
     }
   ]
 }
