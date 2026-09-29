@@ -46,7 +46,12 @@ function get(url, dest, strict, redirects) {
   }
   for (const p of pats) {
     if (!p.sid) continue;
-    list.push({ dir: 'outfit', name: 'outfit_' + p.sid, src: 'outfit/outfit_' + p.sid + '.webp' });
+    // 立绘文件名以 patterns.json 里的 portrait 为准（6 位 sid 要去掉 210000 前缀：
+    // 214060 -> outfit_4060.webp）。portrait 缺失时按同一规则兜底。
+    const n = Number(p.sid);
+    const fallback = 'outfit_' + (n >= 210000 ? n - 210000 : n) + '.webp';
+    const file = (p.portrait ? String(p.portrait).split('/').pop() : '') || fallback;
+    list.push({ dir: 'outfit', name: file.replace(/\.webp$/i, ''), src: 'outfit/' + file });
   }
   // 证书模式探测
   let strict = true;

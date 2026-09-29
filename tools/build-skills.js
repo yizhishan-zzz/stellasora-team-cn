@@ -24,9 +24,19 @@ function need(p) {
 function rd(p) { return JSON.parse(fs.readFileSync(p, 'utf8')); }
 function wr(p, o) { fs.writeFileSync(p, JSON.stringify(o), 'utf8'); }
 
+// 源数据里会拖着调试残渣，例如：
+//   「……上限提升至5个。 Param1: &Param1& (ScriptParameterValue,CommonData)」
+// 注意：&ParamN& 占位符要保留（前端要填数值），只去掉这些残渣
+function stripDebugTail(s) {
+  let t = String(s || '');
+  t = t.replace(/\s*Param\d+\s*:[^\u0000-\u001f]*?(?=$|[\u000b\n])/g, ' ');
+  t = t.replace(/\((?:ScriptParameterValue|CommonData|EffectValue|BuffValue|HitDamage|LaminatedNum|HiddenParam\d*|AttributeType\d*|OnceAdditionalAttribute[A-Za-z]*|EffectType[A-Za-z0-9]*)[^)]*\)/g, ' ');
+  return t;
+}
+
 // 清理富文本（和 build-data.js 保持一致的处理）
 function clean(s) {
-  return String(s || '')
+  return stripDebugTail(String(s || ''))
     .replace(/<color=[^>]*>/g, '').replace(/<\/color>/g, '')
     .replace(/##([^#]*)#\d+#/g, (m, t) => (/^[「『"']/.test(t) ? t : '「' + t + '」'))
     .replace(/[\u0000-\u001f]/g, ' ')
