@@ -9,7 +9,7 @@ echo   ONE STEP: update all data and publish
 echo ==================================================
 echo.
 echo   Part 1/2 : fetch data, rebuild JSON, download assets,
-echo              compress, build dictionary, thumbnails, prerender
+echo              compress, build dictionary, prerender
 echo   Part 2/2 : merge cloud teams, push to GitHub,
 echo              submit to IndexNow
 echo.
