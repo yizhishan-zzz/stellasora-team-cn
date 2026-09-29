@@ -16,7 +16,7 @@ echo   [5/10] download icons ....... potential / disc / char skill / buff
 echo   [6/10] download images ...... portraits / outfits
 echo   [7/10] compress images ...... skip already processed
 echo   [8/10] build thumbnails ..... small images for lists
-echo   [9/10] data check + prerender + verify
+echo   [9/9] data check + prerender
 echo.
 echo ==================================================
 echo.
@@ -49,14 +49,11 @@ echo.
 echo --- [8/10] build thumbnails ---
 node build-thumbs.js
 echo.
-echo --- [9/10] check data + prerender ---
+echo --- [9/9] check data + prerender ---
 node check-data.js
 if errorlevel 1 goto fail
 node prerender.js
 if errorlevel 1 goto fail
-echo.
-echo --- [10/10] verify ---
-node verify-push.js
 echo.
 echo ==================================================
 echo   ALL DONE.
