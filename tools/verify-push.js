@@ -25,7 +25,7 @@ function get(url, strict, redirects) {
 (async () => {
   const RAW = 'https://raw.githubusercontent.com/yizhishan-zzz/stellasora-team-cn/main/';
   let strict = true;
-  const local = JSON.parse(fs.readFileSync('assets/data/preset-teams.json', 'utf8'));
+  const local = JSON.parse(fs.readFileSync(require('path').join(__dirname, '..', 'assets', 'data', 'preset-teams.json'), 'utf8'));
   let remote = null;
   for (const s of [true, false]) {
     try { remote = JSON.parse(await get(RAW + 'assets/data/preset-teams.json?t=' + Date.now(), s, 0)); strict = s; break; }
