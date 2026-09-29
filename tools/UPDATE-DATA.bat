@@ -22,6 +22,11 @@ echo.
 echo --- [1/8] fetch ss-data ---
 node --use-system-ca fetch-data.js
 if errorlevel 1 node fetch-data.js
+if not exist "ss-data\character.json" (
+  echo.
+  echo     [X] ss-data is missing - the download failed. Check your network and run this again.
+  goto fail
+)
 echo.
 echo --- [2/8] rebuild JSON ---
 node build-data.js
