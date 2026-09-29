@@ -5,7 +5,7 @@
  * 而你曾在线上改过配队（数据只在 GitHub 上），强制推送就会把那些改动抹掉。
  * 这个脚本会：取云端数据 + 本地数据，按 id 与 updatedAt 合并，两边都不丢。
  *
- * 由 推送到GitHub.bat 在推送前自动调用，也可以单独运行：
+ * 由 PUSH-TO-GITHUB.bat 在推送前自动调用，也可以单独运行：
  *   node tools/sync-teams-from-cloud.js
  */
 const fs = require('fs');

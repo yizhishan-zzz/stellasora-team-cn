@@ -51,7 +51,7 @@ function post(url, body) {
   }
   if (!ok) {
     console.log('');
-    console.log('[!] 验证文件还没上线，先推送一次（推送到GitHub.bat）再跑本脚本。');
+    console.log('[!] 验证文件还没上线，先推送一次（PUSH-TO-GITHUB.bat）再跑本脚本。');
     process.exit(1);
   }
   const body = JSON.stringify({ host: HOST, key: KEY, keyLocation: keyUrl, urlList: PAGES.map(p => BASE + p) });

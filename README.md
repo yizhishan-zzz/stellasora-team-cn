@@ -62,7 +62,7 @@ github.com/AutumnVN/ss-data    -->  build-data.js   -->  characters.json / patte
 github.com/AutumnVN/ssassets   -->  download-*.js   -->  assets/img/hd/**
 ```
 
-运行 `tools/更新数据.bat` 一键完成：抓数据 → 重建 JSON（**会自动识别新增的旅人与秘纹**）→ 下载高清图 → 数据体检。
+运行 `tools/UPDATE-DATA.bat` 一键完成：抓数据 → 重建 JSON（**会自动识别新增的旅人与秘纹**）→ 下载高清图 → 数据体检。
 
 ### 数据来源
 
@@ -100,13 +100,13 @@ stelladb
 
 ## 新增旅人 / 秘纹时
 
-运行 `tools/更新数据.bat` 会自动识别并补齐：
+运行 `tools/UPDATE-DATA.bat` 会自动识别并补齐：
 
 - 新旅人：从 ss-data 读中文名、星级、属性、职业、头像路径，潜能全量导入
 - 新秘纹：读名称、星级、属性、效果描述、各级数值、音符需求、立绘与效果图
 - 编号自动生成（秘纹接着现有编号往下排；旅人用英文名转 slug）
 
-之后运行 `tools/推送到GitHub.bat` 即可发布。
+之后运行 `tools/PUSH-TO-GITHUB.bat` 即可发布。
 
 > 唯一需要人工补的是**新秘纹的协奏效果（Harmony 文本）** —— ss-data 不提供这部分数据。
 
@@ -144,8 +144,8 @@ stella_sora_network/
 │
 ├── tools/                 工具脚本（不参与运行）
 │   ├── 一键更新并发布.bat   出新旅人时一键更新+推送
-│   ├── 更新数据.bat         只更新数据与图片
-│   ├── 推送到GitHub.bat     推送（自动合并云端配队）
+│   ├── UPDATE-DATA.bat         只更新数据与图片
+│   ├── PUSH-TO-GITHUB.bat     推送（自动合并云端配队）
 │   ├── 启动服务器.bat       本地预览 http://localhost:8080
 │   ├── 检查数据.bat         数据体检
 │   ├── 压缩图片.bat         图片压缩

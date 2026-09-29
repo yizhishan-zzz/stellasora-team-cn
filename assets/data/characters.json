@@ -12289,6 +12289,320 @@
       "noteRecs": [],
       "secrets": [],
       "sid": 137
+    },
+    {
+      "id": "allie",
+      "name": "艾蕾",
+      "gkId": null,
+      "nameEn": "Allie",
+      "element": "water",
+      "role": "vanguard",
+      "rarity": 5,
+      "attackType": "近战",
+      "affiliation": "Freelance Trekker",
+      "birthday": "March 21st",
+      "cvCn": "Zeng Tong",
+      "cvJp": "Erika Ishitobi",
+      "weapon": null,
+      "portrait": "assets/img/hd/head/head_13902_XL.webp",
+      "description": null,
+      "variantOf": null,
+      "skills": null,
+      "potentials": [
+        {
+          "name": "快速清扫",
+          "flow": "前排核心",
+          "type": "核心潜能",
+          "desc": "全队为水系角色时，「清扫标记」数量上限提升至5个，不会随时间消失，且每个「清扫标记」额外使艾蕾提升。「清扫标记」点亮数量达到上限时，可通过主控技施放绝招二段「大扫除·归置」。",
+          "icon": "assets/img/hd/potential/13901_Potential_01_A.webp",
+          "potId": 513901,
+          "rarity": "core",
+          "corner": null
+        },
+        {
+          "name": "多重清扫",
+          "flow": "前排核心",
+          "type": "核心潜能",
+          "desc": "艾蕾施放普攻「家务用重斩」或主控技「扫堂突进」时，生成刀影，造成攻击力的范围水系技能伤害，同时获得1个「清扫标记」，该效果每秒可触发1次。",
+          "icon": "assets/img/hd/potential/13901_Potential_02_A.webp",
+          "potId": 513902,
+          "rarity": "core",
+          "corner": null
+        },
+        {
+          "name": "除尘涡旋",
+          "flow": "前排核心",
+          "type": "核心潜能",
+          "desc": "「清扫标记」点亮数量达到上限时，可通过主控技施放绝招一段「大扫除·除尘」。通过任意方式施放绝招一段「大扫除·除尘」时，吸收所有「清扫标记」，并获得满层「清扫标记」增益，「清扫架势」期间不可获得「清扫标记」。",
+          "icon": "assets/img/hd/potential/13901_Potential_03_A.webp",
+          "potId": 513903,
+          "rarity": "core",
+          "corner": null
+        },
+        {
+          "name": "清扫延续",
+          "flow": "前排核心",
+          "type": "核心潜能",
+          "desc": "绝招一段「大扫除·除尘」的「清扫架势」期间，艾蕾额外提升，同时艾蕾触发「水系印记」，产生「潮汐」时，如果目标身上「潮」的层数达到3层和6层，额外生成「汐」。「汐」强化为「溟汐」：造成攻击力范围印记伤害。",
+          "icon": "assets/img/hd/potential/13901_Potential_04_A.webp",
+          "potId": 513904,
+          "rarity": "core",
+          "corner": null
+        },
+        {
+          "name": "晾衣杆执式",
+          "flow": "前排特有",
+          "type": "金潜能",
+          "desc": "绝招二段「大扫除·归置」造成的绝招伤害均变为技能伤害。施放绝招二段「大扫除·归置」或主控技「扫堂突进」时，自身提升，持续秒，可叠加层。",
+          "icon": "assets/img/hd/potential/13901_Potential_01_A.webp",
+          "potId": 513905,
+          "rarity": "common",
+          "corner": "Diamond"
+        },
+        {
+          "name": "扫把重斩",
+          "flow": "前排特有",
+          "type": "金潜能",
+          "desc": "获得「清扫标记」时，主控技「扫堂突进」和潜能「多重清扫」造成的提升，持续秒，可叠加层。",
+          "icon": "assets/img/hd/potential/13901_Potential_01_A.webp",
+          "potId": 513906,
+          "rarity": "common",
+          "corner": "Triangle"
+        },
+        {
+          "name": "柴刃装配",
+          "flow": "前排特有",
+          "type": "金潜能",
+          "desc": "施放绝招二段「大扫除·归置」后，接下来秒内，刀影的触发间隔降低至秒，该效果每秒最多触发一次。全队为水系角色时，艾蕾提升，提升。",
+          "icon": "assets/img/hd/potential/13901_Potential_02_A.webp",
+          "potId": 513907,
+          "rarity": "rare",
+          "corner": "Round"
+        },
+        {
+          "name": "拼刃横扫",
+          "flow": "前排特有",
+          "type": "金潜能",
+          "desc": "全队为水系角色时，绝招一段「大扫除·除尘」造成的绝招伤害和普攻「家务用重斩」造成的普攻伤害均变为印记伤害，同时艾蕾每提升普攻伤害可额外提升印记伤害，通过此方式提升的印记伤害最高不超过。艾蕾降低。",
+          "icon": "assets/img/hd/potential/13901_Potential_04_A.webp",
+          "potId": 513908,
+          "rarity": "common",
+          "corner": "Diamond"
+        },
+        {
+          "name": "待清理点",
+          "flow": "前排特有",
+          "type": "金潜能",
+          "desc": "「清扫架势」期间，每通过「潮汐」生成次「汐」，可获得1层「待清理点」，可叠加4层，同时艾蕾提升，持续秒，可叠加层。退出「清扫架势」时，每层「待清理点」转化为1个「清扫标记」。",
+          "icon": "assets/img/hd/potential/13901_Potential_03_A.webp",
+          "potId": 513909,
+          "rarity": "common",
+          "corner": "Triangle"
+        },
+        {
+          "name": "黑足猫步",
+          "flow": "前排特有",
+          "type": "金潜能",
+          "desc": "闪避或获得护盾时，艾蕾提升，持续秒。",
+          "icon": "assets/img/hd/potential/Common_Potential_13_A.webp",
+          "potId": 513911,
+          "rarity": "common",
+          "corner": "Diamond"
+        },
+        {
+          "name": "扫间穿行",
+          "flow": "前排特有",
+          "type": "金潜能",
+          "desc": "长按闪避进入疾跑状态后0.5秒，立即获得3个「清扫标记」，该效果每秒可触发1次。 队伍中每有1个水系角色，艾蕾提升。",
+          "icon": "assets/img/hd/potential/Common_Potential_15_A.webp",
+          "potId": 513913,
+          "rarity": "rare",
+          "corner": "Round"
+        },
+        {
+          "name": "额外返工",
+          "flow": "前排特有",
+          "type": "金潜能",
+          "desc": "艾蕾提升。全队为水系角色并且艾蕾处于「清扫架势」期间，普攻「家务用重斩」形态增强，提升，可触发「水系印记」产生「潮汐」。",
+          "icon": "assets/img/hd/potential/13901_Potential_04_A.webp",
+          "potId": 513910,
+          "rarity": "rare",
+          "corner": "Round"
+        },
+        {
+          "name": "重复清理",
+          "flow": "前排特有",
+          "type": "金潜能",
+          "desc": "艾蕾造成印记伤害时，自身提升，持续秒，可叠加层。",
+          "icon": "assets/img/hd/potential/Common_Potential_Water_1_A.webp",
+          "potId": 513912,
+          "rarity": "common",
+          "corner": "Triangle"
+        },
+        {
+          "name": "肃清架势",
+          "flow": "通用",
+          "type": "金潜能",
+          "desc": "施放绝招「大扫除」时，自身提升，持续秒，可叠加层。",
+          "icon": "assets/img/hd/potential/Common_Potential_20_A.webp",
+          "potId": 513941,
+          "rarity": "common",
+          "corner": "Diamond"
+        },
+        {
+          "name": "快速除尘",
+          "flow": "通用",
+          "type": "金潜能",
+          "desc": "绝招一段「大扫除·除尘」爆气范围提升，造成的提升。",
+          "icon": "assets/img/hd/potential/13901_Potential_42_A.webp",
+          "potId": 513942,
+          "rarity": "common",
+          "corner": "Triangle"
+        },
+        {
+          "name": "冰镜巨刃",
+          "flow": "通用",
+          "type": "金潜能",
+          "desc": "绝招二段「大扫除·归置」额外产生长刀虚影，造成攻击力的范围水系绝招伤害。绝招二段造成的提升。",
+          "icon": "assets/img/hd/potential/13901_Potential_43_A.webp",
+          "potId": 513943,
+          "rarity": "common",
+          "corner": "Round"
+        },
+        {
+          "name": "寒冰之刃",
+          "flow": "后排核心",
+          "type": "核心潜能",
+          "desc": "「循环斩击」不断发射寒冰之刃，连续造成攻击力的范围水系技能伤害。",
+          "icon": "assets/img/hd/potential/13901_Potential_21_A.webp",
+          "potId": 513921,
+          "rarity": "core",
+          "corner": null
+        },
+        {
+          "name": "反复清理",
+          "flow": "后排核心",
+          "type": "核心潜能",
+          "desc": "「循环斩击」次数提升8次，且造成的提升。",
+          "icon": "assets/img/hd/potential/13901_Potential_22_A.webp",
+          "potId": 513922,
+          "rarity": "core",
+          "corner": null
+        },
+        {
+          "name": "扫庭终式",
+          "flow": "后排核心",
+          "type": "核心潜能",
+          "desc": "「收尾斩击」额外造成攻击力x3的范围水系技能伤害。",
+          "icon": "assets/img/hd/potential/13901_Potential_23_A.webp",
+          "potId": 513923,
+          "rarity": "core",
+          "corner": null
+        },
+        {
+          "name": "额外破坏",
+          "flow": "后排核心",
+          "type": "核心潜能",
+          "desc": "「收尾斩击」时生成的冰晶会爆炸，再次造成攻击力的范围水系技能伤害。",
+          "icon": "assets/img/hd/potential/13901_Potential_24_A.webp",
+          "potId": 513924,
+          "rarity": "core",
+          "corner": null
+        },
+        {
+          "name": "砍柴劈木",
+          "flow": "后排特有",
+          "type": "金潜能",
+          "desc": "「循环斩击」造成的额外提升，对「破韧」目标额外提升。",
+          "icon": "assets/img/hd/potential/13901_Potential_22_A.webp",
+          "potId": 513925,
+          "rarity": "common",
+          "corner": "Diamond"
+        },
+        {
+          "name": "寒风扫堂",
+          "flow": "后排特有",
+          "type": "金潜能",
+          "desc": "「循环斩击」命中的目标数量大于3个时，造成的提升。",
+          "icon": "assets/img/hd/potential/13901_Potential_22_A.webp",
+          "potId": 513926,
+          "rarity": "common",
+          "corner": "Triangle"
+        },
+        {
+          "name": "家务苦手",
+          "flow": "后排特有",
+          "type": "金潜能",
+          "desc": "艾蕾每在场0.5秒，造成的提升，可叠加4层。",
+          "icon": "assets/img/hd/potential/13901_Potential_22_A.webp",
+          "potId": 513927,
+          "rarity": "rare",
+          "corner": "Round"
+        },
+        {
+          "name": "特殊冻伤",
+          "flow": "后排特有",
+          "type": "金潜能",
+          "desc": "「收尾斩击」和冰晶造成的提升，对精英及以上目标额外提升。",
+          "icon": "assets/img/hd/potential/13901_Potential_24_A.webp",
+          "potId": 513928,
+          "rarity": "common",
+          "corner": "Diamond"
+        },
+        {
+          "name": "月半锥冰",
+          "flow": "后排特有",
+          "type": "金潜能",
+          "desc": "「冰晶」范围提升。「收尾斩击」额外生成2道「冰晶」，分别造成攻击力的范围水系技能伤害。",
+          "icon": "assets/img/hd/potential/13901_Potential_24_A.webp",
+          "potId": 513930,
+          "rarity": "rare",
+          "corner": "Round"
+        },
+        {
+          "name": "雪夜守望",
+          "flow": "后排特有",
+          "type": "金潜能",
+          "desc": "辅助角色在场时，艾蕾造成的提升。",
+          "icon": "assets/img/hd/potential/Common_Potential_18_A.webp",
+          "potId": 513931,
+          "rarity": "common",
+          "corner": "Diamond"
+        },
+        {
+          "name": "冰华加护",
+          "flow": "后排特有",
+          "type": "金潜能",
+          "desc": "艾蕾提升。",
+          "icon": "assets/img/hd/potential/Common_Potential_11_A.webp",
+          "potId": 513932,
+          "rarity": "common",
+          "corner": "Triangle"
+        },
+        {
+          "name": "寒锋独向",
+          "flow": "后排特有",
+          "type": "金潜能",
+          "desc": "「收尾斩击」和冰晶命中的目标数量小于4个时，造成的提升。",
+          "icon": "assets/img/hd/potential/13901_Potential_23_A.webp",
+          "potId": 513929,
+          "rarity": "common",
+          "corner": "Triangle"
+        },
+        {
+          "name": "月白摇篮",
+          "flow": "后排特有",
+          "type": "金潜能",
+          "desc": "全队为水系角色时，全队提升。",
+          "icon": "assets/img/hd/potential/Common_Potential_15_A.webp",
+          "potId": 513933,
+          "rarity": "rare",
+          "corner": "Round"
+        }
+      ],
+      "noteRecs": [],
+      "secrets": [],
+      "sid": 139
     }
   ]
 }

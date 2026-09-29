@@ -7,7 +7,7 @@
  *   3) 秘纹 buff 图  icon/buff/<disc.mainSkill.buffIcon>.webp  → assets/img/hd/buff/
 *   4) 旅人技能图标 icon/skill/<char.skill.icon>.webp          → assets/img/hd/charskill/
  *
- * 需要先跑 tools/fetch-data.ps1（或 更新数据.bat 第 1 步）拿到 ss-data。
+ * 需要先跑 tools/fetch-data.ps1（或 UPDATE-DATA.bat 第 1 步）拿到 ss-data。
  *
  * 用法:
  *   node --use-system-ca tools/download-icons.js             # 全部

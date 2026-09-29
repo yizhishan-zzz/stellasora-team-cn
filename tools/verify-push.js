@@ -1,6 +1,6 @@
 /**
  * verify-push.js —— 推送后验证：线上仓库的数据和本地是否一致
- * 由 推送到GitHub.bat 自动调用，也可单独运行
+ * 由 PUSH-TO-GITHUB.bat 自动调用，也可单独运行
  */
 const fs = require('fs');
 const https = require('https');
