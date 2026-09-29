@@ -8,7 +8,7 @@
  *
  * 用法：node tools/prerender.js
  *
- * 什么时候跑：更新数据、改配队之后（更新数据.bat 和 一键更新并发布.bat 里已带上）。
+ * 什么时候跑：更新数据、改配队之后（UPDATE-DATA.bat 和 一键更新并发布.bat 里已带上）。
  * 可以重复运行，不会堆叠内容。
  */
 const fs = require('fs');
