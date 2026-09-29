@@ -48,7 +48,8 @@ function harmonyFromSec(sec) {
     tpl: tpl,
     params: String(sec.params || '').split('/').filter(Boolean),
     skillImg: sec.icon ? hdIcon('skill', sec.icon, null) : null,
-    levels: null,
+    // 音符需求：ss-data 的 requirements 就是每阶需要的音符与数量
+    levels: Array.isArray(sec.requirements) && sec.requirements.length ? sec.requirements : null,
     buffs: (sec.buffIcon || []).filter(v => v && v !== 'No Icon').map(v => hdIcon('buff', v, null))
   };
 }
@@ -334,6 +335,7 @@ for (const p of pj.patterns) {
       return Object.assign({}, h, {
         tpl: (h.tpl && h.tpl.length > 4) ? h.tpl : ((fresh && fresh.tpl) || h.tpl),
         params: (h.params && h.params.length) ? h.params : ((fresh && fresh.params) || []),
+        levels: (h.levels && h.levels.length) ? h.levels : ((fresh && fresh.levels) || null),
         skillImg: hdIcon('skill', sec && sec.icon, h.skillImg),
         buffs: buffIcons.length ? buffIcons.map(v => hdIcon('buff', v, null)) : (h.buffs || [])
       });
