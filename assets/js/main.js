@@ -905,6 +905,55 @@ function renderTeams() {
     const recs = (typeof loadPresetTeams === 'function') ? loadPresetTeams() : (DATA.presetTeams || []);
     return sortByPower(recs.concat(mine));
   }
+
+  // ===== 搜索：旅人名称 / 预设码 =====
+  const searchInput = document.getElementById('teamSearch');
+  let searchQuery = '';
+  const CODE_RE = /^[A-Za-z0-9+/=_-]{12,}$/;
+  // 队伍里 3 名旅人的名字
+  function charNamesOf(t) {
+    return [0, 1, 2].map(i => (t.chars && t.chars[i]) ? getCharById(t.chars[i]) : null)
+      .filter(Boolean).map(c => c.name);
+  }
+  // 取预设码：优先用已存的，没有就现算一个
+  function presetCodeOf(t) {
+    if (t.presetCode) return String(t.presetCode).trim();
+    try {
+      const r = (typeof teamToPresetCode === 'function') ? teamToPresetCode(t) : null;
+      return (r && r.code) ? r.code : '';
+    } catch (e) { return ''; }
+  }
+  const normCode = s => String(s || '').replace(/\s+/g, '');
+  // 先确认它真是一串能解开的预设码，避免把英文队名误当成码
+  function looksLikeCode(q) {
+    if (!CODE_RE.test(q)) return false;
+    try {
+      const r = (typeof unpackPreset === 'function') ? unpackPreset(q) : null;
+      if (!r) return false;
+      return r.some(e => DATA.characters.some(c => c.sid === e.charId));
+    } catch (e) { return false; }
+  }
+  function findTeamByCode(code) {
+    const target = normCode(code);
+    for (const t of allTeams()) {
+      const c = normCode(presetCodeOf(t));
+      if (c && c === target) return t;
+    }
+    return null;
+  }
+  // 名字搜索：旅人名 或 队伍名 命中即可
+  function matchSearch(t, q) {
+    const n = q.toLowerCase();
+    if (charNamesOf(t).some(x => String(x).toLowerCase().indexOf(n) >= 0)) return true;
+    return String(t.name || '').toLowerCase().indexOf(n) >= 0;
+  }
+  function showEmpty(text) {
+    grid.style.display = 'none';
+    if (!empty) return;
+    empty.hidden = false;
+    const txt = empty.querySelector('.empty-text');
+    if (txt) txt.textContent = text;
+  }
   function matchFilter(t) {
     return FILTER_DEFS.every(d => {
       if (filterState[d.key] === 'all') return true;
@@ -933,21 +982,36 @@ function renderTeams() {
   function refresh() {
     const all = allTeams();
     renderFilterBar(all);
+    const q = searchQuery.trim();
+    // 看起来是一串预设码：直接跳到对应配队；找不到就给空页面提示
+    if (q && looksLikeCode(q)) {
+      const hit = findTeamByCode(q);
+      if (hit) { location.href = 'team.html?id=' + hit.id + (hit.isRecommended ? '&preset=1' : ''); return; }
+      if (count) count.textContent = '0';
+      showEmpty('没有找到与该预设码匹配的配队，请确认是否复制完整');
+      return;
+    }
     const filtering = FILTER_DEFS.some(d => filterState[d.key] !== 'all');
-    const list = all.filter(matchFilter);
+    // 搜索时不受筛选条件限制（搜到就显示）
+    const list = q ? all.filter(t => matchSearch(t, q)) : all.filter(matchFilter);
     if (count) count.textContent = list.length;
     if (!list.length) {
-      grid.style.display = 'none';
-      if (empty) {
-        empty.hidden = false;
-        const txt = empty.querySelector('.empty-text');
-        if (txt) txt.textContent = filtering ? '没有符合筛选条件的配队' : '还没有配队方案，点「新建配队」开始';
-      }
+      showEmpty(q ? ('没有找到包含「' + q + '」的配队')
+        : (filtering ? '没有符合筛选条件的配队' : '还没有配队方案，点「新建配队」开始'));
       return;
     }
     grid.style.display = '';
     empty.hidden = true;
     grid.innerHTML = list.map(t => t.isRecommended ? renderPresetTeamCard(t) : renderUserTeamCard(t)).join('');
+    // 复制预设码：所有人可用（不受管理员身份限制）
+    grid.querySelectorAll('.team-code-btn').forEach(b => b.addEventListener('click', ev => {
+      ev.preventDefault(); ev.stopPropagation();
+      const t = all.find(x => String(x.id) === String(b.dataset.id));
+      if (!t) return;
+      const code = presetCodeOf(t);
+      if (!code) { b.textContent = '暂无预设码'; setTimeout(() => { b.textContent = '复制预设码'; }, 1600); return; }
+      copyToClipboard(code, b);
+    }));
     if (!(typeof isAdmin === 'function' && isAdmin())) return;
     grid.querySelectorAll('.team-del').forEach(b => b.addEventListener('click', ev => {
       ev.preventDefault(); ev.stopPropagation();
@@ -957,6 +1021,17 @@ function renderTeams() {
         refresh();
       }
     }));
+  }
+  if (searchInput) {
+    const applySearch = () => {
+      const v = searchInput.value || '';
+      if (v === searchQuery) return;
+      searchQuery = v;
+      refresh();
+    };
+    searchInput.addEventListener('input', applySearch);
+    searchInput.addEventListener('search', applySearch);   // 点输入框里的小叉
+    searchInput.addEventListener('keydown', e => { if (e.key === 'Enter') applySearch(); });
   }
   if (btn) {
     if (typeof isAdmin === 'function' && !isAdmin()) btn.style.display = 'none';
@@ -1009,12 +1084,10 @@ function renderUserTeamCard(t) {
         ${tagChips ? '<div class="ut-tags">' + tagChips + '</div>' : ''}
         ${t.presetCode ? '<div class="ut-code">✓ 已设置预设码</div>' : '<div class="ut-code ut-code-empty">未设置预设码</div>'}
       </a>
-      ${(typeof isAdmin === 'function' && isAdmin())
-        ? '<div class="ut-actions"><a class="team-edit-btn" href="team.html?id=' + t.id + '&edit=1">编辑</a>'
+      <div class="ut-actions">${(typeof isAdmin === 'function' && isAdmin())
+        ? '<a class="team-edit-btn" href="team.html?id=' + t.id + '&edit=1">编辑</a>'
           + '<button class="team-del" data-id="' + t.id + '" data-name="' + escapeHtml(t.name || '') + '"' + (t.isRecommended ? ' data-preset="1"' : '') + '>删除</button>'
-          + ''
-          + '</div>'
-        : '<div class="ut-actions"><a class="team-edit-btn" href="team.html?id=' + t.id + '">查看</a></div>'}
+        : '<a class="team-edit-btn" href="team.html?id=' + t.id + '">查看</a>'}<button class="team-code-btn" data-id="${t.id}" data-label="复制预设码">复制预设码</button></div>
     </div>
   `;
 }
