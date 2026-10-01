@@ -162,12 +162,10 @@ function renderPresetTeamCard(t) {
         ${tagChips ? '<div class="ut-tags">' + tagChips + '</div>' : ''}
         ${t.presetCode ? '<div class="ut-code">✓ 已设置预设码</div>' : '<div class="ut-code ut-code-empty">未设置预设码</div>'}
       </a>
-      ${(typeof isAdmin === 'function' && isAdmin())
-        ? '<div class="ut-actions"><a class="team-edit-btn" href="team.html?id=' + t.id + '&edit=1">编辑</a>'
+      <div class="ut-actions">${(typeof isAdmin === 'function' && isAdmin())
+        ? '<a class="team-edit-btn" href="team.html?id=' + t.id + '&edit=1">编辑</a>'
           + '<button class="team-del" data-id="' + t.id + '" data-name="' + escapeHtml(t.name || '') + '" data-preset="1">删除</button>'
-          + ''
-          + '</div>'
-        : '<div class="ut-actions"><a class="team-edit-btn" href="team.html?id=' + t.id + '&preset=1">查看</a></div>'}
+        : '<a class="team-edit-btn" href="team.html?id=' + t.id + '&preset=1">查看</a>'}<button class="team-code-btn" data-id="${t.id}" data-label="复制预设码">复制预设码</button></div>
     </div>
   `;
 }

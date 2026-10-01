@@ -533,6 +533,16 @@ button { font-family: inherit; }
 .team-edit-btn { background: rgba(74,158,255,0.12); color: var(--accent); border: 1px solid rgba(74,158,255,0.3); border-radius: 6px; padding: 4px 14px; font-size: 12px; cursor: pointer; text-decoration: none; }
 .team-edit-btn:hover { background: rgba(74,158,255,0.22); }
 .ut-actions .team-del { margin: 0; }
+/* 卡片上的「复制预设码」按钮 */
+.team-code-btn { margin: 0; padding: 4px 12px; font-size: 12px; cursor: pointer; border-radius: 6px; border: 1px solid var(--border); background: var(--card); color: var(--text-secondary); }
+.team-code-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+/* 配队列表的搜索框（搜旅人名 / 预设码） */
+.team-search { margin-left: auto; display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
+.team-search-input { width: 220px; max-width: 46vw; padding: 8px 12px; border-radius: 8px; border: 1px solid var(--border); background: var(--card); color: var(--text); font-size: 14px; }
+.team-search-input:focus { outline: none; border-color: var(--accent); }
+.team-search-input::placeholder { color: var(--text-muted); }
+.team-search-hint { font-size: 12px; color: var(--text-muted); }
 .backup-title { font-size: 13px; color: var(--text-secondary); margin: 16px 0 8px; }
 .backup-title em { font-size: 11px; color: var(--text-muted); font-style: normal; }
 .backup-list { display: flex; gap: 12px; flex-wrap: wrap; }
@@ -886,6 +896,10 @@ img { max-width: 100%; height: auto; }
   .stat-v { font-size: 16px; }
   .grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
   .page-title { font-size: 20px; }
+  .page-head-row { flex-wrap: wrap; }
+  .team-search { margin-left: 0; width: 100%; align-items: stretch; }
+  .team-search-input { width: 100%; max-width: none; }
+  .team-search-hint { text-align: right; }
   .section-title { font-size: 15px; }
   .hero-title { font-size: 21px; }
   .pot-ico { width: 40px; height: 40px; }

@@ -74,7 +74,7 @@ const PAGE_DATA = {
   character:  ['characters', 'charSkills', 'charStats', 'potentialLevels'],
   patterns:   ['patterns'],
   pattern:    ['patterns', 'discSkills'],
-  teams:      ['characters', 'patterns', 'presetTeams'],       // 配队卡片要用
+  teams:      ['characters', 'patterns', 'presetTeams', 'potentialCfg'],   // 卡片要用（复制/搜索预设码需要配置）
   team:       ['characters', 'patterns', 'presetTeams', 'potentialCfg', 'potentialLevels', 'charSkills']
 };
 function dataKeysForPage() {
