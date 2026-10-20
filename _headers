@@ -16,6 +16,10 @@
 /assets/data/*
   Cache-Control: public, max-age=0, must-revalidate
 
+# ===== 更新日志配图：随时会新增，不缓存（避免坏图被 immutable 缓存 7 天）=====
+/assets/img/updates/*
+  Cache-Control: public, max-age=0, must-revalidate
+
 # ===== 图片与字体：长缓存（体积大，基本不变）=====
 /assets/img/*
   Cache-Control: public, max-age=604800, immutable

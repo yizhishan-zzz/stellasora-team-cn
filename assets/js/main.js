@@ -2193,9 +2193,17 @@ function updateBodyHtml(entry) {
   const imgs = (entry.images || []).filter(im => im && im.src);
   const byId = {};
   imgs.forEach((im, i) => { byId[String(im.id != null ? im.id : ('i' + i))] = im; });
+  // 图片地址带上版本号：Cloudflare 对不存在的图片也会回 200 + immutable，
+  // 一旦被缓存成「坏图」会卡 7 天，加 ?v= 保证拿到新地址
+  const ver = encodeURIComponent(String(entry.updatedAt || entry.id || ''));
+  const imgSrc = (src) => {
+    const s = String(src || '');
+    if (!s || s.indexOf('data:') === 0) return s;
+    return s + (s.indexOf('?') >= 0 ? '&' : '?') + 'v=' + ver;
+  };
   const fig = (im) => [
     '<figure class="upd-fig">',
-    '<img loading="lazy" decoding="async" src="' + escapeHtml(im.src) + '" alt="' + escapeHtml(im.caption || '') + '">',
+    '<img loading="lazy" decoding="async" src="' + escapeHtml(imgSrc(im.src)) + '" alt="' + escapeHtml(im.caption || '') + '" onerror="this.classList.add(\'upd-img-broken\')">',
     im.caption ? '<figcaption>' + escapeHtml(im.caption) + '</figcaption>' : '',
     '</figure>'
   ].join('');
@@ -2441,7 +2449,7 @@ async function openUpdateEditor(id) {
       const inBody = (bodyEl.value || '').indexOf('[图:' + im.id + ']') >= 0;
       return [
         '<div class="upd-imgitem" data-i="' + i + '">',
-        '<img class="upd-imgthumb" src="' + escapeHtml(im.src) + '" alt="" loading="lazy">',
+        '<img class="upd-imgthumb" src="' + escapeHtml(im.src + (String(im.src).indexOf('data:') === 0 ? '' : (String(im.src).indexOf('?') >= 0 ? '&' : '?') + 'v=' + encodeURIComponent(String((cur && cur.updatedAt) || Date.now())))) + '" alt="" loading="lazy">',
         '<div class="upd-imgmeta">',
         '<input class="admin-input upd-cap" data-i="' + i + '" placeholder="图注（显示在图片下方）" value="' + escapeHtml(im.caption || '') + '" maxlength="80">',
         '<div class="upd-imgtag">' + (inBody ? '✓ 已放进正文（想换位置就直接拖正文里的 [图:…] 那行）' : '还没放进正文：把光标放在正文里想插图的位置，再点「插入正文」') + '</div>',

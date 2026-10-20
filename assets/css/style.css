@@ -1250,3 +1250,11 @@ html[data-theme="dark"] .hero {
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
 }
 
+
+/* 更新日志配图加载失败时的占位（避免只显示一个碎图标） */
+.upd-fig img.upd-img-broken {
+  min-height: 90px; background: repeating-linear-gradient(45deg, rgba(120,160,210,.10), rgba(120,160,210,.10) 10px, transparent 10px, transparent 20px);
+  border-style: dashed;
+}
+.upd-fig img.upd-img-broken::after { content: '图片加载失败'; }
+
