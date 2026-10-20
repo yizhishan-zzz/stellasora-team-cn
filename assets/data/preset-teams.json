@@ -3257,7 +3257,9 @@
         "element": "光",
         "style": "技伤流",
         "power": "T0",
-        "scene": []
+        "scene": [
+          "单体环境"
+        ]
       },
       "chars": [
         "firstlight-noya",
@@ -3314,8 +3316,8 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1792499737804
+      "updatedAt": 1792499740518
     }
   ],
-  "updatedAt": "2026-10-20T12:35:47.689Z"
+  "updatedAt": "2026-10-20T12:35:52.926Z"
 }
