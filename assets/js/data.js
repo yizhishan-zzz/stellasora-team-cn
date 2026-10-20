@@ -99,7 +99,8 @@ async function loadData() {
   const entries = await Promise.all(
     keys.filter(k => DATA_FILES[k]).map(async (key) => {
       const url = DATA_FILES[key];
-      const resp = await fetch(url);
+      // no-cache：每次都向服务器确认（没变就回 304），避免更新后还看到旧数据
+  const resp = await fetch(url, { cache: 'no-cache' });
       if (!resp.ok) {
         if (OPTIONAL_DATA.indexOf(key) >= 0) return [key, null];
         throw new Error('加载 ' + url + ' 失败: ' + resp.status);

@@ -78,6 +78,7 @@ const FORCE_CN = {
   'Petal Bloom': '花令旅团',
   'Post Haste': '万送屋',
   'Scarlet Sights Media': '绯瞳传讯',
+  'The Night Watch': '守夜人',
   'Trekker Association': '地理协会',
   'United Harvest': '联合种业',
   'White Cat Troupe': '白猫剧团',
@@ -257,7 +258,8 @@ for (const sid of Object.keys(charBin)) {
         name: p.nameCN || p.name,
         flow: FLOW[key],
         type: isCore(key) ? '核心潜能' : '金潜能',
-        desc: clean(potCN['Potential.' + p.id + '.2'] || potCN['Potential.' + p.id + '.1']),
+        // 与老角色一致：保留 &ParamN& 占位符，前端才能按等级填数值
+        desc: cleanKeepParams(potCN['Potential.' + p.id + '.2'] || potCN['Potential.' + p.id + '.1']),
         icon: potentialIcon(p, null),
         potId: p.id,
         rarity: p.rarity || (isCore(key) ? 'core' : 'common'),
