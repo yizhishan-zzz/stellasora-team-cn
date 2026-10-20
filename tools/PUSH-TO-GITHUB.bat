@@ -18,11 +18,21 @@ git remote remove origin >nul 2>&1
 git remote add origin %REPO%
 git branch -M main
 echo.
-echo --- Step 1/5: merge cloud teams back into the local file ---
+echo --- Step 1/7: merge cloud teams back into the local file ---
 node --use-system-ca tools\sync-teams-from-cloud.js
 if errorlevel 1 node tools\sync-teams-from-cloud.js
 echo.
-echo --- Step 2/5: check data files and bat scripts ---
+echo --- Step 2/7: pull web-edited data back before pushing ---
+git fetch origin main
+if errorlevel 1 (
+  echo     [!] Cannot reach GitHub. Skipping this step.
+) else (
+  git show origin/main:assets/data/updates.json > "tools\_cloud_updates.json" 2>nul
+  git show origin/main:assets/data/char-meta.json > "tools\_cloud_charmeta.json" 2>nul
+  node tools\merge-cloud-data.js
+)
+echo.
+echo --- Step 3/7: check data files and bat scripts ---
 node tools\check-data.js
 if errorlevel 1 (
   echo.
@@ -38,22 +48,39 @@ if errorlevel 1 (
   exit /b 1
 )
 echo.
-echo --- Step 3/5: commit merged data ---
+echo --- Step 4/7: commit local changes ---
 git add -A
 git -c user.name="yizhishan_zzz" -c user.email="3910443008@qq.com" commit -q -m "update site" >nul 2>&1
 echo.
-echo --- Step 4/5: push ---
-git fetch origin main
-git push --force origin main
+echo --- Step 5/7: merge remote commits, keep both sides ---
+git merge --no-edit -X ours origin/main >nul 2>&1
+if errorlevel 1 (
+  git merge --abort >nul 2>&1
+  echo.
+  echo     [X] Merge conflict with the remote repository.
+  echo         Nothing was uploaded, the site is unchanged.
+  echo         Run this file again; if it keeps failing, tell the assistant.
+  if /i not "%NOPAUSE%"=="nopause" pause
+  exit /b 1
+)
+echo.
+echo --- Step 6/7: push  ^(normal push, never force^) ---
+git push origin main
 if errorlevel 1 (
   echo.
-  echo     [!] Push failed. Retrying once ...
+  echo     [!] Push failed. Pulling once more and retrying ...
   echo     If a login prompt appears:
   echo        Username : yizhishan-zzz
   echo        Password : paste your token
   echo.
   git fetch origin main
-  git push --force origin main
+  git show origin/main:assets/data/updates.json > "tools\_cloud_updates.json" 2>nul
+  git show origin/main:assets/data/char-meta.json > "tools\_cloud_charmeta.json" 2>nul
+  node tools\merge-cloud-data.js
+  git add -A
+  git -c user.name="yizhishan_zzz" -c user.email="3910443008@qq.com" commit -q -m "update site" >nul 2>&1
+  git merge --no-edit -X ours origin/main >nul 2>&1
+  git push origin main
 )
 if errorlevel 1 (
   echo.
@@ -67,7 +94,7 @@ if errorlevel 1 (
 echo.
 echo [OK] Uploaded!
 echo.
-echo --- Step 5/5: verify + notify Bing ---
+echo --- Step 7/7: verify + notify Bing ---
 node tools\verify-push.js
 node --use-system-ca tools\submit-indexnow.js
 echo.
