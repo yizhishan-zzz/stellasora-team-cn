@@ -1,28 +1,6 @@
 {
   "entries": [
     {
-      "id": "u_mvg7ml05",
-      "title": "艾蕾版本更新",
-      "date": "2026/09/29",
-      "body": "更新新旅人艾蕾\n\n更新新秘纹美好，尽在昨日；睡前童话\n\n更新新配队艾蕾技伤流（依旧T0）；艾蕾印记流（！？强强？！）；艾蕾技伤流低配版\n\n网页链接：https://stellasora-team-cn.pages.dev/\n\n[图:imvg7m9ux288]\n",
-      "images": [
-        {
-          "id": "imvg7m9ux288",
-          "src": "assets/img/updates/xtlr_update_2026_10_20_113317.png",
-          "caption": "预览图"
-        }
-      ],
-      "updatedAt": "2026-10-20T04:55:32.309Z"
-    },
-    {
-      "id": "u_mvg7guls",
-      "title": "星塔旅人配队一览（免费，为爱发电作品）正式开放",
-      "date": "2026/09/25",
-      "body": "本站为玩家自制的非官方工具，与游戏官方无任何关联\n项目完全免费、无广告、无打赏、无任何盈利\n站内游戏素材（立绘、头像、图标等）版权归原发行商所有，仅用于资料展示，不提供素材下载；如涉侵权可通过网站底部联系方式告知，我会立即删除或调整\n已向悠星客服邮箱报备过本项目\n配队预设码使用已获星塔攻略组授权\n\n网站地址：https://stellasora-team-cn.pages.dev\n建议复制网址到浏览器打开，B站内置浏览器可能打不开\n\n当然此项目也已经在github上开源，网站链接：https://github.com/yizhishan-zzz/stellasora-team-cn\n（由于我是第一次开发网站，所以github上提交的次数会很多，相关经验较少，还请理解）\n\n感谢星塔攻略组的预设码授权\n数据来源为stelladb的github开源库，网站链接：https://github.com/AutumnVN/stelladb（使用了ss-data 与 ssassets 资源）\n\n本项目由本人独立开发完成，承诺永久免费、不接任何广告。\n感谢每一位愿意试用并提出建议的魔王，\n有 bug 或想法欢迎在b站bv号：BV1xeh26sEP6 的视频评论区留言。",
-      "images": [],
-      "updatedAt": "2026-10-20T04:53:02.148Z"
-    },
-    {
       "id": "u_mvg86chi",
       "title": "更新艾蕾新手向配队，配队页面添加搜索框，支持搜索旅人/预设码来查看配队",
       "date": "2026/10/01",
@@ -50,7 +28,37 @@
         }
       ],
       "updatedAt": "2026-10-20T05:11:36.000Z"
+    },
+    {
+      "id": "u_mvg7ml05",
+      "title": "艾蕾版本更新",
+      "date": "2026/09/29",
+      "body": "更新新旅人艾蕾\n\n更新新秘纹美好，尽在昨日；睡前童话\n\n更新新配队艾蕾技伤流（依旧T0）；艾蕾印记流（！？强强？！）；艾蕾技伤流低配版\n\n网页链接：https://stellasora-team-cn.pages.dev/\n\n[图:imvg7m9ux288]\n",
+      "images": [
+        {
+          "id": "imvg7m9ux288",
+          "src": "assets/img/updates/xtlr_update_2026_10_20_113317.png",
+          "caption": "预览图"
+        }
+      ],
+      "updatedAt": "2026-10-20T04:55:32.309Z"
+    },
+    {
+      "id": "u_mvg7guls",
+      "title": "星塔旅人配队一览（免费，为爱发电作品）正式开放",
+      "date": "2026/09/25",
+      "body": "本站为玩家自制的非官方工具，与游戏官方无任何关联\n项目完全免费、无广告、无打赏、无任何盈利\n站内游戏素材（立绘、头像、图标等）版权归原发行商所有，仅用于资料展示，不提供素材下载；如涉侵权可通过网站底部联系方式告知，我会立即删除或调整\n已向悠星客服邮箱报备过本项目\n配队预设码使用已获星塔攻略组授权\n\n网站地址：https://stellasora-team-cn.pages.dev\n建议复制网址到浏览器打开，B站内置浏览器可能打不开\n\n当然此项目也已经在github上开源，网站链接：https://github.com/yizhishan-zzz/stellasora-team-cn\n（由于我是第一次开发网站，所以github上提交的次数会很多，相关经验较少，还请理解）\n\n感谢星塔攻略组的预设码授权\n数据来源为stelladb的github开源库，网站链接：https://github.com/AutumnVN/stelladb（使用了ss-data 与 ssassets 资源）\n\n本项目由本人独立开发完成，承诺永久免费、不接任何广告。\n感谢每一位愿意试用并提出建议的魔王，\n有 bug 或想法欢迎在b站bv号：BV1xeh26sEP6 的视频评论区留言。",
+      "images": [],
+      "updatedAt": "2026-10-20T04:53:02.148Z"
+    },
+    {
+      "id": "u_mvg88a5n",
+      "title": "10.20大更新占位",
+      "date": "2026/10/20",
+      "body": "10.20大更新占位",
+      "images": [],
+      "updatedAt": "2026-10-20T05:12:24.683Z"
     }
   ],
-  "updatedAt": "2026-10-20T05:11:36.000Z"
+  "updatedAt": "2026-10-20T05:12:24.683Z"
 }
