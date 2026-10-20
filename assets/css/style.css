@@ -859,11 +859,11 @@ img { max-width: 100%; height: auto; }
   .slot-row .slot { width: 64px; }
   .slot-row .slot img { width: 56px; height: 56px; }
 
-  /* 图鉴网格：两列更合适 */
-  .grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 10px; }
+  /* 图鉴网格：手机上自动铺满 */
+  .grid, .grid.patterns { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 10px; }
   .grid.teams { grid-template-columns: 1fr; }
   /* 旅人页：头像铺满整个框（不裁成留白） */
-  .char-card .char-portrait { max-height: none; width: 100%; height: 100%; object-fit: cover; }
+  .char-card .char-portrait { max-height: none; width: 100%; height: 100%; object-fit: cover; object-position: center top; }
   .char-card .star-img { max-height: none; width: auto; height: auto; }
   /* 秘纹页：按图片自身比例显示，不拉伸也不裁切 */
   .pattern-card .pattern-card-media { aspect-ratio: auto; }
@@ -900,7 +900,22 @@ img { max-width: 100%; height: auto; }
   .pattern-big, .pattern-big img { width: 120px !important; height: 120px !important; }
   .stat-card { flex: 1 1 45%; }
   .stat-v { font-size: 16px; }
-  .grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  /* 手机：旅人和秘纹都一行三个 */
+  .grid, .grid.patterns { grid-template-columns: repeat(3, 1fr); gap: 7px; }
+  .grid.teams { grid-template-columns: 1fr; }
+  /* 三列后卡片变窄，缩小边距与字号 */
+  .char-card-body { padding: 7px 7px 8px; }
+  .char-card-name { font-size: 12.5px; line-height: 1.3; }
+  .char-card-meta { gap: 4px; margin-top: 5px; }
+  .char-card-meta .badge { font-size: 10px; padding: 1px 4px; }
+  .char-card-media .stars { left: 4px; top: 4px; }
+  .char-card-media .stars .star-img { width: 9px !important; height: 9px !important; }
+  .char-buff { right: 4px; top: 4px; font-size: 9.5px; padding: 2px 4px; }
+  .pattern-card-body { padding: 7px; gap: 4px; }
+  .pattern-card-name { font-size: 12.5px; line-height: 1.3; }
+  .pattern-card-meta { font-size: 10.5px; }
+  .pattern-card-effect { font-size: 10.5px; line-height: 1.35; }
+  .pattern-card-head { gap: 4px; }
   .page-title { font-size: 20px; }
   .page-head-row { flex-wrap: wrap; }
   .team-search { margin-left: 0; width: 100%; align-items: stretch; }
