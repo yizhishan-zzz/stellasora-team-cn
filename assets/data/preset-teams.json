@@ -3268,9 +3268,9 @@
         "tiliya"
       ],
       "mainPatterns": [
-        null,
-        null,
-        null
+        "p103",
+        "p070",
+        "p055"
       ],
       "mainBackup": [
         null,
@@ -3317,8 +3317,8 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1792499741450
+      "updatedAt": 1792499782317
     }
   ],
-  "updatedAt": "2026-10-20T12:35:57.745Z"
+  "updatedAt": "2026-10-20T12:36:22.318Z"
 }
