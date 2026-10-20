@@ -1,4 +1,20 @@
 {
-  "chars": {},
-  "updatedAt": ""
+  "chars": {
+    "chixia": {
+      "strengthened": true
+    },
+    "huayuan": {
+      "strengthened": true
+    },
+    "mimiebo": {
+      "strengthened": true
+    },
+    "fengying": {
+      "strengthened": true
+    },
+    "gerui": {
+      "strengthened": true
+    }
+  },
+  "updatedAt": "2026-10-20T06:10:42.584Z"
 }
