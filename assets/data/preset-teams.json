@@ -3251,7 +3251,7 @@
       "id": "t_mvgny1ifogii",
       "name": "尘沙火垂技伤（尘沙单C）",
       "date": "2026/10/20",
-      "presetCode": "AAAAogAAAHMAAABrzbADbYbBgAAMAGwAAAAA",
+      "presetCode": "AAAAogAAAHMAAABrzbADbYbBgAwMAGwAAAwA",
       "description": "参考了星塔攻略组的预设，网页链接：https://www.bilibili.com/opus/1261247765294350354?spm_id_from=333.1365.0.0\n话说尘沙要抓10个潜能我是没绷住的，这里需要用到新的技巧，技巧由攻略组提供，主控潜能6级都满级的话会卡出新的潜能达到9个甚至10个主控潜能\n72潜能及毕业，尘沙自拐还是太强了（内心os：不对，攻击类辅助的尘沙吃不到，这是完全的生命模板，那就能说清楚了）",
       "tags": {
         "element": "光",
@@ -3319,7 +3319,7 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1792516902834
+      "updatedAt": 1792516904575
     },
     {
       "id": "t_mvgoxehgvuot",
@@ -3465,5 +3465,5 @@
       "updatedAt": 1792502170912
     }
   ],
-  "updatedAt": "2026-10-20T17:21:42.834Z"
+  "updatedAt": "2026-10-20T17:21:45.881Z"
 }
