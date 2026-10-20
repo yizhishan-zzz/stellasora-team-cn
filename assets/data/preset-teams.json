@@ -3254,7 +3254,7 @@
       "presetCode": "AAAAogAAAHMAAABrzbADbYbBgAAMAGwAAAAA",
       "description": "",
       "tags": {
-        "element": "",
+        "element": "光",
         "style": "",
         "power": "",
         "scene": []
@@ -3314,8 +3314,8 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1792499733597
+      "updatedAt": 1792499734736
     }
   ],
-  "updatedAt": "2026-10-20T12:35:33.598Z"
+  "updatedAt": "2026-10-20T12:35:37.154Z"
 }
