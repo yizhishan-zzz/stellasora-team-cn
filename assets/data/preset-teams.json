@@ -3349,9 +3349,9 @@
         null
       ],
       "subPatterns": [
-        null,
-        null,
-        null
+        "p067",
+        "p002",
+        "p051"
       ],
       "subBackup": [
         null,
@@ -3385,7 +3385,7 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1792501745111
+      "updatedAt": 1792501759751
     },
     {
       "id": "t_mvgoyhvzv964",
@@ -3456,5 +3456,5 @@
       "updatedAt": 1792501277324
     }
   ],
-  "updatedAt": "2026-10-20T13:09:05.111Z"
+  "updatedAt": "2026-10-20T13:09:19.752Z"
 }
