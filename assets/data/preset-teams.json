@@ -3252,7 +3252,7 @@
       "name": "尘沙火垂技伤",
       "date": "2026/10/20",
       "presetCode": "AAAAogAAAHMAAABrzbADbYbBgAAMAGwAAAAA",
-      "description": "",
+      "description": "参考了星塔攻略组的预设，网页链接：",
       "tags": {
         "element": "光",
         "style": "技伤流",
@@ -3317,8 +3317,8 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1792499827976
+      "updatedAt": 1792499848102
     }
   ],
-  "updatedAt": "2026-10-20T12:37:07.977Z"
+  "updatedAt": "2026-10-20T12:37:28.103Z"
 }
