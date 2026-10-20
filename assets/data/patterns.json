@@ -9719,6 +9719,244 @@
       "maxLevel": 6,
       "gkId": null,
       "sid": 214062
+    },
+    {
+      "id": "p103",
+      "name": "指引前路的启明星",
+      "portrait": "assets/img/hd/outfit/outfit_4066.webp",
+      "rarity": 5,
+      "element": "light",
+      "funcs": [
+        "生命",
+        "技能",
+        "暴击伤害"
+      ],
+      "melody": {
+        "name": "指引前路的启明星",
+        "tpl": "全队生命值提升{1}。 主控角色首次触发##光系印记#1015#后，获得1层「星愿」。 附带「星愿」的角色对目标造成技能伤害时，使目标受到光系技能伤害提升{2}，持续{3}秒。 光系主控角色触发印记产生##光耀#4028#时，自身暴击率提升{4}，持续{5}秒。",
+        "params": [
+          "15%,15%,5,15%,8",
+          "18%,18%,5,18%,8",
+          "21%,21%,5,21%,8",
+          "24%,24%,5,24%,8",
+          "27%,27%,5,27%,8",
+          "30%,30%,5,30%,8"
+        ],
+        "skillImg": "assets/img/hd/discskill/DiscSkill_214066.webp",
+        "dupe": [
+          130,
+          260,
+          390,
+          520,
+          650
+        ],
+        "buffs": [
+          "assets/img/hd/buff/Icon_DiscBuff_214066_Buff.webp"
+        ]
+      },
+      "harmony": [
+        {
+          "name": "星愿闪耀",
+          "tpl": "均衡角色首次对目标附加##光系印记#1015#后，主控角色获得1层「星愿」。 附带「星愿」的角色对目标造成普攻伤害时，使目标受到光系普攻伤害提升{1}，持续{2}秒。 「星愿」获得额外效果：每层使自身光系技能伤害和光系普攻伤害提升{3}。",
+          "params": [
+            "10%,5,7.5%",
+            "15%,5,15%",
+            "20%,5,22.5%",
+            "25%,5,30%",
+            "30%,5,37.5%"
+          ],
+          "skillImg": "assets/img/hd/discskill/DiscSkill_4.webp",
+          "levels": [
+            {
+              "Melody of Skill": 10,
+              "Melody of Lux": 10
+            },
+            {
+              "Melody of Skill": 25,
+              "Melody of Lux": 25
+            },
+            {
+              "Melody of Skill": 40,
+              "Melody of Lux": 40
+            },
+            {
+              "Melody of Skill": 55,
+              "Melody of Lux": 55
+            },
+            {
+              "Melody of Skill": 70,
+              "Melody of Lux": 70
+            }
+          ],
+          "buffs": []
+        },
+        {
+          "name": "开拓明日",
+          "tpl": "辅助角色首次对目标附加##光系印记#1015#后，主控角色获得1层「星愿」。 任意光系角色施放技能时，光系主控角色暴击伤害提升{1}，持续{2}秒。 「星愿」获得额外效果：每层使光系主控角色造成的技能暴击伤害提升{3}。",
+          "params": [
+            "15%,12,3%",
+            "20%,12,4%",
+            "25%,12,5%",
+            "30%,12,6%",
+            "35%,12,7%"
+          ],
+          "skillImg": "assets/img/hd/discskill/DiscSkill_3.webp",
+          "levels": [
+            {
+              "Melody of Luck": 15,
+              "Melody of Skill": 15,
+              "Melody of Lux": 15
+            },
+            {
+              "Melody of Luck": 30,
+              "Melody of Skill": 30,
+              "Melody of Lux": 30
+            },
+            {
+              "Melody of Luck": 45,
+              "Melody of Skill": 45,
+              "Melody of Lux": 45
+            },
+            {
+              "Melody of Luck": 60,
+              "Melody of Skill": 60,
+              "Melody of Lux": 60
+            },
+            {
+              "Melody of Luck": 75,
+              "Melody of Skill": 75,
+              "Melody of Lux": 75
+            }
+          ],
+          "buffs": []
+        }
+      ],
+      "notes": [
+        "luck",
+        "light"
+      ],
+      "maxLevel": 6,
+      "gkId": null,
+      "sid": 214066
+    },
+    {
+      "id": "p104",
+      "name": "永恒的闪耀",
+      "portrait": "assets/img/hd/outfit/outfit_4067.webp",
+      "rarity": 5,
+      "element": "light",
+      "funcs": [
+        "元素",
+        "技能",
+        "普攻"
+      ],
+      "melody": {
+        "name": "永恒的闪耀",
+        "tpl": "光系主控角色累计造成{1}次普攻或技能伤害时，获得1层「永恒」：光系技能伤害提升{2}，持续{3}秒，可叠加10层。 主控角色拥有「永恒」时，全队造成的光系伤害提升{4}。",
+        "params": [
+          "5,0.5%,15,5%",
+          "5,0.6%,15,6%",
+          "5,0.7%,15,7%",
+          "5,0.8%,15,8%",
+          "5,0.9%,15,9%",
+          "5,1%,15,10%"
+        ],
+        "skillImg": "assets/img/hd/discskill/DiscSkill_214067.webp",
+        "dupe": [
+          130,
+          260,
+          390,
+          520,
+          650
+        ],
+        "buffs": [
+          "assets/img/hd/buff/Icon_DiscBuff_214067_Buff.webp"
+        ]
+      },
+      "harmony": [
+        {
+          "name": "永恒之庭",
+          "tpl": "光系均衡角色每在场{1}秒，为主控角色附加1层「永恒」。 「永恒」获得额外效果：每层使自身光系普攻伤害提升{2}。",
+          "params": [
+            "5,0.3%",
+            "5,0.6%",
+            "5,0.9%",
+            "5,1.2%",
+            "5,1.5%"
+          ],
+          "skillImg": "assets/img/hd/discskill/DiscSkill_4.webp",
+          "levels": [
+            {
+              "Melody of Stamina": 10,
+              "Melody of Lux": 10
+            },
+            {
+              "Melody of Stamina": 25,
+              "Melody of Lux": 25
+            },
+            {
+              "Melody of Stamina": 40,
+              "Melody of Lux": 40
+            },
+            {
+              "Melody of Stamina": 55,
+              "Melody of Lux": 55
+            },
+            {
+              "Melody of Stamina": 70,
+              "Melody of Lux": 70
+            }
+          ],
+          "buffs": []
+        },
+        {
+          "name": "人心之光",
+          "tpl": "光系辅助角色施放技能时，为主控角色附加1层「永恒」。 「永恒」可叠加至20层，「永恒」满层时，自身造成的光系伤害提升{1}。",
+          "params": [
+            "5%",
+            "10%",
+            "15%",
+            "20%",
+            "25%"
+          ],
+          "skillImg": "assets/img/hd/discskill/DiscSkill_14.webp",
+          "levels": [
+            {
+              "Melody of Stamina": 15,
+              "Melody of Skill": 15,
+              "Melody of Lux": 15
+            },
+            {
+              "Melody of Stamina": 30,
+              "Melody of Skill": 30,
+              "Melody of Lux": 30
+            },
+            {
+              "Melody of Stamina": 45,
+              "Melody of Skill": 45,
+              "Melody of Lux": 45
+            },
+            {
+              "Melody of Stamina": 60,
+              "Melody of Skill": 60,
+              "Melody of Lux": 60
+            },
+            {
+              "Melody of Stamina": 75,
+              "Melody of Skill": 75,
+              "Melody of Lux": 75
+            }
+          ],
+          "buffs": []
+        }
+      ],
+      "notes": [
+        "technique",
+        "light"
+      ],
+      "maxLevel": 6,
+      "gkId": null,
+      "sid": 214067
     }
   ]
 }
