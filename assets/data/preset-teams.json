@@ -3327,7 +3327,7 @@
       "description": "算是攻略组的尘沙火垂技伤的变种，所以我这里还是要放下网页链接：https://www.bilibili.com/opus/1261247765294350354?spm_id_from=333.1365.0.0\n其他不变，就让希娅纯加爆伤\n",
       "tags": {
         "element": "光",
-        "style": "",
+        "style": "技伤流",
         "power": "",
         "scene": []
       },
@@ -3385,7 +3385,7 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1792501832630
+      "updatedAt": 1792501834279
     },
     {
       "id": "t_mvgoyhvzv964",
@@ -3456,5 +3456,5 @@
       "updatedAt": 1792501277324
     }
   ],
-  "updatedAt": "2026-10-20T13:10:32.800Z"
+  "updatedAt": "2026-10-20T13:10:35.594Z"
 }
