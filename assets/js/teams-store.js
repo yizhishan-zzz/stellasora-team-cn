@@ -282,9 +282,13 @@ function newTeamId() {
   return 't_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
 }
 function blankTeam(name) {
+  // 更新日期：新建时就按北京时间的年月日记下来
+  const today = (typeof beijingToday === 'function') ? beijingToday()
+    : (function () { const d = new Date(); const p = n => (String(n).length < 2 ? '0' + n : String(n)); return d.getFullYear() + '/' + p(d.getMonth() + 1) + '/' + p(d.getDate()); })();
   return {
     id: newTeamId(),
     name: name || '新配队',
+    date: today,
     presetCode: '',
     description: '',
     tags: { element: '', style: '', power: '', scene: [] },

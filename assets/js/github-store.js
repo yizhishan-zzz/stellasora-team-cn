@@ -56,7 +56,16 @@ async function ghReadFile(cfg, filePath) {
 }
 // 写入文件（自动带 sha 实现覆盖提交；遇到版本冲突自动重取 sha 重试）
 async function ghWriteFile(cfg, filePath, text, message) {
-  const content = utf8ToB64(text);
+  return ghPutContent(cfg, filePath, utf8ToB64(text), message);
+}
+
+// 写入二进制文件：content 已经是 base64（图片上传用）
+async function ghWriteFileB64(cfg, filePath, b64, message) {
+  return ghPutContent(cfg, filePath, String(b64).replace(/\s+/g, ''), message);
+}
+
+// 底层提交逻辑
+async function ghPutContent(cfg, filePath, content, message) {
   let lastErr = null;
   for (let attempt = 0; attempt < 4; attempt++) {
     // 每次尝试都重新读一次当前文件的 sha，避免「文件已被别处改动」的 409 冲突

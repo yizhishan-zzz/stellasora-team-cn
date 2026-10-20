@@ -47,7 +47,7 @@ echo --- [6/8] download images ---
 node --use-system-ca download-hd.js
 if errorlevel 1 node download-hd.js
 echo.
-echo --- [7/8] compress images (skips already done) ---
+echo --- [7/8] compress images ^(skips already done^) ---
 node --use-system-ca compress-images.js
 echo.
 echo --- [8/8] check data + prerender ---

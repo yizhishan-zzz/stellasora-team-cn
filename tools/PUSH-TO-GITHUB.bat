@@ -5,7 +5,7 @@ set "NOPAUSE=%~1"
 if defined SS_NOPAUSE set "NOPAUSE=nopause"
 set REPO=https://github.com/yizhishan-zzz/stellasora-team-cn.git
 echo ==================================================
-echo   Upload to GitHub  (Cloudflare rebuilds in ~1 min)
+echo   Upload to GitHub  ^(Cloudflare rebuilds in ~1 min^)
 echo   Folder: %CD%
 echo ==================================================
 echo.

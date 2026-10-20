@@ -88,7 +88,10 @@ function initNavbar(active) {
       <div class="navbar-inner">
         <a class="brand" href="index.html"><img loading="lazy" decoding="async" class="brand-logo" src="assets/img/logo.ico" alt="" width="26" height="26">星塔旅人配队一览</a>
         <nav class="nav-links">${links}</nav>
-        <span id="adminSlot" class="admin-slot"></span>
+        <span class="nav-right">
+          <button type="button" id="themeToggle" class="theme-toggle${document.documentElement.getAttribute('data-theme') === 'dark' ? ' is-dark' : ''}" title="切换深色模式" aria-label="切换深色模式"><span class="ci ci-sun"></span><span class="ci ci-moon"></span></button>
+          <span id="adminSlot" class="admin-slot"></span>
+        </span>
       </div>
     </header>
   `;
@@ -100,9 +103,11 @@ function renderCharCard(char) {
     char.element ? elIcon(char.element) : '<span class="badge badge-none">元素待补</span>',
     char.role ? '<span class="badge role-' + char.role + '">' + roleName(char.role) + '</span>' : '<span class="badge badge-none">职业待补</span>'
   ].join('');
+  // 已加强的旅人在卡片上加个小标（配合图鉴的「加强」筛选）
+  const buffed = (typeof isCharStrengthened === 'function') && isCharStrengthened(char.id);
   return `
     <a class="char-card" href="character.html?id=${char.id}">
-      <div class="char-card-media">${renderPortrait(char, 'char-portrait', { thumb: true, w: 256, h: 256 })}${renderStars(char.rarity)}</div>
+      <div class="char-card-media">${renderPortrait(char, 'char-portrait', { thumb: true, w: 256, h: 256 })}${renderStars(char.rarity)}${buffed ? '<span class="char-buff">加强</span>' : ''}</div>
       <div class="char-card-body">
         <div class="char-card-name">${escapeHtml(char.name)}</div>
         <div class="char-card-meta">${meta}</div>

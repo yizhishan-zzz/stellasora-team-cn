@@ -23,6 +23,8 @@
   <!-- 首屏字体预加载：正文最常用的字重，提前拉取，减少文字闪烁 -->
   <link rel="preload" href="assets/fonts/MiSans-Regular.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/MiSansLatin-Regular.woff2" as="font" type="font/woff2" crossorigin>
+  <!-- 深色模式：尽早应用偏好，避免刷新时闪白 -->
+  <script>try{if(localStorage.getItem("ss_theme")==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}</script>
 </head>
 <body data-page="patterns">
   <noscript><h1>星塔旅人配队一览</h1><p>星塔旅人秘纹图鉴：按音符、品质、元素、功能筛选，查看主效果与协奏效果。</p></noscript>
@@ -1183,6 +1185,16 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
   <main class="container">
     <div class="page-head">
       <h1 class="page-title">秘纹图鉴</h1>
@@ -1190,7 +1202,7 @@
     </div>
     <div class="filter-bar" id="filters"></div>
     <div class="grid patterns" id="grid"></div>
-    <div class="empty" id="empty" hidden><div class="empty-icon">🔍</div><div class="empty-text">没有符合条件的秘纹</div></div>
+    <div class="empty" id="empty" hidden><div class="empty-icon"><span class="ci ci-search"></span></div><div class="empty-text">没有符合条件的秘纹</div></div>
   </main>
 
   <script src="assets/js/auth.js"></script>

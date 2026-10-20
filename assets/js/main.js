@@ -10,7 +10,8 @@ const routes = {
   teams: renderTeams,
   team: renderTeam,
   patterns: renderPatterns,
-  pattern: renderPattern
+  pattern: renderPattern,
+  updates: renderUpdates
 };
 
 async function init() {
@@ -23,6 +24,7 @@ async function init() {
   }
   const page = document.body.dataset.page;
   initNavbar(page);
+  initTheme();
   initFooter();
     initAdminButton();
   // 接数据源：本机文件 / 线上仓库 / 本地暂存
@@ -33,6 +35,28 @@ async function init() {
   if (pre && pre.parentNode) pre.parentNode.removeChild(pre);
 
   if (routes[page]) routes[page]();
+}
+
+// ===== 深色模式 =====
+// 首屏闪白靠每个 HTML <head> 里的一小段内联脚本避免，这里只负责切换与图标同步
+function initTheme() {
+  const root = document.documentElement;
+  const btn = document.getElementById('themeToggle');
+  const isDark = () => root.getAttribute('data-theme') === 'dark';
+  const sync = () => {
+    if (!btn) return;
+    btn.classList.toggle('is-dark', isDark());   // 深色=月亮，浅色=太阳（纯 CSS 画）
+    const label = isDark() ? '切换到浅色模式' : '切换到深色模式';
+    btn.title = label;
+    btn.setAttribute('aria-label', label);
+  };
+  if (btn) btn.addEventListener('click', () => {
+    if (isDark()) root.removeAttribute('data-theme');
+    else root.setAttribute('data-theme', 'dark');
+    try { localStorage.setItem('ss_theme', isDark() ? 'dark' : 'light'); } catch (e) {}
+    sync();
+  });
+  sync();
 }
 
 // 全站页脚（字体标注）
@@ -86,7 +110,7 @@ function setupListPage(defs, data, renderItem, gridId, countId, emptyId) {
   function render() {
     const list = data.filter(item => defs.every(d => {
       if (state[d.key] === 'all') return true;
-      const v = item[d.key];
+      const v = d.get ? d.get(item) : item[d.key];
       if (d.kind === 'int') return v === parseInt(state[d.key], 10);
       if (d.kind === 'bool') return v === (state[d.key] === 'true');
       if (d.kind === 'array') return Array.isArray(v) && v.includes(state[d.key]);
@@ -141,12 +165,109 @@ function styleIcon(v) { return '<i class="tag-ico style ' + styleIcoCls(v) + '">
 function powerIcon(v) { return '<i class="tag-ico power ' + powerIcoCls(v) + '">' + escapeHtml(v) + '</i>'; }
 const TEAM_SCENES = SCENE_OPTIONS;
 // 兼容旧数据：没有 scene 字段时按空数组处理
+// ===== 配队更新日期（精确到日，默认 2026/09/20）=====
+// 新建配队时由 blankTeam 写入「北京时间的今天」；
+// 老配队没有日期字段时保持这个固定值，避免日期天天变。
+const DEFAULT_TEAM_DATE = '2026/09/25';
+function normTeamDate(v) {
+  const s = String(v == null ? '' : v).trim();
+  if (!s) return DEFAULT_TEAM_DATE;
+  const m = /^(\d{4})[\/\-.](\d{1,2})[\/\-.](\d{1,2})$/.exec(s);
+  if (!m) return DEFAULT_TEAM_DATE;
+  const pad = n => (String(n).length < 2 ? '0' + n : String(n));
+  return m[1] + '/' + pad(m[2]) + '/' + pad(m[3]);
+}
+
+// ===== 旅人「加强」状态（云端共享，管理员可改）=====
+function charMetaOf(id) {
+  const m = (DATA.charMeta && DATA.charMeta.chars) || {};
+  return m[id] || {};
+}
+function isCharStrengthened(id) { return !!charMetaOf(id).strengthened; }
+
+// 把加强状态写回 assets/data/char-meta.json（管理员）
+// ===== 本地服务器直写 =====
+// tools/serve.js 在跑（localhost）时，管理员改的东西可以直接写进仓库文件，
+// 这样「一键更新并发布.bat」就会把加强状态/更新日志一起提交上去。
+function isLocalServer() {
+  try {
+    return /^https?:$/.test(location.protocol) &&
+      /^(localhost|127\.0\.0\.1|0\.0\.0\.0)$/.test(location.hostname);
+  } catch (e) { return false; }
+}
+
+async function localApiPut(apiPath, payload) {
+  if (!isLocalServer()) return null;
+  try {
+    const resp = await fetch(apiPath, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    if (!resp.ok) return null;
+    const j = await resp.json();
+    return (j && j.ok) ? j : null;
+  } catch (e) { return null; }
+}
+
+async function saveCharMeta(id, strengthened) {
+  const chars = Object.assign({}, (DATA.charMeta && DATA.charMeta.chars) || {});
+  chars[id] = Object.assign({}, chars[id] || {}, { strengthened: !!strengthened });
+  const payload = { chars: chars, updatedAt: new Date().toISOString() };
+  DATA.charMeta = payload;
+  const json = JSON.stringify(payload, null, 2);
+  try { localStorage.setItem('ss_char_meta', json); } catch (e) {}
+  // 本地服务器在跑 → 直接写进 assets/data/char-meta.json（发布时会一起推上去）
+  const local = await localApiPut('/api/char-meta', payload);
+  if (local) { showToast('已写入本地文件（发布时会一起推上去）', 'ok'); return { ok: true, where: 'localFile' }; }
+  if (typeof ghConfigured === 'function' && ghConfigured()) {
+    await ghWriteFile(ghGetCfg(), 'assets/data/char-meta.json', json, '更新旅人加强状态');
+    showToast('已同步到线上仓库', 'ok');
+    return { ok: true, where: 'github' };
+  }
+  showToast('已存到本机（未连接仓库，别人看不到）', 'err');
+  return { ok: true, where: 'local' };
+}
+
 function teamScenes(t) {
   const v = (t && t.tags) ? t.tags.scene : null;
   return Array.isArray(v) ? v.filter(s => TEAM_SCENES.indexOf(s) >= 0) : [];
 }
 
 // ============ 首页 ============
+// ===== 旅人速览：每日凌晨 3 点换一批（同一天内所有人看到同一批）=====
+function dailySeed() {
+  const shifted = new Date(Date.now() - 3 * 3600 * 1000);   // 3 点之前算前一天
+  return shifted.getFullYear() * 10000 + (shifted.getMonth() + 1) * 100 + shifted.getDate();
+}
+function seededRandom(seed) {
+  let a = seed >>> 0;
+  return function () {
+    a = (a + 0x6D2B79F5) >>> 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+// 洗牌后取前 n 个：保证同一个 id 不会重复（异格/换皮的 id 不同，可以同时出现）
+function pickDailyChars(list, n) {
+  const arr = (list || []).slice();
+  const rnd = seededRandom(dailySeed());
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(rnd() * (i + 1));
+    const tmp = arr[i]; arr[i] = arr[j]; arr[j] = tmp;
+  }
+  const out = [];
+  const seen = new Set();
+  for (const c of arr) {
+    if (!c || seen.has(c.id)) continue;
+    seen.add(c.id);
+    out.push(c);
+    if (out.length >= n) break;
+  }
+  return out;
+}
+
 function renderHome() {
   const userTeams = (typeof loadTeams === 'function') ? loadTeams() : [];
   const recs = (typeof loadPresetTeams === 'function') ? loadPresetTeams() : (DATA.presetTeams || []);
@@ -192,7 +313,11 @@ function renderHome() {
     const firstEl = ELORDER.find(e => byEl[e] && byEl[e].length);
     if (firstEl) showEl(firstEl);
   }
-  document.getElementById('hotChars').innerHTML = DATA.characters.slice().sort((a,b)=>(b.sid||0)-(a.sid||0)).slice(0, 8).map(renderCharCard).join('');
+  // 旅人速览：每日 3 点随机 8 位（不再固定最新 8 个）
+  document.getElementById('hotChars').innerHTML = pickDailyChars(DATA.characters, 8).map(renderCharCard).join('');
+
+  // 最新一条更新日志（只展示一条，点击进入更新日志页）
+  fillLatestUpdate();
 }
 
 // ============ 角色图鉴 ============
@@ -200,7 +325,8 @@ function renderCharacters() {
   const defs = [
     { key: 'element', label: '属性', options: [{ value: 'all', label: '全部' }].concat(Object.entries(ELEMENTS).map(([v, o]) => ({ value: v, label: o.name, cls: 'el-' + v, html: elIcon(v) }))) },
     { key: 'role', label: '职业', options: [{ value: 'all', label: '全部' }].concat(Object.entries(ROLES).map(([v, o]) => ({ value: v, label: o.name, cls: 'role-' + v }))) },
-    { key: 'rarity', label: '星级', kind: 'int', options: [{ value: 'all', label: '全部' }, { value: '5', label: '5星', html: renderStars(5) }, { value: '4', label: '4星', html: renderStars(4) }] }
+    { key: 'rarity', label: '星级', kind: 'int', options: [{ value: 'all', label: '全部' }, { value: '5', label: '5星', html: renderStars(5) }, { value: '4', label: '4星', html: renderStars(4) }] },
+    { key: 'strengthened', label: '加强', get: c => (isCharStrengthened(c.id) ? 'yes' : 'no'), options: [{ value: 'all', label: '全部' }, { value: 'yes', label: '已加强' }, { value: 'no', label: '未加强' }] }
   ];
   setupListPage(defs, DATA.characters.slice().sort((a,b)=>(b.sid||0)-(a.sid||0)), renderCharCard, 'grid', 'count', 'empty');
 }
@@ -517,7 +643,14 @@ function renderCharacter() {
 
       <div class="detail-info">
 
-        <h1 class="detail-name">${escapeHtml(char.name)}</h1>
+        <div class="detail-name-row">
+
+          <h1 class="detail-name">${escapeHtml(char.name)}</h1>
+
+          ${isAdmin() ? '<button type="button" class="buff-btn' + (isCharStrengthened(char.id) ? ' on' : '') + '" id="buffToggle" title="点击切换加强状态">' + (isCharStrengthened(char.id) ? '已加强' : '未加强') + '</button>'
+            : '<span class="buff-tag' + (isCharStrengthened(char.id) ? ' on' : '') + '">' + (isCharStrengthened(char.id) ? '已加强' : '未加强') + '</span>'}
+
+        </div>
 
         <div class="badge-row">
 
@@ -669,6 +802,21 @@ function renderCharacter() {
         bindPotLevels(pane);
       }
     });
+  });
+
+  // 加强状态切换（管理员）
+  const buffBtn = document.getElementById('buffToggle');
+  if (buffBtn) buffBtn.addEventListener('click', async () => {
+    const next = !isCharStrengthened(char.id);
+    buffBtn.disabled = true;
+    try {
+      await saveCharMeta(char.id, next);
+      buffBtn.classList.toggle('on', next);
+      buffBtn.textContent = next ? '已加强' : '未加强';
+    } catch (err) {
+      showToast('保存失败：' + (err && err.message ? err.message : '未知错误'), 'err');
+    }
+    buffBtn.disabled = false;
   });
 }
 
@@ -1181,7 +1329,7 @@ function renderTeam() {
         const p = c ? (c.potentials || []).find(x => x.name === name) : null;
         const lv = sel[name];
         const isCore = !!(p && p.flow && p.flow.indexOf('核心') >= 0);
-        const inner = '<span class="bpot-icon ' + potRarityCls(p) + '">' + (p && p.icon ? '<img class="bpot-img" src="' + escapeHtml(p.icon) + '" alt="" loading="lazy">' : '<span class="bpot-ph">♪</span>') + potCornerHtml(p) + '<i class="bpot-lv">' + lv + '</i></span>' + '<span class="bpot-name">' + escapeHtml(name) + '</span>';
+        const inner = '<span class="bpot-icon ' + potRarityCls(p) + '">' + (p && p.icon ? '<img class="bpot-img" src="' + escapeHtml(p.icon) + '" alt="" loading="lazy">' : '<span class="bpot-ph"><span class="ci ci-note"></span></span>') + potCornerHtml(p) + '<i class="bpot-lv">' + lv + '</i></span>' + '<span class="bpot-name">' + escapeHtml(name) + '</span>';
         return isEdit
           ? '<button class="bpot" data-idx="' + i + '" data-name="' + escapeHtml(name) + '"' + (isCore ? ' data-core="1"' : '') + ' title="点击调整等级">' + inner + '</button>'
           : '<span class="bpot">' + inner + '</span>';
@@ -1277,6 +1425,9 @@ function renderTeam() {
         ${(typeof isAdmin === 'function' && isAdmin()) ? '<button class="btn-secondary" id="delBtn">删除配队</button>' : ''}
 
       </div>
+      <div class="team-date-line">${isEdit
+        ? '<label class="team-date-edit">更新日期 <input id="teamDate" class="team-date-input" value="' + normTeamDate(t.date) + '" placeholder="2026/09/20" maxlength="10"></label>'
+        : '<span class="team-date">' + normTeamDate(t.date) + '</span>'}</div>
       ${isEdit ? '<p class="local-edit-hint">改动会直接保存到 <b>assets/data/preset-teams.json</b>（' + teamStoreLabel() + '）</p>' : ''}
       <section class="section">
         <h2 class="section-title">预设码</h2>
@@ -1492,6 +1643,8 @@ function renderTeam() {
         if (ne) patch.name = ne.value.trim() || '未命名配队';
         const de = document.getElementById('teamDesc');
         if (de) patch.description = de.value;
+        const dEl = document.getElementById('teamDate');
+        if (dEl) patch.date = normTeamDate(dEl.value);
         saveBtn.disabled = true;
         saveBtn.textContent = '保存中…';
         try {
@@ -1660,7 +1813,7 @@ function openPotPicker(char, selected, isFront, onSave) {
             : '<select class="pot-lv-select" data-name="' + escapeHtml(p.name) + '">' + [1,2,3,4,5,6].map(n => '<option value="' + n + '"' + (n === lv ? ' selected' : '') + '>' + n + ' 级</option>').join('') + '</select>';
         }
         return '<div class="pot-cell' + (on ? ' on' : '') + '" data-flow="' + escapeHtml(f) + '" data-name="' + escapeHtml(p.name) + '">' +
-          '<span class="pot-cell-icon ' + potRarityCls(p) + '">' + (p.icon ? '<img class="pot-cell-img" src="' + escapeHtml(p.icon) + '" alt="" loading="lazy">' : '<span class="pot-cell-ph">♪</span>') + (on ? '<i class="pot-cell-badge">' + lv + '</i>' : '') + '</span>' +
+          '<span class="pot-cell-icon ' + potRarityCls(p) + '">' + (p.icon ? '<img class="pot-cell-img" src="' + escapeHtml(p.icon) + '" alt="" loading="lazy">' : '<span class="pot-cell-ph"><span class="ci ci-note"></span></span>') + (on ? '<i class="pot-cell-badge">' + lv + '</i>' : '') + '</span>' +
           '<span class="pot-cell-name">' + escapeHtml(p.name) + '</span>' + lvCtl + '</div>';
       }).join('');
       return '<div class="pot-group"><div class="pot-group-title">' + escapeHtml(f) + ' <em class="core-hint">' + (core ? '(限选 2 · 固定 1 级)' : '(可选 1-6 级)') + '</em></div><div class="pot-grid2">' + cells + '</div></div>';
@@ -1906,7 +2059,7 @@ function renderPattern() {
     '<input type="range" class="lvslider" id="tierSlider" min="1" max="' + tierMax + '" value="1" step="1">',
     '<b class="lvctl-v" id="tierOut">1</b></div>',
     '<div class="eff-card">',
-    (melody.skillImg ? '<span class="eff-icon ' + elCls + '"><img loading="lazy" decoding="async" src="' + escapeHtml(melody.skillImg) + '" alt=""></span>' : '<div class="eff-icon eff-icon-ph">♪</div>'),
+    (melody.skillImg ? '<span class="eff-icon ' + elCls + '"><img loading="lazy" decoding="async" src="' + escapeHtml(melody.skillImg) + '" alt=""></span>' : '<div class="eff-icon eff-icon-ph"><span class="ci ci-note"></span></div>'),
     '<div class="eff-body">',
     '<div class="eff-name">' + escapeHtml(melody.name) + '</div>',
     '<div class="eff-desc" id="melodyDesc">' + renderTpl(melody.tpl, (melody.params || [])[0]) + '</div>',
@@ -1919,7 +2072,7 @@ function renderPattern() {
 
   const harmonyCards = harmony.map((h, i) => [
     '<div class="eff-card">',
-    (h.skillImg ? '<span class="eff-icon ' + elCls + '"><img loading="lazy" decoding="async" src="' + escapeHtml(h.skillImg) + '" alt=""></span>' : '<div class="eff-icon eff-icon-ph">♪</div>'),
+    (h.skillImg ? '<span class="eff-icon ' + elCls + '"><img loading="lazy" decoding="async" src="' + escapeHtml(h.skillImg) + '" alt=""></span>' : '<div class="eff-icon eff-icon-ph"><span class="ci ci-note"></span></div>'),
     '<div class="eff-body">',
     '<div class="eff-name">' + escapeHtml(h.name || '') + '</div>',
     '<div class="eff-toolbar"><span class="tool-label">协奏等级</span>',
@@ -1996,8 +2149,402 @@ function renderPattern() {
 
 // ============ 通用小部件 ============
 function notFound(msg, backHref, backLabel) {
-  return '<div class="empty center"><div class="empty-icon">❓</div><p class="empty-text">' + escapeHtml(msg) + '</p><a class="btn" href="' + backHref + '">' + escapeHtml(backLabel) + '</a></div>';
+  return '<div class="empty center"><div class="empty-icon"><span class="ci ci-info"></span></div><p class="empty-text">' + escapeHtml(msg) + '</p><a class="btn" href="' + backHref + '">' + escapeHtml(backLabel) + '</a></div>';
 }
 function emptyHint(text) {
   return '<p class="hint">' + escapeHtml(text) + '</p>';
 }
+
+// ============ 更新日志 ============
+// 数据在 assets/data/updates.json，管理员编辑后直接提交到仓库
+function updateEntries() {
+  const list = (DATA.updates && Array.isArray(DATA.updates.entries)) ? DATA.updates.entries.slice() : [];
+  return list.sort((a, b) => {
+    const d = String(b.date || '').localeCompare(String(a.date || ''));
+    if (d) return d;
+    return String(b.id || '').localeCompare(String(a.id || ''));
+  });
+}
+function latestUpdate() { return updateEntries()[0] || null; }
+
+async function saveUpdates(entries) {
+  const payload = { entries: entries, updatedAt: new Date().toISOString() };
+  DATA.updates = payload;
+  const json = JSON.stringify(payload, null, 2);
+  // 先存本机：即使没连仓库，换页面/刷新也不会丢
+  let cached = false;
+  try { localStorage.setItem('ss_updates', json); cached = true; } catch (e) {}
+  if (!cached && typeof showToast === 'function') showToast('本机缓存已满（图片太大？），刷新后可能丢失', 'err');
+  // 本地服务器在跑 → 直接写进 assets/data/updates.json（发布时会一起推上去）
+  const local = await localApiPut('/api/updates', payload);
+  if (local) { showToast('已写入本地文件（发布时会一起推上去）', 'ok'); return { ok: true, where: 'localFile' }; }
+  if (typeof ghConfigured === 'function' && ghConfigured()) {
+    await ghWriteFile(ghGetCfg(), 'assets/data/updates.json', json, '更新日志：' + ((entries[0] && entries[0].title) || '修改'));
+    showToast('已同步到线上仓库', 'ok');
+    return { ok: true, where: 'github' };
+  }
+  showToast('已存到本机（未连接仓库，别人看不到）', 'err');
+  return { ok: true, where: 'local' };
+}
+
+// 正文与图片：只有展开时才渲染；正文里的 [图:id] 决定图片插在哪
+function updateBodyHtml(entry) {
+  const text = String(entry.body || '');
+  const imgs = (entry.images || []).filter(im => im && im.src);
+  const byId = {};
+  imgs.forEach((im, i) => { byId[String(im.id != null ? im.id : ('i' + i))] = im; });
+  const fig = (im) => [
+    '<figure class="upd-fig">',
+    '<img loading="lazy" decoding="async" src="' + escapeHtml(im.src) + '" alt="' + escapeHtml(im.caption || '') + '">',
+    im.caption ? '<figcaption>' + escapeHtml(im.caption) + '</figcaption>' : '',
+    '</figure>'
+  ].join('');
+  const used = {};
+  let html = '';
+  let buf = [];
+  const flush = () => {
+    const chunk = buf.join('\n');
+    buf = [];
+    chunk.split(/\n{2,}/).map(s => s.trim()).filter(Boolean).forEach(p => {
+      html += '<p>' + escapeHtml(p).replace(/\n/g, '<br>') + '</p>';
+    });
+  };
+  const re = /\[图:([^\]]+)\]/g;
+  text.split('\n').forEach(line => {
+    let last = 0, m;
+    re.lastIndex = 0;
+    while ((m = re.exec(line))) {
+      const chunk = line.slice(last, m.index);
+      if (chunk.trim()) buf.push(chunk);
+      if (byId[m[1]]) { flush(); html += fig(byId[m[1]]); used[m[1]] = 1; }
+      last = re.lastIndex;
+    }
+    const rest = line.slice(last);
+    if (rest.trim()) buf.push(rest);
+    else if (last === 0 && !line.trim()) buf.push('');
+  });
+  flush();
+  // 没插进正文的图片，统一补在最后，避免丢图
+  imgs.forEach((im, i) => {
+    const k = String(im.id != null ? im.id : ('i' + i));
+    if (!used[k]) html += fig(im);
+  });
+  return html;
+}
+function renderUpdates() {
+  const listEl = document.getElementById('updatesList');
+  const tlEl = document.getElementById('updatesTimeline');
+  const cnt = document.getElementById('updCount');
+  const adminEl = document.getElementById('updatesAdmin');
+  const entries = updateEntries();
+  if (cnt) cnt.textContent = entries.length;
+
+  // 左侧时间轴：同一天只显示一次
+  const dates = Array.from(new Set(entries.map(e => normTeamDate(e.date))));
+  if (tlEl) {
+    tlEl.innerHTML = dates.length
+      ? dates.map(d => '<button type="button" class="tl-item" data-date="' + escapeHtml(d) + '">' + escapeHtml(d) + '</button>').join('')
+      : '<span class="tl-empty">暂无记录</span>';
+    tlEl.querySelectorAll('.tl-item').forEach(b => b.addEventListener('click', () => {
+      const card = listEl && listEl.querySelector('.update-card[data-date="' + b.dataset.date + '"]');
+      if (card) { expand(card); card.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+      tlEl.querySelectorAll('.tl-item').forEach(x => x.classList.toggle('on', x === b));
+    }));
+  }
+
+  if (!listEl) return;
+  if (!entries.length) {
+    listEl.innerHTML = '<div class="upd-empty">还没有更新日志</div>';
+  } else {
+    listEl.innerHTML = entries.map(e => {
+      const d = normTeamDate(e.date);
+      const adm = isAdmin();
+      return [
+        '<article class="update-card" data-id="' + escapeHtml(e.id) + '" data-date="' + escapeHtml(d) + '">',
+        '<div class="update-head">',
+        '<div class="update-title">' + escapeHtml(e.title || '未命名更新') + '</div>',
+        '<div class="update-date">' + escapeHtml(d) + '<span class="update-caret">▾</span></div>',
+        '</div>',
+        '<div class="update-body" hidden></div>',
+        adm ? '<div class="update-actions"><button type="button" class="team-edit-btn upd-edit" data-id="' + escapeHtml(e.id) + '">编辑</button><button type="button" class="team-del upd-del" data-id="' + escapeHtml(e.id) + '">删除</button></div>' : '',
+        '</article>'
+      ].join('');
+    }).join('');
+
+    listEl.querySelectorAll('.update-card').forEach(card => {
+      const head = card.querySelector('.update-head');
+      if (head) head.addEventListener('click', () => expand(card));
+    });
+
+    if (isAdmin()) {
+      listEl.querySelectorAll('.upd-edit').forEach(b => b.addEventListener('click', async ev => {
+        ev.stopPropagation();
+        await openUpdateEditor(b.dataset.id);
+      }));
+      listEl.querySelectorAll('.upd-del').forEach(b => b.addEventListener('click', async ev => {
+        ev.stopPropagation();
+        if (!confirm('确定删除这条更新日志吗？')) return;
+        try {
+          await saveUpdates(updateEntries().filter(x => x.id !== b.dataset.id));
+          renderUpdates();
+        } catch (err) { showToast('删除失败：' + (err && err.message ? err.message : '未知错误'), 'err'); }
+      }));
+    }
+  }
+
+  function expand(card) {
+    const body = card.querySelector('.update-body');
+    if (!body) return;
+    const open = card.classList.toggle('open');
+    if (open) {
+      if (!body.dataset.filled) {
+        const e = updateEntries().find(x => String(x.id) === String(card.dataset.id));
+        body.innerHTML = e ? updateBodyHtml(e) : '';
+        body.dataset.filled = '1';
+      }
+      body.hidden = false;
+    } else {
+      body.hidden = true;
+    }
+    const caret = card.querySelector('.update-caret');
+    if (caret) caret.textContent = open ? '▴' : '▾';
+  }
+
+  // 管理员：新增按钮
+  if (adminEl) {
+    if (isAdmin()) {
+      adminEl.innerHTML = '<button type="button" class="btn" id="updAdd">＋ 新增更新日志</button>';
+      const addBtn = document.getElementById('updAdd');
+      if (addBtn) addBtn.addEventListener('click', () => openUpdateEditor(null));
+    } else adminEl.innerHTML = '';
+  }
+}
+
+// 管理员编辑弹窗：标题 / 日期 / 正文 / 配图
+// 北京时区的今天：2026/10/19
+function beijingToday() {
+  try {
+    return new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Shanghai', year: 'numeric', month: '2-digit', day: '2-digit' })
+      .format(new Date()).replace(/-/g, '/');
+  } catch (e) {
+    const d = new Date();
+    const p = n => (String(n).length < 2 ? '0' + n : String(n));
+    return d.getFullYear() + '/' + p(d.getMonth() + 1) + '/' + p(d.getDate());
+  }
+}
+
+// 单张配图上限 512KB
+const UPD_MAX_BYTES = 512 * 1024;
+
+function fileToB64(file) {
+  return new Promise((resolve, reject) => {
+    const fr = new FileReader();
+    fr.onload = () => {
+      const s = String(fr.result || '');
+      const i = s.indexOf(',');
+      resolve(i >= 0 ? s.slice(i + 1) : '');
+    };
+    fr.onerror = () => reject(new Error('读取图片失败'));
+    fr.readAsDataURL(file);
+  });
+}
+
+// 上传一张配图：已连接仓库就传进 assets/img/updates/，否则退回本机 data URL
+async function uploadUpdateImage(file) {
+  if (!file) throw new Error('没有选择图片');
+  if (file.size > UPD_MAX_BYTES) {
+    throw new Error('图片超过 512 KB（当前 ' + (file.size / 1024).toFixed(0) + ' KB），请先压缩到 512 KB 以内再上传');
+  }
+  if (!/^image\//.test(file.type || '')) throw new Error('不是图片文件');
+  const b64 = await fileToB64(file);
+  const ext = file.type === 'image/jpeg' ? '.jpg' : (file.type === 'image/webp' ? '.webp' : '.png');
+  const stamp = beijingToday().replace(/\//g, '_') + '_' + Date.now().toString().slice(-6);
+  const path = 'assets/img/updates/xtlr_update_' + stamp + ext;
+  // 本地服务器在跑 → 直接把图片写进 assets/img/updates/（随发布一起提交）
+  if (isLocalServer()) {
+    try {
+      const resp = await fetch('/api/image', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: 'xtlr_update_' + stamp, dataUrl: 'data:' + (file.type || 'image/png') + ';base64,' + b64 })
+      });
+      if (resp.ok) {
+        const j = await resp.json();
+        if (j && j.ok && j.path) return j.path;
+      }
+    } catch (e) { /* 落到后面的兜底 */ }
+  }
+  if (typeof ghConfigured === 'function' && ghConfigured()) {
+    await ghWriteFileB64(ghGetCfg(), path, b64, '上传更新日志配图');
+    return path;
+  }
+  return 'data:' + (file.type || 'image/png') + ';base64,' + b64;
+}
+
+// 管理员编辑弹窗：标题 / 日期 / 正文 / 配图（可上传、可写图注、可选插入位置）
+async function openUpdateEditor(id) {
+  const entries = updateEntries();
+  const cur = id ? entries.find(e => String(e.id) === String(id)) : null;
+  let imgs = ((cur && cur.images) || []).map((x, i) => typeof x === 'string'
+    ? { id: 'i' + i, src: x, caption: '' }
+    : { id: x.id || ('i' + i), src: x.src || '', caption: x.caption || '' });
+
+  const old = document.getElementById('updModal');
+  if (old) old.remove();
+  const modal = document.createElement('div');
+  modal.id = 'updModal';
+  modal.className = 'picker-modal';
+  modal.innerHTML = [
+    '<div class="picker-panel upd-panel">',
+    '<div class="picker-head"><b>' + (cur ? '编辑更新日志' : '新增更新日志') + '</b><button type="button" class="picker-close" id="updClose">✕</button></div>',
+    '<div class="upd-form">',
+    '<label class="upd-row"><span>标题</span><input id="updTitle" class="admin-input" value="' + escapeHtml((cur && cur.title) || '') + '" placeholder="写个标题吧~" maxlength="80"></label>',
+    '<label class="upd-row"><span>日期</span><input id="updDate" class="admin-input" value="' + escapeHtml(normTeamDate((cur && cur.date) || beijingToday())) + '" placeholder="2026/10/19" maxlength="10"></label>',
+    '<div class="upd-row upd-row-area"><span>正文</span><textarea id="updBody" class="team-desc-input" rows="8" placeholder="写这次更新了什么（空行分段）">' + escapeHtml((cur && cur.body) || '') + '</textarea></div>',
+    '<div class="upd-row upd-row-area"><span>配图</span>',
+      '<div class="upd-imgbox">',
+      '<div class="upd-imglist" id="updImgList"></div>',
+      '<div class="upd-imgbar">',
+      '<button type="button" class="btn-secondary" id="updPick">＋ 上传图片</button>',
+      '<input type="file" id="updFile" accept="image/png,image/jpeg,image/webp" multiple hidden>',
+      '<span class="upd-hint">选电脑里的图片，单张不超过 512 KB；上传后可写图注，点「插入正文」可放到任何位置</span>',
+      '</div></div>',
+    '</div>',
+    '</div>',
+    '<div class="picker-foot"><button type="button" class="btn" id="updSave">保存</button><button type="button" class="btn-secondary" id="updCancel">取消</button></div>',
+    '</div>'
+  ].join('');
+  document.body.appendChild(modal);
+
+  const bodyEl = document.getElementById('updBody');
+  const listEl = document.getElementById('updImgList');
+
+  // 在光标处插入 [图:id]，正文里按这个标记决定图片位置
+  const insertMarker = (marker) => {
+    const v = bodyEl.value || '';
+    const s = typeof bodyEl.selectionStart === 'number' ? bodyEl.selectionStart : v.length;
+    const e2 = typeof bodyEl.selectionEnd === 'number' ? bodyEl.selectionEnd : v.length;
+    const before = v.slice(0, s);
+    const after = v.slice(e2);
+    const pre = (before && !/\n$/.test(before)) ? '\n' : '';
+    const ins = pre + marker + '\n';
+    bodyEl.value = before + ins + after;
+    const pos = (before + ins).length;
+    try { bodyEl.setSelectionRange(pos, pos); } catch (err) {}
+    bodyEl.focus();
+    renderImgs();
+  };
+
+  const renderImgs = () => {
+    if (!imgs.length) { listEl.innerHTML = '<div class="upd-noimg">还没有配图</div>'; return; }
+    listEl.innerHTML = imgs.map((im, i) => {
+      const inBody = (bodyEl.value || '').indexOf('[图:' + im.id + ']') >= 0;
+      return [
+        '<div class="upd-imgitem" data-i="' + i + '">',
+        '<img class="upd-imgthumb" src="' + escapeHtml(im.src) + '" alt="" loading="lazy">',
+        '<div class="upd-imgmeta">',
+        '<input class="admin-input upd-cap" data-i="' + i + '" placeholder="图注（显示在图片下方）" value="' + escapeHtml(im.caption || '') + '" maxlength="80">',
+        '<div class="upd-imgtag">' + (inBody ? '✓ 已放进正文（想换位置就直接拖正文里的 [图:…] 那行）' : '还没放进正文：把光标放在正文里想插图的位置，再点「插入正文」') + '</div>',
+        '</div>',
+        '<button type="button" class="btn-secondary upd-ins" data-i="' + i + '">插入正文</button>',
+        '<button type="button" class="team-del upd-imgdel" data-i="' + i + '">删除</button>',
+        '</div>'
+      ].join('');
+    }).join('');
+
+    listEl.querySelectorAll('.upd-cap').forEach(inp => inp.addEventListener('input', () => {
+      imgs[Number(inp.dataset.i)].caption = inp.value;
+    }));
+    listEl.querySelectorAll('.upd-ins').forEach(b => b.addEventListener('click', () => {
+      insertMarker('[图:' + imgs[Number(b.dataset.i)].id + ']');
+    }));
+    listEl.querySelectorAll('.upd-imgdel').forEach(b => b.addEventListener('click', () => {
+      imgs.splice(Number(b.dataset.i), 1);
+      renderImgs();
+    }));
+  };
+  renderImgs();
+
+  // 正文改动后刷新「第 N 段之后」的选项
+  let t = null;
+  bodyEl.addEventListener('input', () => {
+    clearTimeout(t);
+    t = setTimeout(renderImgs, 350);
+  });
+
+  // 上传图片
+  const fileEl = document.getElementById('updFile');
+  const pickBtn = document.getElementById('updPick');
+  if (pickBtn) pickBtn.addEventListener('click', () => fileEl.click());
+  if (fileEl) fileEl.addEventListener('change', async () => {
+    const files = Array.from(fileEl.files || []);
+    fileEl.value = '';
+    if (!files.length) return;
+    pickBtn.disabled = true;
+    const oldLabel = pickBtn.textContent;
+    for (const f of files) {
+      if (f.size > UPD_MAX_BYTES) {
+        alert('上传失败：' + f.name + ' 有 ' + (f.size / 1024).toFixed(0) + ' KB\n单张图片请控制在 512 KB 以内（可以先用「压缩更新图片.bat」压一下）');
+        continue;
+      }
+      pickBtn.textContent = '上传中…';
+      try {
+        const src = await uploadUpdateImage(f);
+        const id = 'i' + Date.now().toString(36) + Math.floor(Math.random() * 900 + 100);
+        imgs.push({ id: id, src: src, caption: '' });
+        insertMarker('[图:' + id + ']');
+        if (src.indexOf('data:') === 0) showToast('未连接仓库：图片只存在本机，别人看不到', 'err');
+      } catch (err) {
+        alert('上传失败：' + (err && err.message ? err.message : '未知错误'));
+      }
+    }
+    pickBtn.disabled = false;
+    pickBtn.textContent = oldLabel;
+  });
+
+  const close = () => modal.remove();
+  modal.addEventListener('click', e => { if (e.target === modal) close(); });
+  document.getElementById('updClose').addEventListener('click', close);
+  document.getElementById('updCancel').addEventListener('click', close);
+
+  const saveBtn = document.getElementById('updSave');
+  saveBtn.addEventListener('click', async () => {
+    const title = (document.getElementById('updTitle').value || '').trim();
+    if (!title) { showToast('请填写标题', 'err'); return; }
+    const date = normTeamDate(document.getElementById('updDate').value || beijingToday());
+    const body = bodyEl.value || '';
+    const next = updateEntries().filter(e => !cur || String(e.id) !== String(cur.id));
+    next.push({
+      id: (cur && cur.id) || ('u_' + Date.now().toString(36)),
+      title: title,
+      date: date,
+      body: body,
+      images: imgs.filter(im => im.src).map(im => ({ id: im.id, src: im.src, caption: im.caption || '' })),
+      updatedAt: new Date().toISOString()
+    });
+    saveBtn.disabled = true;
+    saveBtn.textContent = '保存中…';
+    try {
+      await saveUpdates(next);
+      close();
+      renderUpdates();
+    } catch (err) {
+      saveBtn.disabled = false;
+      saveBtn.textContent = '保存';
+      showToast('保存失败：' + (err && err.message ? err.message : '未知错误'), 'err');
+    }
+  });
+}
+// 首页：填最新一条更新日志
+function fillLatestUpdate() {
+  const el = document.getElementById('latestUpdate');
+  if (!el) return;
+  const e = latestUpdate();
+  if (!e) { el.hidden = true; return; }
+  el.hidden = false;
+  const t = el.querySelector('.lu-title');
+  const d = el.querySelector('.lu-date');
+  if (t) t.textContent = e.title || '未命名更新';
+  if (d) d.textContent = normTeamDate(e.date);
+}
+

@@ -76,6 +76,12 @@ bats.forEach(f => {
     }
     // 无条件 pause
     if (t === 'pause' && /NOPAUSE/.test(text)) errs.push('第 ' + n + ' 行是无条件 pause（本脚本会被 call，必须条件 pause）');
+    // echo 里的 ( ) < > | & 必须用 ^ 转义，否则会被当成语法（曾经把 if 块整块搞坏）
+    if (/^echo(\s|\.|$)/i.test(t)) {
+      const noEsc = t.replace(/\^[()<>|&^]/g, '');
+      const bad = noEsc.match(/[()<>|&]/);
+      if (bad) errs.push('第 ' + n + ' 行 echo 里有未转义的「' + bad[0] + '」—— 会被当成 cmd 语法，请写成 ^' + bad[0]);
+    }
     // call 目标
     const c = /^call\s+"([^"]+)"/.exec(t);
     if (c) {

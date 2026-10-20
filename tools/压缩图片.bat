@@ -1,7 +1,7 @@
 @echo off
 cd /d "%~dp0"
 echo ==================================================
-echo   Compress site images (save bandwidth)
+echo   Compress site images ^(save bandwidth^)
 echo ==================================================
 echo.
 echo   default quality 92; images under 20KB are skipped

@@ -49,7 +49,9 @@ const DATA = {
   charStats: {},             // 旅人各级基础数值 [等级, 生命, 攻击, 防御]
   potentialLevels: {},       // 潜能各级数值与等级上限
   discSkills: {},            // 秘纹各级数值与音符表
-  dict: {}                   // 翻译字典（英文 → 中文）
+  dict: {},                  // 翻译字典（英文 → 中文）
+  charMeta: { chars: {} },   // 旅人附加信息（加强状态等，管理员可编辑）
+  updates: { entries: [] }   // 更新日志
 };
 
 // 数据文件表：每个文件 40~530 KB，按页面按需加载（首屏能省一大半）
@@ -62,20 +64,23 @@ const DATA_FILES = {
   charStats:       'assets/data/character-stats.json',
   potentialLevels: 'assets/data/potential-levels.json',
   discSkills:      'assets/data/disc-skills.json',
-  dict:            'assets/data/dict.json'
+  dict:            'assets/data/dict.json',
+  charMeta:        'assets/data/char-meta.json',
+  updates:         'assets/data/updates.json'
 };
 
 // 每个页面真正需要的数据（rest = 基础数据，所有页面都要）
 // dict 很小（53 KB）且每个页面都可能用到，所以归入基础数据
 const BASE_DATA = ['characters', 'patterns', 'presetTeams', 'dict'];
 const PAGE_DATA = {
-  home:       ['characters', 'patterns', 'presetTeams'],
-  characters: ['characters'],                                  // 卡片只用 characters
-  character:  ['characters', 'charSkills', 'charStats', 'potentialLevels'],
+  home:       ['characters', 'patterns', 'presetTeams', 'updates'],        // 首页要显示最新一条更新日志
+  characters: ['characters', 'charMeta'],                      // 卡片 + 加强状态筛选
+  character:  ['characters', 'charSkills', 'charStats', 'potentialLevels', 'charMeta'],
   patterns:   ['patterns'],
   pattern:    ['patterns', 'discSkills'],
   teams:      ['characters', 'patterns', 'presetTeams', 'potentialCfg'],   // 卡片要用（复制/搜索预设码需要配置）
-  team:       ['characters', 'patterns', 'presetTeams', 'potentialCfg', 'potentialLevels', 'charSkills']
+  team:       ['characters', 'patterns', 'presetTeams', 'potentialCfg', 'potentialLevels', 'charSkills'],
+  updates:    ['updates', 'charMeta']                          // 更新日志页
 };
 function dataKeysForPage() {
   const pg = (document.body && document.body.dataset && document.body.dataset.page) || 'home';
@@ -85,6 +90,9 @@ function dataKeysForPage() {
   return need;
 }
 
+// 这些文件缺失时不应该让整页崩掉（比如还没添加过更新日志）
+const OPTIONAL_DATA = ['charMeta', 'updates'];
+
 async function loadData() {
   // 只加载当前页面需要的数据文件
   const keys = dataKeysForPage();
@@ -92,16 +100,42 @@ async function loadData() {
     keys.filter(k => DATA_FILES[k]).map(async (key) => {
       const url = DATA_FILES[key];
       const resp = await fetch(url);
-      if (!resp.ok) throw new Error('加载 ' + url + ' 失败: ' + resp.status);
-      return [key, await resp.json()];
+      if (!resp.ok) {
+        if (OPTIONAL_DATA.indexOf(key) >= 0) return [key, null];
+        throw new Error('加载 ' + url + ' 失败: ' + resp.status);
+      }
+      try { return [key, await resp.json()]; }
+      catch (e) { if (OPTIONAL_DATA.indexOf(key) >= 0) return [key, null]; throw e; }
     })
   );
   for (const [key, json] of entries) {
+    if (json == null) continue;
     if (key === 'potentialCfg') DATA.potentialCfg = json;
     else if (key === 'presetTeams') { DATA.presetTeams = json.teams || []; DATA.presetTeamsUpdatedAt = json.updatedAt || ''; }
+    else if (key === 'charMeta') DATA.charMeta = json || { chars: {} };
+    else if (key === 'updates') DATA.updates = json || { entries: [] };
     else if (key === 'charSkills' || key === 'charStats' || key === 'potentialLevels' || key === 'discSkills' || key === 'dict') DATA[key] = json;
     else DATA[key] = json[key];
   }
+
+  // ===== 本机改动覆盖：管理员在本机编辑过、但还没提交到仓库的内容不能丢 =====
+  // （换页面/刷新都会重新走这里，所以必须把 localStorage 里的版本合并回来）
+  DATA.updates = preferLocalCopy('ss_updates', DATA.updates);
+  DATA.charMeta = preferLocalCopy('ss_char_meta', DATA.charMeta);
+}
+
+function readLocalJson(key) {
+  try { const s = localStorage.getItem(key); return s ? JSON.parse(s) : null; } catch (e) { return null; }
+}
+
+// 本机版本比文件新 → 用本机的；否则用文件里的
+function preferLocalCopy(key, fromFile) {
+  const local = readLocalJson(key);
+  if (!local) return fromFile;
+  const f = (fromFile && fromFile.updatedAt) || '';
+  const l = local.updatedAt || '';
+  if (!f || !l || l >= f) return local;
+  return fromFile;
 }
 
 // 加载失败时的友好提示

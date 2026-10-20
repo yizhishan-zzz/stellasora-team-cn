@@ -23,6 +23,8 @@
   <!-- 首屏字体预加载：正文最常用的字重，提前拉取，减少文字闪烁 -->
   <link rel="preload" href="assets/fonts/MiSans-Regular.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/MiSansLatin-Regular.woff2" as="font" type="font/woff2" crossorigin>
+  <!-- 深色模式：尽早应用偏好，避免刷新时闪白 -->
+  <script>try{if(localStorage.getItem("ss_theme")==="dark")document.documentElement.setAttribute("data-theme","dark");}catch(e){}</script>
 </head>
 <body data-page="characters">
   <noscript><h1>星塔旅人配队一览</h1><p>星塔旅人旅人图鉴：按元素、职业、星级筛选全部旅人，查看旅人潜能与流派。</p></noscript>
@@ -347,7 +349,17 @@
         <div class="char-card-meta"><img loading="lazy" decoding="async" class="el-icon" src="assets/img/ui/el-fire.png" alt="火"><span class="badge role-vanguard">先锋</span></div>
       </div>
     </a>
-  <div class="filter-row"><span class="filter-label">属性</span><div class="filter-chips"><button type="button" class="chip active" data-key="element" data-value="all">全部</button><button type="button" class="chip el-water" data-key="element" data-value="water"><img loading="lazy" decoding="async" class="el-icon" src="assets/img/ui/el-water.png" alt="水"></button><button type="button" class="chip el-fire" data-key="element" data-value="fire"><img loading="lazy" decoding="async" class="el-icon" src="assets/img/ui/el-fire.png" alt="火"></button><button type="button" class="chip el-wind" data-key="element" data-value="wind"><img loading="lazy" decoding="async" class="el-icon" src="assets/img/ui/el-wind.png" alt="风"></button><button type="button" class="chip el-earth" data-key="element" data-value="earth"><img loading="lazy" decoding="async" class="el-icon" src="assets/img/ui/el-earth.png" alt="土"></button><button type="button" class="chip el-light" data-key="element" data-value="light"><img loading="lazy" decoding="async" class="el-icon" src="assets/img/ui/el-light.png" alt="光"></button><button type="button" class="chip el-dark" data-key="element" data-value="dark"><img loading="lazy" decoding="async" class="el-icon" src="assets/img/ui/el-dark.png" alt="暗"></button></div></div><div class="filter-row"><span class="filter-label">职业</span><div class="filter-chips"><button type="button" class="chip active" data-key="role" data-value="all">全部</button><button type="button" class="chip role-vanguard" data-key="role" data-value="vanguard">先锋</button><button type="button" class="chip role-balanced" data-key="role" data-value="balanced">均衡</button><button type="button" class="chip role-support" data-key="role" data-value="support">辅助</button></div></div><div class="filter-row"><span class="filter-label">星级</span><div class="filter-chips"><button type="button" class="chip active" data-key="rarity" data-value="all">全部</button><button type="button" class="chip" data-key="rarity" data-value="5"><img loading="lazy" decoding="async" class="star-img" src="assets/img/ui/star-5.png" alt="5星"></button><button type="button" class="chip" data-key="rarity" data-value="4"><img loading="lazy" decoding="async" class="star-img" src="assets/img/ui/star-4.png" alt="4星"></button></div></div></div><script>(function(){var e=document.getElementById("prerender");if(e)e.style.display="none";})();</script><!--prerender-end-->
+  <div class="filter-row"><span class="filter-label">属性</span><div class="filter-chips"><button type="button" class="chip active" data-key="element" data-value="all">全部</button><button type="button" class="chip el-water" data-key="element" data-value="water"><img loading="lazy" decoding="async" class="el-icon" src="assets/img/ui/el-water.png" alt="水"></button><button type="button" class="chip el-fire" data-key="element" data-value="fire"><img loading="lazy" decoding="async" class="el-icon" src="assets/img/ui/el-fire.png" alt="火"></button><button type="button" class="chip el-wind" data-key="element" data-value="wind"><img loading="lazy" decoding="async" class="el-icon" src="assets/img/ui/el-wind.png" alt="风"></button><button type="button" class="chip el-earth" data-key="element" data-value="earth"><img loading="lazy" decoding="async" class="el-icon" src="assets/img/ui/el-earth.png" alt="土"></button><button type="button" class="chip el-light" data-key="element" data-value="light"><img loading="lazy" decoding="async" class="el-icon" src="assets/img/ui/el-light.png" alt="光"></button><button type="button" class="chip el-dark" data-key="element" data-value="dark"><img loading="lazy" decoding="async" class="el-icon" src="assets/img/ui/el-dark.png" alt="暗"></button></div></div><div class="filter-row"><span class="filter-label">职业</span><div class="filter-chips"><button type="button" class="chip active" data-key="role" data-value="all">全部</button><button type="button" class="chip role-vanguard" data-key="role" data-value="vanguard">先锋</button><button type="button" class="chip role-balanced" data-key="role" data-value="balanced">均衡</button><button type="button" class="chip role-support" data-key="role" data-value="support">辅助</button></div></div><div class="filter-row"><span class="filter-label">星级</span><div class="filter-chips"><button type="button" class="chip active" data-key="rarity" data-value="all">全部</button><button type="button" class="chip" data-key="rarity" data-value="5"><img loading="lazy" decoding="async" class="star-img" src="assets/img/ui/star-5.png" alt="5星"></button><button type="button" class="chip" data-key="rarity" data-value="4"><img loading="lazy" decoding="async" class="star-img" src="assets/img/ui/star-4.png" alt="4星"></button></div></div><div class="filter-row"><span class="filter-label">加强</span><div class="filter-chips"><button type="button" class="chip active" data-key="strengthened" data-value="all">全部</button><button type="button" class="chip" data-key="strengthened" data-value="yes">已加强</button><button type="button" class="chip" data-key="strengthened" data-value="no">未加强</button></div></div></div><script>(function(){var e=document.getElementById("prerender");if(e)e.style.display="none";})();</script><!--prerender-end-->
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -388,7 +400,7 @@
     </div>
     <div class="filter-bar" id="filters"></div>
     <div class="grid" id="grid"></div>
-    <div class="empty" id="empty" hidden><div class="empty-icon">🔍</div><div class="empty-text">没有符合条件的角色</div></div>
+    <div class="empty" id="empty" hidden><div class="empty-icon"><span class="ci ci-search"></span></div><div class="empty-text">没有符合条件的角色</div></div>
   </main>
 
   <script src="assets/js/auth.js"></script>

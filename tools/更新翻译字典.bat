@@ -2,7 +2,7 @@
 chcp 65001 >nul
 cd /d "%~dp0"
 echo ==================================================
-echo   Rebuild translation dictionary (EN -^> CN)
+echo   Rebuild translation dictionary ^(EN - CN^)
 echo ==================================================
 echo.
 node build-dict.js
