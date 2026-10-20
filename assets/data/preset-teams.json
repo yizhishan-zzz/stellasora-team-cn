@@ -3389,7 +3389,7 @@
     },
     {
       "id": "t_mvgoyhvzv964",
-      "name": "尘沙火垂技伤（尘沙单C）",
+      "name": "尘沙璟麟技伤（尘沙单C）",
       "date": "2026/10/20",
       "presetCode": "AAAAogAAAHUAAABrzbADbYZgAAAMAGwAAAAA",
       "description": "",
@@ -3453,8 +3453,8 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1792501268212
+      "updatedAt": 1792501277244
     }
   ],
-  "updatedAt": "2026-10-20T13:01:08.213Z"
+  "updatedAt": "2026-10-20T13:01:17.245Z"
 }
