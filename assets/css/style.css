@@ -1273,3 +1273,16 @@ html[data-theme="dark"] .hero {
 }
 .upd-fig img.upd-img-broken::after { content: '图片加载失败'; }
 
+
+/* 图鉴卡片上的「加强」开关（仅管理员可见/可点） */
+.char-buff-btn {
+  position: absolute; right: 8px; top: 8px; z-index: 3;
+  font-size: 11px; line-height: 1; padding: 5px 8px; border-radius: 8px;
+  background: rgba(16, 26, 40, 0.78); color: #dfe7f2;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  font-weight: 700; cursor: pointer; transition: background .15s, color .15s, transform .12s;
+}
+.char-buff-btn:hover { transform: scale(1.05); }
+.char-buff-btn.on { background: rgba(255, 197, 61, 0.95); color: #4a3200; border-color: transparent; }
+.char-buff-btn:disabled { opacity: .55; cursor: default; }
+

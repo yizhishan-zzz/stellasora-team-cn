@@ -221,7 +221,22 @@ async function saveCharMeta(id, strengthened) {
   const local = await localApiPut('/api/char-meta', payload);
   if (local) { showToast('已写入本地文件（发布时会一起推上去）', 'ok'); return { ok: true, where: 'localFile' }; }
   if (typeof ghConfigured === 'function' && ghConfigured()) {
-    await ghWriteFile(ghGetCfg(), 'assets/data/char-meta.json', json, '更新旅人加强状态');
+    // 先读云端再只改这一个角色，避免手里的旧数据把别人的标记覆盖掉
+    const cfg = ghGetCfg();
+    let remoteChars = null;
+    try {
+      const cur = await ghReadFile(cfg, 'assets/data/char-meta.json');
+      if (cur && cur.content) {
+        const remote = JSON.parse(b64ToUtf8(cur.content));
+        remoteChars = (remote && remote.chars) || {};
+      }
+    } catch (e) { /* 读不到就按本地写 */ }
+    const baseChars = remoteChars || chars;
+    baseChars[id] = Object.assign({}, baseChars[id] || {}, { strengthened: !!strengthened });
+    const full = { chars: baseChars, updatedAt: new Date().toISOString() };
+    await ghWriteFile(cfg, 'assets/data/char-meta.json', JSON.stringify(full, null, 2), '更新旅人加强状态');
+    DATA.charMeta = full;
+    try { localStorage.setItem('ss_char_meta', JSON.stringify(full)); } catch (e) {}
     showToast('已同步到线上仓库', 'ok');
     return { ok: true, where: 'github' };
   }
@@ -329,6 +344,29 @@ function renderCharacters() {
     { key: 'strengthened', label: '加强', get: c => (isCharStrengthened(c.id) ? 'yes' : 'no'), options: [{ value: 'all', label: '全部' }, { value: 'yes', label: '已加强' }, { value: 'no', label: '未加强' }] }
   ];
   setupListPage(defs, DATA.characters.slice().sort((a,b)=>(b.sid||0)-(a.sid||0)), renderCharCard, 'grid', 'count', 'empty');
+
+  // 管理员：在图鉴卡片上直接切换加强状态（手机上也方便）
+  const grid = document.getElementById('grid');
+  if (grid && isAdmin()) {
+    grid.addEventListener('click', async (ev) => {
+      const btn = ev.target.closest('.char-buff-btn');
+      if (!btn) return;
+      ev.preventDefault();
+      ev.stopPropagation();
+      if (btn.disabled) return;
+      const id = btn.dataset.buffId;
+      const next = !isCharStrengthened(id);
+      btn.disabled = true;
+      try {
+        await saveCharMeta(id, next);
+        btn.classList.toggle('on', next);
+        btn.textContent = next ? '已加强' : '加强';
+      } catch (err) {
+        showToast('保存失败：' + (err && err.message ? err.message : '未知错误'), 'err');
+      }
+      btn.disabled = false;
+    });
+  }
 }
 
 // ============ 角色详情 ============
@@ -2179,7 +2217,26 @@ async function saveUpdates(entries) {
   const local = await localApiPut('/api/updates', payload);
   if (local) { showToast('已写入本地文件（发布时会一起推上去）', 'ok'); return { ok: true, where: 'localFile' }; }
   if (typeof ghConfigured === 'function' && ghConfigured()) {
-    await ghWriteFile(ghGetCfg(), 'assets/data/updates.json', json, '更新日志：' + ((entries[0] && entries[0].title) || '修改'));
+    // 先读云端日志，按 id 合并后再写，避免手里的旧数据把云端的条目冲掉
+    const cfg = ghGetCfg();
+    let merged = payload;
+    try {
+      const cur = await ghReadFile(cfg, 'assets/data/updates.json');
+      if (cur && cur.content) {
+        const remote = JSON.parse(b64ToUtf8(cur.content));
+        const t = s => { const v = Date.parse(s || ''); return isNaN(v) ? 0 : v; };
+        const map = {};
+        ((remote && remote.entries) || []).forEach(e => { if (e && e.id) map[e.id] = e; });
+        (entries || []).forEach(e => {
+          if (!e || !e.id) return;
+          const old = map[e.id];
+          if (!old || t(e.updatedAt) >= t(old.updatedAt)) map[e.id] = e;
+        });
+        merged = { entries: Object.keys(map).map(k => map[k]), updatedAt: new Date().toISOString() };
+      }
+    } catch (e) { /* 读不到就按本地写 */ }
+    await ghWriteFile(cfg, 'assets/data/updates.json', JSON.stringify(merged, null, 2), '更新日志：' + ((entries[0] && entries[0].title) || '修改'));
+    DATA.updates = merged;
     showToast('已同步到线上仓库', 'ok');
     return { ok: true, where: 'github' };
   }

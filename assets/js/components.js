@@ -103,11 +103,15 @@ function renderCharCard(char) {
     char.element ? elIcon(char.element) : '<span class="badge badge-none">元素待补</span>',
     char.role ? '<span class="badge role-' + char.role + '">' + roleName(char.role) + '</span>' : '<span class="badge badge-none">职业待补</span>'
   ].join('');
-  // 已加强的旅人在卡片上加个小标（配合图鉴的「加强」筛选）
+  // 已加强的旅人在卡片上打个标记；管理员直接看到可点的开关
   const buffed = (typeof isCharStrengthened === 'function') && isCharStrengthened(char.id);
+  const canEditBuff = (typeof isAdmin === 'function') && isAdmin();
+  const buffHtml = canEditBuff
+    ? '<button type="button" class="char-buff-btn' + (buffed ? ' on' : '') + '" data-buff-id="' + char.id + '" title="点击切换加强状态">' + (buffed ? '已加强' : '加强') + '</button>'
+    : (buffed ? '<span class="char-buff">加强</span>' : '');
   return `
     <a class="char-card" href="character.html?id=${char.id}">
-      <div class="char-card-media">${renderPortrait(char, 'char-portrait', { thumb: true, w: 256, h: 256 })}${renderStars(char.rarity)}${buffed ? '<span class="char-buff">加强</span>' : ''}</div>
+      <div class="char-card-media">${renderPortrait(char, 'char-portrait', { thumb: true, w: 256, h: 256 })}${renderStars(char.rarity)}${buffHtml}</div>
       <div class="char-card-body">
         <div class="char-card-name">${escapeHtml(char.name)}</div>
         <div class="char-card-meta">${meta}</div>
