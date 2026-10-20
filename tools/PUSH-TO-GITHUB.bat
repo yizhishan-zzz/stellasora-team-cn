@@ -40,7 +40,7 @@ if errorlevel 1 (
 echo.
 echo --- Step 3/5: commit merged data ---
 git add -A
-git -c user.name="site" -c user.email="site@local" commit -q -m "update site" >nul 2>&1
+git -c user.name="yizhishan_zzz" -c user.email="3910443008@qq.com" commit -q -m "update site" >nul 2>&1
 echo.
 echo --- Step 4/5: push ---
 git fetch origin main
