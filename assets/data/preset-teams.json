@@ -3395,7 +3395,7 @@
       "name": "尘沙璟麟技伤（尘沙单C）",
       "date": "2026/10/20",
       "presetCode": "AAAAogAAAHUAAABrzbADbYZgAAAMAGwAAAAA",
-      "description": "算是攻略组的尘沙火垂技伤的变种，所以我这里还是要放下网页链接：https://www.bilibili.com/opus/1261247765294350354?spm_id_from=333.1365.0.0\n",
+      "description": "算是攻略组的尘沙火垂技伤的变种，所以我这里还是要放下网页链接：https://www.bilibili.com/opus/1261247765294350354?spm_id_from=333.1365.0.0\n璟麟当小暴击拐就行",
       "tags": {
         "element": "光",
         "style": "技伤流",
@@ -3460,8 +3460,8 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1792501983930
+      "updatedAt": 1792502005396
     }
   ],
-  "updatedAt": "2026-10-20T13:13:03.931Z"
+  "updatedAt": "2026-10-20T13:13:25.397Z"
 }
