@@ -114,14 +114,7 @@ function splitParams(params) {
   wr(path.join(OUT, 'potential-levels.json'), pots);
 
   // ===== 旅人基础数值（只保留等级/生命/攻击/防御，去重压缩）=====
-  // 极少数新角色数据里没有 DEF 字段（其余角色全是同一个固定值），用众数兜底
-  const defCount = {};
-  Object.keys(charBin).forEach(sid => {
-    const s0 = charBin[sid];
-    ((s0 && s0.stat) || []).forEach(r => { if (r && r.DEF != null) defCount[r.DEF] = (defCount[r.DEF] || 0) + 1; });
-  });
-  let defFallback = null, defBest = 0;
-  Object.keys(defCount).forEach(k => { if (defCount[k] > defBest) { defBest = defCount[k]; defFallback = Number(k); } });
+  // 数据里没有 DEF 字段 = 这个角色的防御就是 0（特殊设定，不是缺数据，不能乱补）
   const stats = {};
   chars.forEach(c => {
     if (!c.sid) return;
@@ -130,13 +123,14 @@ function splitParams(params) {
     // 每级一组，只留三个数，用数组存
     // 去重：数据里最高级会重复一次（Lv90 与 Lv91 数值相同）
     // 数据里最高级重复了一次（Lv91 与 Lv90 数值完全相同），去重后上限 = 90
-    let defFixed = 0;
+    let defZero = 0;
     const rows = s.stat.map(r => {
       let def = r.DEF;
-      if (def == null && defFallback != null) { def = defFallback; defFixed++; }
+      // 没有 DEF 字段的角色（特殊设定）防御按 0 处理
+      if (def == null) { def = 0; defZero++; }
       return [r.Level, r.HP, r.ATK, def];
     });
-    if (defFixed) console.log('  [兜底] ' + (c.name || c.id) + ' 数据缺 DEF，按全角色固定值 ' + defFallback + ' 补上（' + defFixed + ' 行）');
+    if (defZero) console.log('  [无防御] ' + (c.name || c.id) + ' 数据里没有 DEF 字段，防御按 0 处理（' + defZero + ' 行）');
     if (rows.length > 1) {
       const a = rows[rows.length - 1], b = rows[rows.length - 2];
       if (a[1] === b[1] && a[2] === b[2] && a[3] === b[3]) rows.pop();
