@@ -3475,7 +3475,7 @@
       "tags": {
         "element": "光",
         "style": "技伤流",
-        "power": "",
+        "power": "T1.5",
         "scene": []
       },
       "chars": [
@@ -3533,8 +3533,8 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1792558004286
+      "updatedAt": 1792558005440
     }
   ],
-  "updatedAt": "2026-10-21T04:46:45.254Z"
+  "updatedAt": "2026-10-21T04:46:48.488Z"
 }
