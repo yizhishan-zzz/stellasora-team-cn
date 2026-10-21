@@ -3471,7 +3471,7 @@
       "name": "尘沙菈露技伤（尘沙单C）",
       "date": "2026/10/21",
       "presetCode": "AAAAogAAAJYAAABrzbADbYbAAAAMAMwAAAwA",
-      "description": "",
+      "description": "算是攻略组的尘沙火垂技伤的变种，所以我这里还是要放下网页链接：https://www.bilibili.com/opus/1261247765294350354?spm_id_from=333.1365.0.0\n其他不变，就让菈露纯加技伤\n\n紧急补充：尘沙有巨大毒点，防御为0！！！需要缇莉娅的加防才能保证生存\n菈露不放技能与大招，会抢印记",
       "tags": {
         "element": "光",
         "style": "技伤流",
@@ -3537,8 +3537,8 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1792558026482
+      "updatedAt": 1792558061256
     }
   ],
-  "updatedAt": "2026-10-21T04:47:06.483Z"
+  "updatedAt": "2026-10-21T04:47:41.257Z"
 }
