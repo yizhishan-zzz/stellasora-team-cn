@@ -3480,7 +3480,7 @@
       },
       "chars": [
         "firstlight-noya",
-        null,
+        "lalu",
         null
       ],
       "mainPatterns": [
@@ -3513,8 +3513,8 @@
         {}
       ],
       "isRecommended": false,
-      "updatedAt": 1792557844571
+      "updatedAt": 1792557849618
     }
   ],
-  "updatedAt": "2026-10-21T04:44:04.572Z"
+  "updatedAt": "2026-10-21T04:44:09.619Z"
 }
