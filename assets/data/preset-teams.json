@@ -3325,7 +3325,7 @@
       "id": "t_mvgoxehgvuot",
       "name": "尘沙希娅技伤（尘沙单C）",
       "date": "2026/10/21",
-      "presetCode": "AAAAogAAAJsAAABrzbADbYbAAAAMAGwAAAwA",
+      "presetCode": "AAAAogAAAJsAAABrzbADbYbAAAAMAMwAAAwA",
       "description": "算是攻略组的尘沙火垂技伤的变种，所以我这里还是要放下网页链接：https://www.bilibili.com/opus/1261247765294350354?spm_id_from=333.1365.0.0\n其他不变，就让希娅纯加爆伤\n\n紧急补充：尘沙有巨大毒点，防御为0！！！需要缇莉娅的加防才能保证生存\n希娅不放技能与大招，会抢印记\n",
       "tags": {
         "element": "光",
@@ -3391,7 +3391,7 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1792557658502
+      "updatedAt": 1792557662086
     },
     {
       "id": "t_mvgoyhvzv964",
@@ -3467,5 +3467,5 @@
       "updatedAt": 1792517615005
     }
   ],
-  "updatedAt": "2026-10-21T04:40:58.503Z"
+  "updatedAt": "2026-10-21T04:41:02.087Z"
 }
