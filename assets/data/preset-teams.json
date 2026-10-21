@@ -3402,7 +3402,7 @@
       "tags": {
         "element": "光",
         "style": "技伤流",
-        "power": "T1",
+        "power": "T2",
         "scene": [
           "单体环境",
           "群体环境",
@@ -3464,8 +3464,8 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1792557750888
+      "updatedAt": 1792557752103
     }
   ],
-  "updatedAt": "2026-10-21T04:42:30.889Z"
+  "updatedAt": "2026-10-21T04:42:34.476Z"
 }
