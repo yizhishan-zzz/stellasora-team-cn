@@ -3479,7 +3479,7 @@
         "scene": []
       },
       "chars": [
-        null,
+        "firstlight-noya",
         null,
         null
       ],
@@ -3513,8 +3513,8 @@
         {}
       ],
       "isRecommended": false,
-      "updatedAt": 1792557808219
+      "updatedAt": 1792557844571
     }
   ],
-  "updatedAt": "2026-10-21T04:43:28.220Z"
+  "updatedAt": "2026-10-21T04:44:04.572Z"
 }
