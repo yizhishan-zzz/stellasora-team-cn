@@ -1340,3 +1340,7 @@ html[data-theme="dark"] .kw { color: #5eead4; }
 
 .badge .el-icon { width: 14px; height: 14px; vertical-align: -2px; margin-right: 3px; }
 
+
+/* 联想里的元素只显示图标 */
+.ts-el .el-icon { width: 18px; height: 18px; }
+

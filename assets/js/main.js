@@ -1305,7 +1305,7 @@ function renderTeams() {
     suggestBox.innerHTML = hits.map(c =>
       '<button type="button" class="ts-item" data-name="' + escapeHtml(c.name) + '">' +
         '<span class="ts-name">' + escapeHtml(c.name) + '</span>' +
-        '<span class="ts-el">' + elIcon(c.element) + escapeHtml((ELEMENTS[c.element] || {}).name || '') + '元素</span>' +
+        '<span class="ts-el" title="' + escapeHtml((ELEMENTS[c.element] || {}).name || '') + '元素">' + elIcon(c.element) + '</span>' +
       '</button>'
     ).join('');
     suggestBox.hidden = false;
