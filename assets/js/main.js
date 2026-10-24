@@ -1365,7 +1365,7 @@ function renderUserTeamCard(t) {
   }, 0);
   const tg = t.tags || {};
   const tagChips = [
-    tg.element ? '<span class="ut-tag ut-tag-el">' + elIcon(elKeyByName(tg.element)) + escapeHtml(tg.element) + '</span>' : '',
+    tg.element ? '<span class="ut-tag ut-tag-el" title="' + escapeHtml(tg.element) + '元素">' + elIcon(elKeyByName(tg.element)) + '</span>' : '',
     tg.style ? '<span class="ut-tag">流派 · ' + escapeHtml(tg.style) + '</span>' : '',
     normPower(tg.power) ? '<span class="ut-tag ut-tag-pow">强度 · ' + escapeHtml(normPower(tg.power)) + '</span>' : '',
     teamScenes(t).length ? '<span class="ut-tag ut-tag-scene">适用 · ' + escapeHtml(teamScenes(t).join(' / ')) + '</span>' : ''
@@ -1518,7 +1518,7 @@ function renderTeam() {
       </div>`;
 
     const tagText = [
-      tg.element ? '<span class="ut-tag ut-tag-el">' + elIcon(elKeyByName(tg.element)) + escapeHtml(tg.element) + '</span>' : '',
+      tg.element ? '<span class="ut-tag ut-tag-el" title="' + escapeHtml(tg.element) + '元素">' + elIcon(elKeyByName(tg.element)) + '</span>' : '',
       tg.style ? '<span class="ut-tag">流派 · ' + escapeHtml(tg.style) + '</span>' : '',
       normPower(tg.power) ? '<span class="ut-tag ut-tag-pow">强度 · ' + escapeHtml(normPower(tg.power)) + '</span>' : '',
       teamScenes(t).length ? '<span class="ut-tag ut-tag-scene">适用 · ' + escapeHtml(teamScenes(t).join(' / ')) + '</span>' : ''

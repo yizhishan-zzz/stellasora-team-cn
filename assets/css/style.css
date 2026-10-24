@@ -1344,3 +1344,8 @@ html[data-theme="dark"] .kw { color: #5eead4; }
 /* 联想里的元素只显示图标 */
 .ts-el .el-icon { width: 18px; height: 18px; }
 
+
+/* 配队卡片上的元素标签：只显示图标（悬停看元素名） */
+.ut-tag-el { padding-left: 5px; padding-right: 5px; }
+.ut-tag-el .el-icon { width: 16px; height: 16px; margin-right: 0; vertical-align: -3px; }
+
