@@ -136,10 +136,23 @@ const POWER_TIERS = [
   '数值过低，时代淘汰'
 ];
 const POWER_ORDER = POWER_TIERS;
+
+// 旧档位（T0/T1…）自动映射到新的五档，避免页面再显示 T0.5 这种字样
+const LEGACY_POWER_MAP = {
+  'T0': '力大转飞，跨属执法', 'T0.5': '力大转飞，跨属执法',
+  'T1': '环境优解，对策使用', 'T1.5': '环境优解，对策使用',
+  'T2': '中规中矩，常规配队', 'T2.5': '中规中矩，常规配队',
+  'T3': '数值过低，时代淘汰'
+};
+function normPower(v) {
+  const s = String(v == null ? '' : v).trim();
+  if (!s) return '';
+  if (POWER_TIERS.indexOf(s) >= 0) return s;
+  return LEGACY_POWER_MAP[s.toUpperCase()] || '';
+}
 function powerRank(power) {
-  const s = String(power == null ? '' : power).trim().toUpperCase();
-  const i = POWER_ORDER.indexOf(s);
-  return i < 0 ? POWER_ORDER.length : i;
+  const i = POWER_TIERS.indexOf(normPower(power));
+  return i < 0 ? POWER_TIERS.length : i;
 }
 // 按强度稳定排序（同档位保持原顺序）
 function sortByPower(list) {
@@ -170,8 +183,7 @@ function styleIcoCls(v) {
 }
 // 强度档位序号（0=最强），用于配色和排序
 function powerTierOf(v) {
-  const i = (typeof POWER_OPTIONS !== 'undefined' ? POWER_OPTIONS : []).indexOf(String(v == null ? '' : v).trim());
-  return i;
+  return POWER_TIERS.indexOf(normPower(v));
 }
 function powerIcoCls(v) {
   const i = powerTierOf(v);
@@ -1118,7 +1130,7 @@ function renderTeams() {
   const FILTER_DEFS = [
     { key: 'element', label: '元素', get: t => (t.tags || {}).element || '', opts: Object.entries(ELEMENTS).map(([k, o]) => ({ value: o.name, label: o.name, cls: 'el-' + k, html: elIcon(k), title: o.name + '元素' })) },
     { key: 'style', label: '流派', get: t => (t.tags || {}).style || '', opts: STYLE_OPTIONS },
-    { key: 'power', label: '强度', get: t => (t.tags || {}).power || '', opts: POWER_OPTIONS },
+    { key: 'power', label: '强度', get: t => normPower((t.tags || {}).power), opts: POWER_OPTIONS },
     { key: 'scene', label: '适用场合', get: t => teamScenes(t)[0] || '', opts: TEAM_SCENES }
   ];
   // 从首页点「水队」之类跳过来时，自动套用元素筛选（其它条件保持全部）
@@ -1355,7 +1367,7 @@ function renderUserTeamCard(t) {
   const tagChips = [
     tg.element ? '<span class="ut-tag ut-tag-el">' + elIcon(elKeyByName(tg.element)) + escapeHtml(tg.element) + '</span>' : '',
     tg.style ? '<span class="ut-tag">流派 · ' + escapeHtml(tg.style) + '</span>' : '',
-    tg.power ? '<span class="ut-tag ut-tag-pow">强度 · ' + escapeHtml(tg.power) + '</span>' : '',
+    normPower(tg.power) ? '<span class="ut-tag ut-tag-pow">强度 · ' + escapeHtml(normPower(tg.power)) + '</span>' : '',
     teamScenes(t).length ? '<span class="ut-tag ut-tag-scene">适用 · ' + escapeHtml(teamScenes(t).join(' / ')) + '</span>' : ''
   ].filter(Boolean).join('');
   return `
@@ -1508,7 +1520,7 @@ function renderTeam() {
     const tagText = [
       tg.element ? '<span class="ut-tag ut-tag-el">' + elIcon(elKeyByName(tg.element)) + escapeHtml(tg.element) + '</span>' : '',
       tg.style ? '<span class="ut-tag">流派 · ' + escapeHtml(tg.style) + '</span>' : '',
-      tg.power ? '<span class="ut-tag ut-tag-pow">强度 · ' + escapeHtml(tg.power) + '</span>' : '',
+      normPower(tg.power) ? '<span class="ut-tag ut-tag-pow">强度 · ' + escapeHtml(normPower(tg.power)) + '</span>' : '',
       teamScenes(t).length ? '<span class="ut-tag ut-tag-scene">适用 · ' + escapeHtml(teamScenes(t).join(' / ')) + '</span>' : ''
     ].filter(Boolean).join('');
 
@@ -1537,10 +1549,10 @@ function renderTeam() {
         <div class="tag-item">
           <label>强度</label>
           <div class="dd" id="ddPower">
-            <button type="button" class="dd-btn" id="ddPowerBtn">${tg.power ? powerIcon(tg.power) + '<span>' + escapeHtml(tg.power) + '</span>' : '<span class="dd-ph">未设置</span>'}</button>
+            <button type="button" class="dd-btn" id="ddPowerBtn">${normPower(tg.power) ? powerIcon(normPower(tg.power)) + '<span>' + escapeHtml(normPower(tg.power)) + '</span>' : '<span class="dd-ph">未设置</span>'}</button>
             <div class="dd-menu">
               <button type="button" class="dd-opt" data-v=""><span>未设置</span></button>
-              ${POWER_OPTIONS.map(o => '<button type="button" class="dd-opt' + (tg.power === o ? ' on' : '') + '" data-v="' + o + '">' + powerIcon(o) + '<span>' + o + '</span></button>').join('')}
+              ${POWER_OPTIONS.map(o => '<button type="button" class="dd-opt' + (normPower(tg.power) === o ? ' on' : '') + '" data-v="' + o + '">' + powerIcon(o) + '<span>' + o + '</span></button>').join('')}
             </div>
           </div>
         </div>

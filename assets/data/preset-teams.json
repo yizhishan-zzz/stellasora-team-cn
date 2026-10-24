@@ -8,7 +8,7 @@
       "tags": {
         "element": "暗",
         "style": "绝招流",
-        "power": "T0.5",
+        "power": "力大转飞，跨属执法",
         "scene": [
           "单体环境"
         ]
@@ -82,7 +82,7 @@
       "tags": {
         "element": "暗",
         "style": "绝招流",
-        "power": "T1",
+        "power": "环境优解，对策使用",
         "scene": [
           "单体环境"
         ]
@@ -156,7 +156,7 @@
       "tags": {
         "element": "土",
         "style": "技伤流",
-        "power": "T0.5",
+        "power": "力大转飞，跨属执法",
         "scene": [
           "单体环境"
         ]
@@ -229,7 +229,7 @@
       "tags": {
         "element": "土",
         "style": "印记流",
-        "power": "T0.5",
+        "power": "力大转飞，跨属执法",
         "scene": [
           "单体环境"
         ]
@@ -302,7 +302,7 @@
       "tags": {
         "element": "火",
         "style": "绝招流",
-        "power": "T0.5",
+        "power": "力大转飞，跨属执法",
         "scene": [
           "单体环境"
         ]
@@ -377,7 +377,7 @@
       "tags": {
         "element": "土",
         "style": "技伤流",
-        "power": "T1",
+        "power": "环境优解，对策使用",
         "scene": [
           "单体环境",
           "群体环境"
@@ -451,7 +451,7 @@
       "tags": {
         "element": "土",
         "style": "技伤流",
-        "power": "T1",
+        "power": "环境优解，对策使用",
         "scene": [
           "单体环境",
           "群体环境"
@@ -525,7 +525,7 @@
       "tags": {
         "element": "风",
         "style": "技伤流",
-        "power": "T0.5",
+        "power": "力大转飞，跨属执法",
         "scene": [
           "群体环境"
         ]
@@ -601,7 +601,7 @@
       "tags": {
         "element": "风",
         "style": "普攻流",
-        "power": "T1",
+        "power": "环境优解，对策使用",
         "scene": [
           "单体环境"
         ]
@@ -674,7 +674,7 @@
       "tags": {
         "element": "水",
         "style": "技伤流",
-        "power": "T0.5",
+        "power": "力大转飞，跨属执法",
         "scene": []
       },
       "chars": [
@@ -748,7 +748,7 @@
       "tags": {
         "element": "光",
         "style": "技伤流",
-        "power": "T0.5",
+        "power": "力大转飞，跨属执法",
         "scene": [
           "单体环境",
           "群体环境"
@@ -820,7 +820,7 @@
       "tags": {
         "element": "光",
         "style": "技伤流",
-        "power": "T2",
+        "power": "中规中矩，常规配队",
         "scene": [
           "单体环境",
           "群体环境",
@@ -893,7 +893,7 @@
       "tags": {
         "element": "光",
         "style": "技伤流",
-        "power": "T1.5",
+        "power": "环境优解，对策使用",
         "scene": [
           "单体环境",
           "群体环境",
@@ -3615,5 +3615,6 @@
       "isRecommended": false,
       "updatedAt": 1792817796276
     }
-  ]
+  ],
+  "updatedAt": "2026-10-24T05:13:24.224Z"
 }

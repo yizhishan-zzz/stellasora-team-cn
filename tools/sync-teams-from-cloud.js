@@ -69,6 +69,24 @@ function get(url, strict, redirects) {
   // 保持稳定顺序：先按 updatedAt，再按 id
   merged.sort((a, b) => (a.updatedAt || 0) - (b.updatedAt || 0) || String(a.id).localeCompare(String(b.id)));
 
+  // 云端可能还存着旧的 T0/T1 强度值，合并时统一转成新的五档，避免页面出现旧字样
+  const LEGACY_POWER = {
+    'T0': '力大转飞，跨属执法', 'T0.5': '力大转飞，跨属执法',
+    'T1': '环境优解，对策使用', 'T1.5': '环境优解，对策使用',
+    'T2': '中规中矩，常规配队', 'T2.5': '中规中矩，常规配队',
+    'T3': '数值过低，时代淘汰'
+  };
+  const NEW_POWER = ['力大转飞，跨属执法', '环境优解，对策使用', '中规中矩，常规配队', '未来可期，静静等待', '数值过低，时代淘汰'];
+  let powFixed = 0;
+  merged.forEach(t => {
+    t.tags = Object.assign({}, t.tags || {});
+    const p = String(t.tags.power || '').trim();
+    if (!p || NEW_POWER.indexOf(p) >= 0) return;
+    const next = LEGACY_POWER[p.toUpperCase()];
+    if (next) { t.tags.power = next; powFixed++; }
+  });
+  if (powFixed) console.log('  旧强度值已转换: ' + powFixed + ' 个（T0/T1 → 新五档）');
+
   const onlyRemote = remoteTeams.filter(t => !localTeams.some(x => x.id === t.id));
   const onlyLocal = localTeams.filter(t => !remoteTeams.some(x => x.id === t.id));
   if (onlyRemote.length) { console.log('  云端独有（会补进本地）: ' + onlyRemote.map(t => t.name).join('、')); }
