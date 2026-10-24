@@ -122,26 +122,26 @@
       "id": "u_mvlyy83d",
       "title": "2026/10/24优化更新",
       "date": "2026/10/24",
-      "body": "1.印记相关描述优化，详情如图1.1所示\n[图:imvlyuoye127]\n2.配队界面与默认排序逻辑优化，如图2.1所示；删除预设码搜索，增加搜索框旅人联想，如图2.2所示\n[图:imvlywzxd669]\n[图:imvlyxodf228]\n",
+      "body": "1.更新配队：尘沙火垂技伤双c卷分（慎用）；更改所有配队强度描述；更新配队：花原早期风队（！？区区？！）的简介\n2.印记相关描述优化，详情如图2.1所示\n[图:imvlyuoye127]\n3.配队界面与默认排序逻辑优化，如图3.1所示；删除预设码搜索，增加搜索框旅人联想，如图3.2所示\n[图:imvlywzxd669]\n[图:imvlyxodf228]",
       "images": [
         {
           "id": "imvlyuoye127",
           "src": "assets/img/updates/xtlr_update_2026_10_24_185145.png",
-          "caption": "图1.1 印记相关描述优化"
+          "caption": "图2.1 印记相关描述优化"
         },
         {
           "id": "imvlywzxd669",
           "src": "assets/img/updates/xtlr_update_2026_10_24_294155.png",
-          "caption": "图2.1 界面与排序逻辑优化"
+          "caption": "图3.1 界面与排序逻辑优化"
         },
         {
           "id": "imvlyxodf228",
           "src": "assets/img/updates/xtlr_update_2026_10_24_321378.png",
-          "caption": "图2.2 搜索框旅人联想"
+          "caption": "图3.2 搜索框旅人联想"
         }
       ],
-      "updatedAt": "2026-10-24T05:39:15.961Z"
+      "updatedAt": "2026-10-24T05:43:53.475Z"
     }
   ],
-  "updatedAt": "2026-10-24T05:39:18.673Z"
+  "updatedAt": "2026-10-24T05:43:56.188Z"
 }
