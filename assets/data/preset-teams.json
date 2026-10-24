@@ -8,7 +8,7 @@
       "tags": {
         "element": "暗",
         "style": "绝招流",
-        "power": "T0.5",
+        "power": "环境优解，对策使用",
         "scene": [
           "单体环境"
         ]
@@ -82,7 +82,7 @@
       "tags": {
         "element": "暗",
         "style": "绝招流",
-        "power": "T1",
+        "power": "环境优解，对策使用",
         "scene": [
           "单体环境"
         ]
@@ -156,7 +156,7 @@
       "tags": {
         "element": "暗",
         "style": "普攻流",
-        "power": "T1",
+        "power": "中规中矩，常规配队",
         "scene": [
           "单体环境"
         ]
@@ -219,7 +219,7 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1789628757224,
+      "updatedAt": 1792815977184,
       "date": "2026/09/25"
     },
     {
@@ -230,7 +230,7 @@
       "tags": {
         "element": "火",
         "style": "技伤流",
-        "power": "T0",
+        "power": "力大转飞，跨属执法",
         "scene": [
           "单体环境"
         ]
@@ -294,7 +294,7 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1789631225234,
+      "updatedAt": 1792815065737,
       "date": "2026/09/25"
     },
     {
@@ -305,7 +305,7 @@
       "tags": {
         "element": "火",
         "style": "绝招流",
-        "power": "T1",
+        "power": "中规中矩，常规配队",
         "scene": [
           "单体环境"
         ]
@@ -367,7 +367,7 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1789631244753,
+      "updatedAt": 1792815015042,
       "date": "2026/09/25"
     },
     {
@@ -378,7 +378,7 @@
       "tags": {
         "element": "水",
         "style": "技伤流",
-        "power": "T0.5",
+        "power": "中规中矩，常规配队",
         "scene": [
           "单体环境"
         ]
@@ -442,7 +442,7 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1789631303765,
+      "updatedAt": 1792814817605,
       "date": "2026/09/25"
     },
     {
@@ -453,7 +453,7 @@
       "tags": {
         "element": "土",
         "style": "技伤流",
-        "power": "T0.5",
+        "power": "环境优解，对策使用",
         "scene": [
           "单体环境"
         ]
@@ -520,13 +520,13 @@
     },
     {
       "id": "t_mu5r6gdxxek6",
-      "name": "火垂光队",
+      "name": "希娅火垂光队",
       "presetCode": "AAAAmwAAAGsAAABzzbADAgDMMABgBjAGwwwA",
       "description": "战未来，战未来，战未来！\n现强度跟早期光队其实差不了多少，火垂的潜能和伴生秘纹都不很契合当今版本光队\n参考了星塔攻略组的预设，网页链接：https://www.bilibili.com/opus/1202236817361862657?spm_id_from=333.1369.0.0",
       "tags": {
         "element": "光",
         "style": "普攻流",
-        "power": "T1",
+        "power": "数值过低，时代淘汰",
         "scene": [
           "单体环境"
         ]
@@ -588,7 +588,7 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1789663302960,
+      "updatedAt": 1792816143092,
       "date": "2026/09/25"
     },
     {
@@ -599,7 +599,7 @@
       "tags": {
         "element": "暗",
         "style": "绝招流",
-        "power": "T1.5",
+        "power": "数值过低，时代淘汰",
         "scene": [
           "单体环境"
         ]
@@ -661,7 +661,7 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1789692578227,
+      "updatedAt": 1792816015208,
       "date": "2026/09/25"
     },
     {
@@ -672,7 +672,7 @@
       "tags": {
         "element": "土",
         "style": "印记流",
-        "power": "T0.5",
+        "power": "力大转飞，跨属执法",
         "scene": [
           "单体环境"
         ]
@@ -735,7 +735,7 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1789727941826,
+      "updatedAt": 1792815745762,
       "date": "2026/09/25"
     },
     {
@@ -746,7 +746,7 @@
       "tags": {
         "element": "土",
         "style": "印记流",
-        "power": "T0.5",
+        "power": "环境优解，对策使用",
         "scene": [
           "单体环境"
         ]
@@ -819,7 +819,7 @@
       "tags": {
         "element": "暗",
         "style": "技伤流",
-        "power": "T2",
+        "power": "数值过低，时代淘汰",
         "scene": [
           "单体环境"
         ]
@@ -879,7 +879,7 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1789728095119,
+      "updatedAt": 1792816057321,
       "date": "2026/09/25"
     },
     {
@@ -890,7 +890,7 @@
       "tags": {
         "element": "土",
         "style": "印记流",
-        "power": "T1",
+        "power": "中规中矩，常规配队",
         "scene": [
           "单体环境"
         ]
@@ -952,7 +952,7 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1789728522789,
+      "updatedAt": 1792815827919,
       "date": "2026/09/25"
     },
     {
@@ -963,7 +963,7 @@
       "tags": {
         "element": "火",
         "style": "绝招流",
-        "power": "T0.5",
+        "power": "环境优解，对策使用",
         "scene": [
           "单体环境"
         ]
@@ -1038,7 +1038,7 @@
       "tags": {
         "element": "风",
         "style": "混伤流",
-        "power": "T2",
+        "power": "中规中矩，常规配队",
         "scene": [
           "单体环境"
         ]
@@ -1101,7 +1101,7 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1789911094121,
+      "updatedAt": 1792815689524,
       "date": "2026/09/25"
     },
     {
@@ -1112,7 +1112,7 @@
       "tags": {
         "element": "火",
         "style": "技伤流",
-        "power": "T2",
+        "power": "未来可期，静静等待",
         "scene": [
           "单体环境"
         ]
@@ -1174,7 +1174,7 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1789914403819,
+      "updatedAt": 1792815571994,
       "date": "2026/09/25"
     },
     {
@@ -1185,7 +1185,7 @@
       "tags": {
         "element": "暗",
         "style": "仆从流",
-        "power": "T2.5",
+        "power": "未来可期，静静等待",
         "scene": [
           "单体环境"
         ]
@@ -1246,18 +1246,18 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1789914869591,
+      "updatedAt": 1792815996053,
       "date": "2026/09/25"
     },
     {
       "id": "t_mu9x49y384ak",
       "name": "花原早期风队（！？区区？！）",
       "presetCode": "AAAAdwAAAIUAAAB7MDAYYA4wANtsAKDGwAwA",
-      "description": "难以评价（花原宝宝不是区QAQ）（花园宝宝就是区！！！）真的难绷\n参考了星塔攻略组的预设，网页链接：https://www.bilibili.com/opus/1144370426586071048?spm_id_from=333.1369.0.0\n大改了一下，这队真的尴尬的要命，唯一优势就是这队能打心危擂台（花原宝宝只有触发器作用，只不过触发的最频繁罢了，伤害全是夏花打的）",
+      "description": "难以评价（花原宝宝不是区QAQ）（花园宝宝就是区！！！）真的难绷\n参考了星塔攻略组的预设，网页链接：https://www.bilibili.com/opus/1144370426586071048?spm_id_from=333.1369.0.0\n大改了一下，这队真的尴尬的要命，唯一优势就是这队能打心危擂台（花原宝宝只有触发器作用，只不过触发的最频繁罢了，伤害全是夏花打的）\n加强后怎么还是区区，得等新的风辅",
       "tags": {
         "element": "风",
         "style": "技伤流",
-        "power": "T2.5",
+        "power": "未来可期，静静等待",
         "scene": [
           "单体环境",
           "群体环境"
@@ -1321,7 +1321,7 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1789915610533,
+      "updatedAt": 1792815644940,
       "date": "2026/09/25"
     },
     {
@@ -1332,7 +1332,7 @@
       "tags": {
         "element": "水",
         "style": "技伤流",
-        "power": "T0",
+        "power": "力大转飞，跨属执法",
         "scene": [
           "单体环境",
           "群体环境"
@@ -1397,7 +1397,7 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1789915632235,
+      "updatedAt": 1792814689686,
       "date": "2026/09/25"
     },
     {
@@ -1408,7 +1408,7 @@
       "tags": {
         "element": "水",
         "style": "印记流",
-        "power": "T1",
+        "power": "中规中矩，常规配队",
         "scene": [
           "单体环境",
           "群体环境"
@@ -1474,7 +1474,7 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1789915682811,
+      "updatedAt": 1792814675053,
       "date": "2026/09/25"
     },
     {
@@ -1485,7 +1485,7 @@
       "tags": {
         "element": "水",
         "style": "普攻流",
-        "power": "T1",
+        "power": "中规中矩，常规配队",
         "scene": [
           "单体环境",
           "群体环境"
@@ -1549,7 +1549,7 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1789915703557,
+      "updatedAt": 1792814784489,
       "date": "2026/09/25"
     },
     {
@@ -1560,7 +1560,7 @@
       "tags": {
         "element": "土",
         "style": "技伤流",
-        "power": "T1",
+        "power": "环境优解，对策使用",
         "scene": [
           "单体环境",
           "群体环境"
@@ -1634,7 +1634,7 @@
       "tags": {
         "element": "土",
         "style": "技伤流",
-        "power": "T1",
+        "power": "环境优解，对策使用",
         "scene": [
           "单体环境",
           "群体环境"
@@ -1708,7 +1708,7 @@
       "tags": {
         "element": "暗",
         "style": "技伤流",
-        "power": "T2",
+        "power": "数值过低，时代淘汰",
         "scene": [
           "单体环境",
           "群体环境"
@@ -1771,7 +1771,7 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1789915817128,
+      "updatedAt": 1792816036163,
       "date": "2026/09/25"
     },
     {
@@ -1782,7 +1782,7 @@
       "tags": {
         "element": "土",
         "style": "技伤流",
-        "power": "T2",
+        "power": "数值过低，时代淘汰",
         "scene": [
           "单体环境"
         ]
@@ -1842,7 +1842,7 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1789916315011,
+      "updatedAt": 1792815779289,
       "date": "2026/09/25"
     },
     {
@@ -1853,7 +1853,7 @@
       "tags": {
         "element": "土",
         "style": "技伤流",
-        "power": "T2",
+        "power": "数值过低，时代淘汰",
         "scene": [
           "群体环境"
         ]
@@ -1914,7 +1914,7 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1789916580507,
+      "updatedAt": 1792815810555,
       "date": "2026/09/25"
     },
     {
@@ -1925,7 +1925,7 @@
       "tags": {
         "element": "光",
         "style": "普攻流",
-        "power": "T1.5",
+        "power": "数值过低，时代淘汰",
         "scene": [
           "单体环境"
         ]
@@ -1989,7 +1989,7 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1789921982371,
+      "updatedAt": 1792815903600,
       "date": "2026/09/25"
     },
     {
@@ -2000,7 +2000,7 @@
       "tags": {
         "element": "光",
         "style": "技伤流",
-        "power": "T2",
+        "power": "数值过低，时代淘汰",
         "scene": [
           "群体环境"
         ]
@@ -2064,7 +2064,7 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1789922235050,
+      "updatedAt": 1792815920431,
       "date": "2026/09/25"
     },
     {
@@ -2075,7 +2075,7 @@
       "tags": {
         "element": "水",
         "style": "普攻流",
-        "power": "T2",
+        "power": "中规中矩，常规配队",
         "scene": [
           "单体环境",
           "群体环境",
@@ -2138,7 +2138,7 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1789924143483,
+      "updatedAt": 1792814900271,
       "date": "2026/09/25"
     },
     {
@@ -2149,7 +2149,7 @@
       "tags": {
         "element": "火",
         "style": "技伤流",
-        "power": "T3",
+        "power": "数值过低，时代淘汰",
         "scene": [
           "群体环境",
           "新手向"
@@ -2209,7 +2209,7 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1789924171429,
+      "updatedAt": 1792815029331,
       "date": "2026/09/25"
     },
     {
@@ -2220,7 +2220,7 @@
       "tags": {
         "element": "土",
         "style": "技伤流",
-        "power": "T2",
+        "power": "数值过低，时代淘汰",
         "scene": [
           "群体环境",
           "新手向"
@@ -2279,7 +2279,7 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1789924677685,
+      "updatedAt": 1792815800581,
       "date": "2026/09/25"
     },
     {
@@ -2290,7 +2290,7 @@
       "tags": {
         "element": "风",
         "style": "技伤流",
-        "power": "T3",
+        "power": "数值过低，时代淘汰",
         "scene": [
           "单体环境",
           "群体环境",
@@ -2352,7 +2352,7 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1789924998621,
+      "updatedAt": 1792815670680,
       "date": "2026/09/25"
     },
     {
@@ -2363,7 +2363,7 @@
       "tags": {
         "element": "光",
         "style": "混伤流",
-        "power": "T2.5",
+        "power": "数值过低，时代淘汰",
         "scene": [
           "单体环境",
           "群体环境",
@@ -2424,7 +2424,7 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1789925408209,
+      "updatedAt": 1792815938603,
       "date": "2026/09/25"
     },
     {
@@ -2435,7 +2435,7 @@
       "tags": {
         "element": "暗",
         "style": "混伤流",
-        "power": "T2.5",
+        "power": "数值过低，时代淘汰",
         "scene": [
           "单体环境",
           "新手向"
@@ -2495,7 +2495,7 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1789925960799,
+      "updatedAt": 1792816069658,
       "date": "2026/09/25"
     },
     {
@@ -2506,7 +2506,7 @@
       "tags": {
         "element": "火",
         "style": "技伤流",
-        "power": "T1.5",
+        "power": "中规中矩，常规配队",
         "scene": [
           "群体环境"
         ]
@@ -2569,7 +2569,7 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1789926308661,
+      "updatedAt": 1792815041895,
       "date": "2026/09/25"
     },
     {
@@ -2580,7 +2580,7 @@
       "tags": {
         "element": "火",
         "style": "绝招流",
-        "power": "T1.5",
+        "power": "中规中矩，常规配队",
         "scene": [
           "单体环境"
         ]
@@ -2646,7 +2646,7 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1789926694930,
+      "updatedAt": 1792815078922,
       "date": "2026/09/25"
     },
     {
@@ -2657,7 +2657,7 @@
       "tags": {
         "element": "水",
         "style": "普攻流",
-        "power": "T1",
+        "power": "环境优解，对策使用",
         "scene": [
           "单体环境"
         ]
@@ -2718,7 +2718,7 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1789926850857,
+      "updatedAt": 1792814845333,
       "date": "2026/09/25"
     },
     {
@@ -2729,7 +2729,7 @@
       "tags": {
         "element": "风",
         "style": "技伤流",
-        "power": "T0.5",
+        "power": "环境优解，对策使用",
         "scene": [
           "群体环境"
         ]
@@ -2805,7 +2805,7 @@
       "tags": {
         "element": "水",
         "style": "印记流",
-        "power": "T0",
+        "power": "力大转飞，跨属执法",
         "scene": [
           "单体环境",
           "群体环境"
@@ -2871,7 +2871,7 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1792484295799,
+      "updatedAt": 1792814644784,
       "date": "2026/09/29"
     },
     {
@@ -2882,7 +2882,7 @@
       "tags": {
         "element": "风",
         "style": "普攻流",
-        "power": "T1",
+        "power": "环境优解，对策使用",
         "scene": [
           "单体环境"
         ]
@@ -2955,7 +2955,7 @@
       "tags": {
         "element": "水",
         "style": "技伤流",
-        "power": "T0.5",
+        "power": "环境优解，对策使用",
         "scene": []
       },
       "chars": [
@@ -3028,7 +3028,7 @@
       "tags": {
         "element": "水",
         "style": "技伤流",
-        "power": "T0",
+        "power": "力大转飞，跨属执法",
         "scene": [
           "单体环境",
           "群体环境"
@@ -3092,7 +3092,7 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1792484318840,
+      "updatedAt": 1792814623213,
       "date": "2026/09/29"
     },
     {
@@ -3103,7 +3103,7 @@
       "tags": {
         "element": "水",
         "style": "技伤流",
-        "power": "T1.5",
+        "power": "中规中矩，常规配队",
         "scene": [
           "单体环境",
           "新手向"
@@ -3168,7 +3168,7 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1792484455445,
+      "updatedAt": 1792814876818,
       "date": "2026/10/01"
     },
     {
@@ -3179,7 +3179,7 @@
       "tags": {
         "element": "水",
         "style": "印记流",
-        "power": "T1.5",
+        "power": "中规中矩，常规配队",
         "scene": [
           "单体环境",
           "群体环境",
@@ -3244,7 +3244,7 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1792484419879,
+      "updatedAt": 1792814801593,
       "date": "2026/10/01"
     },
     {
@@ -3256,7 +3256,7 @@
       "tags": {
         "element": "光",
         "style": "技伤流",
-        "power": "T0",
+        "power": "力大转飞，跨属执法",
         "scene": [
           "单体环境",
           "群体环境"
@@ -3319,7 +3319,7 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1792517570867
+      "updatedAt": 1792815865590
     },
     {
       "id": "t_mvgoxehgvuot",
@@ -3330,7 +3330,7 @@
       "tags": {
         "element": "光",
         "style": "技伤流",
-        "power": "T0.5",
+        "power": "环境优解，对策使用",
         "scene": [
           "单体环境",
           "群体环境"
@@ -3402,7 +3402,7 @@
       "tags": {
         "element": "光",
         "style": "技伤流",
-        "power": "T2",
+        "power": "环境优解，对策使用",
         "scene": [
           "单体环境",
           "群体环境",
@@ -3475,7 +3475,7 @@
       "tags": {
         "element": "光",
         "style": "技伤流",
-        "power": "T1.5",
+        "power": "环境优解，对策使用",
         "scene": [
           "单体环境",
           "群体环境",
@@ -3538,7 +3538,83 @@
       ],
       "isRecommended": false,
       "updatedAt": 1792558061330
+    },
+    {
+      "id": "t_mvlwgokpzo5j",
+      "name": "尘沙火垂技伤双c卷分（慎用）",
+      "date": "2026/10/24",
+      "presetCode": "AAAAogAAAHMAAABrzbACbYbJmAAMAGwwAGAA",
+      "description": "先说下注意事项：这个配置要求极高，角色必须全部01才能起用；尘沙最好是21以上配置，火垂01即可，配置越高越好，默认缇莉娅满命；默认操作水平高所以不加防御；最重要的，此毕业档极其难刷取，魔王大人们慎用！（即便有潜能与音符调整）\n非21尘沙灼目的烈阳（至少3），觉悟·极闪（至少4）可少抓，21尘沙可额外少抓百战的不屈（至少4），其他尽力抓满\n火垂的纯洁领域，星芒坠落得抓满，积光成刃和归刃散华至少要抓3个，当然越多越好\n缇莉娅顽敌克制必须抓满，其他两个能多抓多抓\n主位秘纹极度固定，必须为尘沙（源初），希娅，火垂的三个伴生秘纹\n辅位秘纹必须要有永恒的闪耀（尘沙（源初）活动秘纹）；午后间隙突破一阶即可（仅吃15%光伤和音符），非大月卡玩家可使用 午夜，堕天使（密涅瓦伴生秘纹） 无密涅瓦伴生可使用半周年秘纹星光的印记；无晴之花可用你与我相似（火垂活动秘纹）\n总之这个配置很高，一档摆烂党慎用，卷分佬可尝试",
+      "tags": {
+        "element": "光",
+        "style": "技伤流",
+        "power": "力大转飞，跨属执法",
+        "scene": [
+          "单体环境",
+          "群体环境"
+        ]
+      },
+      "chars": [
+        "firstlight-noya",
+        "huochui",
+        "tiliya"
+      ],
+      "mainPatterns": [
+        "p103",
+        "p055",
+        "p067"
+      ],
+      "mainBackup": [
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "subPatterns": [
+        "p104",
+        "p002",
+        "p071"
+      ],
+      "subBackup": [
+        "p041",
+        "p086",
+        "p058",
+        null,
+        null
+      ],
+      "pots": [
+        {
+          "流光极闪": 1,
+          "破晓闪耀": 1,
+          "裁光折跃": 6,
+          "群星的闪耀": 6,
+          "觉悟·极闪": 6,
+          "流光浪影": 6,
+          "百战的不屈": 6,
+          "白影流光破万敌": 6,
+          "启明之星": 6,
+          "灼目的烈阳": 4
+        },
+        {
+          "辉剑·重影": 1,
+          "辉剑·萤火": 1,
+          "纯洁领域": 6,
+          "星芒坠落": 6,
+          "积光成刃": 4,
+          "归刃散华": 3
+        },
+        {
+          "再续的光谱": 1,
+          "完美的回旋": 1,
+          "顽敌克制": 6,
+          "骑士圣印": 6,
+          "奇招馈能": 6
+        }
+      ],
+      "isRecommended": false,
+      "updatedAt": 1792817796276
     }
   ],
-  "updatedAt": "2026-10-21T04:47:45.142Z"
+  "updatedAt": "2026-10-24T04:56:36.284Z"
 }

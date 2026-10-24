@@ -123,17 +123,22 @@ function stripDebugTail(s) {
   return t;
 }
 
+// 把 #名称#编号# / ##名称#编号# 统一变成 @@名称@@
+// 前端遇到 @@…@@ 会渲染成青色术语（印记、光耀这类特定效果），不再显示编号和井号
+function markTerms(s) {
+  return String(s || '').replace(/#{1,2}([^#]{1,24})#\d+#/g, (m, t) => '@@' + t.trim() + '@@');
+}
+
 function cleanTpl(s) {
-  return stripDebugTail(String(s || ''))
-    .replace(/<color=[^>]*>/g, '').replace(/<\/color>/g, '')
+  return markTerms(stripDebugTail(String(s || ''))
+    .replace(/<color=[^>]*>/g, '').replace(/<\/color>/g, ''))
     .replace(/[\u0000-\u001f]/g, ' ')
     .replace(/[ \t]{2,}/g, ' ').trim();
 }
 
 function clean(s) {
-  return stripDebugTail(String(s || ''))
-    .replace(/<color=[^>]*>/g, '').replace(/<\/color>/g, '')
-    .replace(/##([^#]*)#\d+#/g, (m, t) => (/^[「『"']/.test(t) ? t : '「' + t + '」'))
+  return markTerms(stripDebugTail(String(s || ''))
+    .replace(/<color=[^>]*>/g, '').replace(/<\/color>/g, ''))
     .replace(/&Param\d+&/g, '')
     .replace(/[\u0000-\u001f]/g, ' ')
     .replace(/\s+/g, ' ').trim();
@@ -141,9 +146,8 @@ function clean(s) {
 
 // 潜能描述专用：保留 &ParamN& 占位符（前端要按等级填数值），只清掉富文本标签与调试残渣
 function cleanKeepParams(s) {
-  return stripDebugTail(String(s || ''))
-    .replace(/<color=[^>]*>/g, '').replace(/<\/color>/g, '')
-    .replace(/##([^#]*)#\d+#/g, (m, t) => (/^[「『"']/.test(t) ? t : '「' + t + '」'))
+  return markTerms(stripDebugTail(String(s || ''))
+    .replace(/<color=[^>]*>/g, '').replace(/<\/color>/g, ''))
     .replace(/[\u0000-\u001f]/g, ' ')
     .replace(/\s+/g, ' ').trim();
 }
@@ -335,7 +339,8 @@ for (const p of pj.patterns) {
       const buffIcons = sec ? (sec.buffIcon || []).filter(v => v && v !== 'No Icon') : [];
       const fresh = harmonyFromSec(sec);
       return Object.assign({}, h, {
-        tpl: (h.tpl && h.tpl.length > 4) ? h.tpl : ((fresh && fresh.tpl) || h.tpl),
+        // 保留原有 tpl 时也要过一遍 markTerms，否则老的 ##印记#编号# 会留在页面上
+        tpl: markTerms((h.tpl && h.tpl.length > 4) ? h.tpl : ((fresh && fresh.tpl) || h.tpl)),
         params: (h.params && h.params.length) ? h.params : ((fresh && fresh.params) || []),
         levels: (h.levels && h.levels.length) ? h.levels : ((fresh && fresh.levels) || null),
         skillImg: hdIcon('skill', sec && sec.icon, h.skillImg),

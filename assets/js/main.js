@@ -127,8 +127,15 @@ function setupListPage(defs, data, renderItem, gridId, countId, emptyId) {
 }
 
 // ============ 通用：强度排序 ============
-// 强度档位顺序：T0 > T0.5 > T1 > T1.5 > T2 > T2.5 > T3 > 未设置
-const POWER_ORDER = ['T0', 'T0.5', 'T1', 'T1.5', 'T2', 'T2.5', 'T3'];
+// 强度档位（由强到弱）：用描述性说法代替 T0/T1
+const POWER_TIERS = [
+  '力大转飞，跨属执法',
+  '环境优解，对策使用',
+  '中规中矩，常规配队',
+  '未来可期，静静等待',
+  '数值过低，时代淘汰'
+];
+const POWER_ORDER = POWER_TIERS;
 function powerRank(power) {
   const s = String(power == null ? '' : power).trim().toUpperCase();
   const i = POWER_ORDER.indexOf(s);
@@ -155,12 +162,21 @@ const HOME_TEAMS_PER_ELEMENT = 6;
 // ============ 通用：适用场合标签 ============
 // 队伍标签的可选项（流派 / 强度 / 适用场合）
 const STYLE_OPTIONS = ['普攻流', '技伤流', '绝招流', '印记流', '仆从流', '混伤流'];
-const POWER_OPTIONS = ['T0', 'T0.5', 'T1', 'T1.5', 'T2', 'T2.5', 'T3'];
+// 强度可选项（与排序表共用同一份定义）
+const POWER_OPTIONS = POWER_TIERS;
 const SCENE_OPTIONS = ['单体环境', '群体环境', '新手向'];
 function styleIcoCls(v) {
   return { '普攻流': 'style-normal', '技伤流': 'style-skill', '绝招流': 'style-ult', '印记流': 'style-mark', '仆从流': 'style-minion', '混伤流': 'style-mixed' }[v] || 'style-normal';
 }
-function powerIcoCls(v) { return 'power-' + String(v || '').toLowerCase().replace('.', ''); }
+// 强度档位序号（0=最强），用于配色和排序
+function powerTierOf(v) {
+  const i = (typeof POWER_OPTIONS !== 'undefined' ? POWER_OPTIONS : []).indexOf(String(v == null ? '' : v).trim());
+  return i;
+}
+function powerIcoCls(v) {
+  const i = powerTierOf(v);
+  return i < 0 ? 'power-none' : ('power-r' + (i + 1));
+}
 function styleIcon(v) { return '<i class="tag-ico style ' + styleIcoCls(v) + '"></i>'; }
 function powerIcon(v) { return '<i class="tag-ico power ' + powerIcoCls(v) + '">' + escapeHtml(v) + '</i>'; }
 const TEAM_SCENES = SCENE_OPTIONS;
@@ -310,6 +326,8 @@ function renderHome() {
     }).join('');
     const showEl = (e) => {
       blocks.querySelectorAll('.el-block').forEach(b => b.classList.toggle('active', b.dataset.el === e));
+      const allLink = document.getElementById('teamsAllLink');
+      if (allLink) allLink.href = 'teams.html?el=' + encodeURIComponent(e);
       const grid = document.getElementById('hotTeams');
       if (!grid) return;
       const all = byEl[e] || [];
@@ -320,7 +338,7 @@ function renderHome() {
         const rest = all.length - shown.length;
         more.hidden = rest <= 0;
         more.innerHTML = rest > 0
-          ? '本属性共 ' + all.length + ' 个配队，另有 ' + rest + ' 个未展示 · <a class="nav-link" href="teams.html">查看全部 →</a>'
+          ? '本属性共 ' + all.length + ' 个配队，另有 ' + rest + ' 个未展示 · <a class="nav-link" href="teams.html?el=' + encodeURIComponent(e) + '">查看全部 →</a>'
           : '';
       }
     };
@@ -371,15 +389,32 @@ function renderCharacters() {
 
 // ============ 角色详情 ============
 // ===== 技能 / 数值 展示的公共辅助 =====
-// 把 desc 里的 &Param1& 等占位符替换成第 lv 级的数值
+// 描述文本：@@术语@@ 渲染成青色高亮（印记、光耀这类特定效果），其余部分正常转义
+function descText(raw) {
+  return String(raw == null ? '' : raw).split(/(@@[^@]+@@)/).map(seg => {
+    if (seg.length > 4 && seg.slice(0, 2) === '@@' && seg.slice(-2) === '@@') {
+      return '<span class="kw">' + escapeHtml(seg.slice(2, -2)) + '</span>';
+    }
+    return escapeHtml(seg);
+  }).join('');
+}
+
+// 描述文本：&ParamN& 换成数值，@@术语@@ 换成青色高亮，其余按普通文本转义
 function fillParams(desc, params, lv) {
-  return String(desc || '').replace(/&Param(\d+)&/g, (m, n) => {
-    const p = (params || [])[Number(n) - 1];
-    if (!p) return m;
-    const i = Math.max(0, Math.min(lv - 1, p.length - 1));
-    // 参数值可能是英文标签（如 Ultimate Crit Rate），翻成中文
-    return '<b class="pv">' + escapeHtml(tr(String(p[i]))) + '</b>';
-  });
+  const src = String(desc == null ? '' : desc);
+  return src.split(/(&Param\d+&|@@[^@]+@@)/).map(seg => {
+    let m = /^&Param(\d+)&$/.exec(seg);
+    if (m) {
+      const p = (params || [])[Number(m[1]) - 1];
+      if (!p) return escapeHtml(seg);
+      const i = Math.max(0, Math.min(lv - 1, p.length - 1));
+      // 参数值可能是英文标签（如 Ultimate Crit Rate），翻成中文
+      return '<b class="pv">' + escapeHtml(tr(String(p[i]))) + '</b>';
+    }
+    m = /^@@([^@]+)@@$/.exec(seg);
+    if (m) return '<span class="kw">' + escapeHtml(m[1]) + '</span>';
+    return escapeHtml(seg);
+  }).join('');
 }
 // 参数列表最多有几级（不同参数长度不同，取最长的）
 function maxLevelOf(params) {
@@ -408,7 +443,7 @@ function potHighlightDesc(desc, params, lv) {
   const RE = /[0-9.]+%(?:\/[0-9.]+%)+|&Param\d+&/g;
   let out = '', last = 0, idx = 0, m;
   while ((m = RE.exec(text)) !== null) {
-    out += escapeHtml(text.slice(last, m.index));
+    out += descText(text.slice(last, m.index));
     const tok = m[0];
     const arr = tok.charAt(0) === '&'
       ? (params || [])[Number(tok.replace(/\D/g, '')) - 1]
@@ -417,13 +452,13 @@ function potHighlightDesc(desc, params, lv) {
     out += (v == null || v === '') ? '' : '<b class="pv">' + escapeHtml(v) + '</b>';
     last = RE.lastIndex;
   }
-  out += escapeHtml(text.slice(last));
+  out += descText(text.slice(last));
   return out;
 }
 // 潜能：按等级显示描述（带橙字高亮）
 function potLevelHtml(char, p, lv) {
   const pl = potData(char, p);
-  if (!pl || !pl.params || !pl.params.length) return escapeHtml(p.desc || '');
+  if (!pl || !pl.params || !pl.params.length) return descText(p.desc || '');
   return potHighlightDesc(p.desc, pl.params, lv);
 }
 // 潜能的等级上限：核心 13 级，其他 9 级
@@ -692,7 +727,7 @@ function renderCharacter() {
 
         <div class="badge-row">
 
-          <span class="badge el-${char.element}">${elementName(char.element)}元素</span>
+          <span class="badge el-${char.element}">${elIcon(char.element)}${elementName(char.element)}元素</span>
 
           <span class="badge role-${char.role}">${roleName(char.role)}</span>
 
@@ -1081,15 +1116,50 @@ function renderTeams() {
   const filterState = { element: 'all', style: 'all', power: 'all', scene: 'all' };
   // 每行把所有可选情况都列出来（和编辑页的选项一致）
   const FILTER_DEFS = [
-    { key: 'element', label: '元素', get: t => (t.tags || {}).element || '', opts: Object.keys(ELEMENTS).map(k => ELEMENTS[k].name) },
+    { key: 'element', label: '元素', get: t => (t.tags || {}).element || '', opts: Object.entries(ELEMENTS).map(([k, o]) => ({ value: o.name, label: o.name, cls: 'el-' + k, html: elIcon(k), title: o.name + '元素' })) },
     { key: 'style', label: '流派', get: t => (t.tags || {}).style || '', opts: STYLE_OPTIONS },
-    { key: 'power', label: '强度', get: t => (t.tags || {}).power || '', opts: ['T0', 'T0.5', 'T1', 'T1.5', 'T2', 'T2.5', 'T3'] },
+    { key: 'power', label: '强度', get: t => (t.tags || {}).power || '', opts: POWER_OPTIONS },
     { key: 'scene', label: '适用场合', get: t => teamScenes(t)[0] || '', opts: TEAM_SCENES }
   ];
+  // 从首页点「水队」之类跳过来时，自动套用元素筛选（其它条件保持全部）
+  (function applyUrlElement() {
+    let raw = '';
+    try { raw = (typeof getUrlParam === 'function' ? getUrlParam('el') : '') || ''; } catch (e) { raw = ''; }
+    const key = String(raw || '').trim();
+    if (!key) return;
+    const target = (ELEMENTS[key] || {}).name || key;   // water → 水
+    if (FILTER_DEFS[0].opts.indexOf(target) >= 0) filterState.element = target;
+  })();
+  // 默认排序：强度 → 编辑时间（新的在前）→ 元素（水 火 风 土 光 暗）
+  const EL_SORT_ORDER = ['water', 'fire', 'wind', 'earth', 'light', 'dark'];
+  const elSortRank = t => {
+    const i = EL_SORT_ORDER.indexOf((t.tags || {}).element || '');
+    return i < 0 ? EL_SORT_ORDER.length : i;
+  };
+  // 排序用的「编辑时间」= 配队详情页右上角那个日期（tags 里的 date 字段）
+  const timeOf = t => {
+    const d = t && t.date;
+    if (d) {
+      const m = /^(\d{4})[\/\-.](\d{1,2})[\/\-.](\d{1,2})$/.exec(String(d).trim());
+      if (m) return new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3])).getTime();
+    }
+    const v = t && t.updatedAt;
+    if (typeof v === 'number') return v;
+    const n = Date.parse(v || '');
+    return isNaN(n) ? 0 : n;
+  };
+  const powRank = t => {
+    const i = powerTierOf((t.tags || {}).power);
+    return i < 0 ? POWER_ORDER.length : i;
+  };
   function allTeams() {
     const mine = loadTeams();
     const recs = (typeof loadPresetTeams === 'function') ? loadPresetTeams() : (DATA.presetTeams || []);
-    return sortByPower(recs.concat(mine));
+    return recs.concat(mine).slice().sort((a, b) =>
+      (powRank(a) - powRank(b)) ||
+      (timeOf(b) - timeOf(a)) ||
+      (elSortRank(a) - elSortRank(b))
+    );
   }
 
   // ===== 搜索：旅人名称 / 预设码 =====
@@ -1152,9 +1222,9 @@ function renderTeams() {
     const bar = document.getElementById('teamFilters');
     if (!bar) return;
     const rows = FILTER_DEFS.map(d => {
-      const opts = d.opts.map(v => ({ value: v, label: v }));
+      const opts = d.opts.map(v => (typeof v === 'string') ? { value: v, label: v } : v);
       const chips = [{ value: 'all', label: '全部' }].concat(opts).map(o =>
-        '<button type="button" class="chip' + (filterState[d.key] === o.value ? ' active' : '') + '" data-key="' + d.key + '" data-v="' + escapeHtml(o.value) + '">' + escapeHtml(o.label) + '</button>'
+        '<button type="button" class="chip' + (filterState[d.key] === o.value ? ' active' : '') + (o.cls ? ' ' + o.cls : '') + '" data-key="' + d.key + '" data-v="' + escapeHtml(o.value) + '"' + (o.title ? ' title="' + escapeHtml(o.title) + '"' : '') + '>' + (o.html || escapeHtml(o.label)) + '</button>'
       ).join('');
       return '<div class="filter-row"><span class="filter-label">' + d.label + '</span><div class="filter-chips">' + chips + '</div></div>';
     }).join('');
@@ -1169,17 +1239,9 @@ function renderTeams() {
     const all = allTeams();
     renderFilterBar(all);
     const q = searchQuery.trim();
-    // 看起来是一串预设码：直接跳到对应配队；找不到就给空页面提示
-    if (q && looksLikeCode(q)) {
-      const hit = findTeamByCode(q);
-      if (hit) { location.href = 'team.html?id=' + hit.id + (hit.isRecommended ? '&preset=1' : ''); return; }
-      if (count) count.textContent = '0';
-      showEmpty('没有找到与该预设码匹配的配队，请确认是否复制完整');
-      return;
-    }
     const filtering = FILTER_DEFS.some(d => filterState[d.key] !== 'all');
-    // 搜索时不受筛选条件限制（搜到就显示）
-    const list = q ? all.filter(t => matchSearch(t, q)) : all.filter(matchFilter);
+    // 搜索和筛选同时生效（输入旅人名时会自动把元素切到该旅人的元素）
+    const list = all.filter(t => matchFilter(t) && (!q || matchSearch(t, q)));
     if (count) count.textContent = list.length;
     if (!list.length) {
       showEmpty(q ? ('没有找到包含「' + q + '」的配队')
@@ -1208,16 +1270,58 @@ function renderTeams() {
       }
     }));
   }
+  // ===== 搜索：旅人名联想 + 自动切元素 =====
+  const suggestBox = document.getElementById('teamSuggest');
+  function charByExactName(name) {
+    const s = String(name || '').trim();
+    if (!s) return null;
+    return (DATA.characters || []).find(c => c.name === s) || null;
+  }
+  // 搜索某位旅人时，元素筛选自动跳到该旅人的元素（用户之后还能自己改）
+  function jumpElementFor(name) {
+    const c = charByExactName(name);
+    if (!c) return;
+    const el = (ELEMENTS[c.element] || {}).name;
+    if (el) filterState.element = el;
+  }
+  function renderSuggest() {
+    if (!suggestBox) return;
+    const q = (searchInput.value || '').trim();
+    if (!q) { suggestBox.hidden = true; suggestBox.innerHTML = ''; return; }
+    const hits = (DATA.characters || []).filter(c => String(c.name).indexOf(q) >= 0).slice(0, 8);
+    if (!hits.length) { suggestBox.hidden = true; suggestBox.innerHTML = ''; return; }
+    suggestBox.innerHTML = hits.map(c =>
+      '<button type="button" class="ts-item" data-name="' + escapeHtml(c.name) + '">' +
+        '<span class="ts-name">' + escapeHtml(c.name) + '</span>' +
+        '<span class="ts-el">' + elIcon(c.element) + escapeHtml((ELEMENTS[c.element] || {}).name || '') + '元素</span>' +
+      '</button>'
+    ).join('');
+    suggestBox.hidden = false;
+    suggestBox.querySelectorAll('.ts-item').forEach(b => b.addEventListener('mousedown', ev => {
+      ev.preventDefault();
+      searchInput.value = b.dataset.name;
+      searchQuery = b.dataset.name;
+      jumpElementFor(b.dataset.name);
+      suggestBox.hidden = true;
+      refresh();
+    }));
+  }
   if (searchInput) {
     const applySearch = () => {
       const v = searchInput.value || '';
-      if (v === searchQuery) return;
       searchQuery = v;
+      jumpElementFor(v);
+      renderSuggest();
       refresh();
     };
     searchInput.addEventListener('input', applySearch);
     searchInput.addEventListener('search', applySearch);   // 点输入框里的小叉
-    searchInput.addEventListener('keydown', e => { if (e.key === 'Enter') applySearch(); });
+    searchInput.addEventListener('keydown', e => {
+      if (e.key === 'Escape') { suggestBox && (suggestBox.hidden = true); return; }
+      if (e.key === 'Enter') { suggestBox && (suggestBox.hidden = true); applySearch(); }
+    });
+    searchInput.addEventListener('focus', () => { if ((searchInput.value || '').trim()) renderSuggest(); });
+    searchInput.addEventListener('blur', () => { setTimeout(() => { if (suggestBox) suggestBox.hidden = true; }, 150); });
   }
   if (btn) {
     if (typeof isAdmin === 'function' && !isAdmin()) btn.style.display = 'none';
@@ -1249,7 +1353,7 @@ function renderUserTeamCard(t) {
   }, 0);
   const tg = t.tags || {};
   const tagChips = [
-    tg.element ? '<span class="ut-tag ut-tag-el">元素 · ' + escapeHtml(tg.element) + '</span>' : '',
+    tg.element ? '<span class="ut-tag ut-tag-el">' + elIcon(elKeyByName(tg.element)) + escapeHtml(tg.element) + '</span>' : '',
     tg.style ? '<span class="ut-tag">流派 · ' + escapeHtml(tg.style) + '</span>' : '',
     tg.power ? '<span class="ut-tag ut-tag-pow">强度 · ' + escapeHtml(tg.power) + '</span>' : '',
     teamScenes(t).length ? '<span class="ut-tag ut-tag-scene">适用 · ' + escapeHtml(teamScenes(t).join(' / ')) + '</span>' : ''
@@ -1402,7 +1506,7 @@ function renderTeam() {
       </div>`;
 
     const tagText = [
-      tg.element ? '<span class="ut-tag ut-tag-el">元素 · ' + escapeHtml(tg.element) + '</span>' : '',
+      tg.element ? '<span class="ut-tag ut-tag-el">' + elIcon(elKeyByName(tg.element)) + escapeHtml(tg.element) + '</span>' : '',
       tg.style ? '<span class="ut-tag">流派 · ' + escapeHtml(tg.style) + '</span>' : '',
       tg.power ? '<span class="ut-tag ut-tag-pow">强度 · ' + escapeHtml(tg.power) + '</span>' : '',
       teamScenes(t).length ? '<span class="ut-tag ut-tag-scene">适用 · ' + escapeHtml(teamScenes(t).join(' / ')) + '</span>' : ''
@@ -2046,7 +2150,7 @@ function renderPattern() {
   function renderTpl(tpl, paramStr) {
     if (!tpl) return '';
     const vals = String(paramStr || '').split(',');
-    return escapeHtml(tpl).replace(/\{(\d+)\}/g, (m, n) => '<span class="pv">' + escapeHtml(vals[parseInt(n, 10) - 1] || '') + '</span>');
+    return descText(tpl).replace(/\{(\d+)\}/g, (m, n) => '<span class="pv">' + escapeHtml(vals[parseInt(n, 10) - 1] || '') + '</span>');
   }
   const buffRow = (buffs) => (buffs && buffs.length)
     ? '<div class="eff-buffs">' + buffs.map(b => '<img class="buff-icon" src="' + escapeHtml(b) + '" alt="" loading="lazy">').join('') + '</div>'

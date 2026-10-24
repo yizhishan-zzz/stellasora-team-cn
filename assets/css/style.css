@@ -1286,3 +1286,57 @@ html[data-theme="dark"] .hero {
 .char-buff-btn.on { background: rgba(255, 197, 61, 0.95); color: #4a3200; border-color: transparent; }
 .char-buff-btn:disabled { opacity: .55; cursor: default; }
 
+
+/* ===== 印记 / 特定效果术语：青色高亮（替代 #名称#编号#） ===== */
+.kw { color: #0d9488; font-weight: 600; }
+html[data-theme="dark"] .kw { color: #5eead4; }
+
+
+/* 强度档位配色（1=最强 … 4=最弱） */
+.tag-ico.power-r1 { background: #e0453a; }
+.tag-ico.power-r2 { background: #d9a441; }
+.tag-ico.power-r3 { background: #4a9e7a; }
+.tag-ico.power-r4 { background: #7a8598; }
+.tag-ico.power-none { background: #9aa3b8; }
+/* 强度标签现在是比较长的中文短语，放宽一些 */
+.tag-ico.power { white-space: nowrap; }
+.ut-tag-pow { max-width: 100%; }
+
+
+/* ===== 配队搜索联想 ===== */
+.team-search { position: relative; }
+.team-suggest {
+  position: absolute; left: 0; right: 0; top: calc(100% + 4px); z-index: 30;
+  background: var(--card); border: 1px solid var(--border); border-radius: var(--radius-sm);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18); overflow: hidden; max-height: 280px; overflow-y: auto;
+}
+.ts-item {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  width: 100%; padding: 9px 12px; background: transparent; border: 0; cursor: pointer;
+  color: var(--text); font-size: 14px; text-align: left;
+}
+.ts-item:hover, .ts-item:focus { background: var(--bg-soft); }
+.ts-name { font-weight: 600; }
+.ts-el { font-size: 12px; color: var(--text-muted); }
+
+
+/* 「更多」提示行：单独成行，避免和卡片挨太近 */
+.el-more { margin: 16px 0 0; font-size: 13px; color: var(--text-muted); line-height: 1.6; }
+.el-more a { color: var(--accent); }
+
+
+/* 强度第五档配色 */
+.tag-ico.power-r4 { background: #4a86b8; }
+.tag-ico.power-r5 { background: #7a8598; }
+
+
+/* ===== 元素图标（筛选按钮 / 卡片标签 / 搜索联想） ===== */
+.chip .el-icon { width: 16px; height: 16px; margin-right: 0; vertical-align: -3px; }
+.chip { display: inline-flex; align-items: center; gap: 5px; }
+.ut-tag-el .el-icon { width: 14px; height: 14px; vertical-align: -2px; margin-right: 3px; }
+.ts-el { display: inline-flex; align-items: center; gap: 4px; }
+.ts-el .el-icon { width: 15px; height: 15px; }
+
+
+.badge .el-icon { width: 14px; height: 14px; vertical-align: -2px; margin-right: 3px; }
+
