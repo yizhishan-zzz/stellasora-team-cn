@@ -820,7 +820,7 @@
       "tags": {
         "element": "光",
         "style": "技伤流",
-        "power": "中规中矩，常规配队",
+        "power": "环境优解，对策使用",
         "scene": [
           "单体环境",
           "群体环境",
@@ -882,7 +882,7 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1792557794462
+      "updatedAt": 1792819251567
     },
     {
       "id": "t_mvhmmwyjhi8g",
@@ -3616,5 +3616,5 @@
       "updatedAt": 1792817796276
     }
   ],
-  "updatedAt": "2026-10-24T05:20:02.377Z"
+  "updatedAt": "2026-10-24T05:20:51.568Z"
 }
