@@ -748,7 +748,7 @@
       "tags": {
         "element": "光",
         "style": "技伤流",
-        "power": "力大转飞，跨属执法",
+        "power": "环境优解，对策使用",
         "scene": [
           "单体环境",
           "群体环境"
@@ -809,7 +809,7 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1792557677537
+      "updatedAt": 1792819193480
     },
     {
       "id": "t_mvgoyhvzv964",
@@ -3616,5 +3616,5 @@
       "updatedAt": 1792817796276
     }
   ],
-  "updatedAt": "2026-10-24T05:19:24.669Z"
+  "updatedAt": "2026-10-24T05:19:53.481Z"
 }
