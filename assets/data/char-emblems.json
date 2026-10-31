@@ -1,4 +1,139 @@
 {
-  "emblems": {},
-  "updatedAt": "2026-10-31T14:53:22.377Z"
+  "emblems": {
+    "firstlight-noya": [
+      {
+        "name": "技伤毕业必要纹章",
+        "desc": "生命有2个就够，技能伤害1个也行；有伴生秘纹就一个彩暴，没有就两个彩暴；只要一个彩穿，没有群星的闪耀+3时，可多选一个蓝彩穿",
+        "levels": {
+          "lv70": [
+            {
+              "id": "crit-rate",
+              "tier": 4
+            },
+            {
+              "id": "elemental-pen",
+              "tier": 4
+            },
+            {
+              "id": "hp-pct",
+              "tier": 4
+            },
+            {
+              "id": "skill-dmg",
+              "tier": 4
+            }
+          ],
+          "lv80": [
+            {
+              "id": "main-skill",
+              "tier": 3
+            },
+            {
+              "id": "skill-dmg",
+              "tier": 4
+            },
+            {
+              "id": "hp-pct",
+              "tier": 4
+            }
+          ],
+          "lv90": [
+            {
+              "id": "potential",
+              "pot": "群星的闪耀",
+              "lv": 3
+            },
+            {
+              "id": "hp-pct",
+              "tier": 4
+            }
+          ]
+        }
+      },
+      {
+        "name": "普攻毕业必要纹章",
+        "desc": "道理与技伤毕业必要纹章一样",
+        "levels": {
+          "lv70": [
+            {
+              "id": "crit-rate",
+              "tier": 4
+            },
+            {
+              "id": "elemental-pen",
+              "tier": 4
+            },
+            {
+              "id": "hp-pct",
+              "tier": 4
+            },
+            {
+              "id": "auto-attack-dmg",
+              "tier": 4
+            }
+          ],
+          "lv80": [
+            {
+              "id": "auto-attack",
+              "tier": 3
+            },
+            {
+              "id": "hp-pct",
+              "tier": 4
+            },
+            {
+              "id": "auto-attack-dmg",
+              "tier": 4
+            }
+          ],
+          "lv90": [
+            {
+              "id": "potential",
+              "pot": "群星的闪耀",
+              "lv": 3
+            },
+            {
+              "id": "hp-pct",
+              "tier": 4
+            }
+          ]
+        }
+      }
+    ],
+    "lingchuan": [
+      {
+        "name": "无需纹章",
+        "desc": "这就是岭川的培养成本",
+        "levels": {}
+      }
+    ],
+    "wlsh": [
+      {
+        "name": "后排毕业必要纹章",
+        "desc": "",
+        "levels": {
+          "lv70": [
+            {
+              "id": "charge-efficiency-support",
+              "tier": 4
+            }
+          ],
+          "lv80": [
+            {
+              "id": "support-skill",
+              "tier": 3
+            }
+          ],
+          "lv90": [
+            {
+              "id": "potential",
+              "pot": "海风执纪",
+              "lv": 3
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "updatedAt": "2026-10-31T15:21:11.918Z"
 }

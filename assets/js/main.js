@@ -699,9 +699,13 @@ function embTierSelect(ci, lv, slot, a, entry) {
     const pots = (EMB_EDIT && EMB_EDIT.pots) || [];
     const curPot = (entry && entry.pot) || '';
     const curLv = (entry && entry.lv) || 0;
-    const potOpts = ['<option value="">选择潜能</option>'].concat(pots.map(p =>
-      '<option value="' + escapeHtml(p.name) + '"' + (p.name === curPot ? ' selected' : '') + '>' + escapeHtml(p.name) + '</option>'
-    )).join('');
+    // 同一枚纹章里已被其它格子用掉的潜能置灰
+    const list = (EMB_EDIT.cfgs[ci].levels[lv] || []);
+    const usedPots = list.map((x, i) => (i !== slot && x && embKeyOf(x) === 'potential') ? (x.pot || '') : '').filter(Boolean);
+    const potOpts = ['<option value="">选择潜能</option>'].concat(pots.map(p => {
+      const used = usedPots.indexOf(p.name) >= 0;
+      return '<option value="' + escapeHtml(p.name) + '"' + (p.name === curPot ? ' selected' : '') + (used ? ' disabled' : '') + '>' + escapeHtml(p.name) + (used ? '（已选）' : '') + '</option>';
+    })).join('');
     const lvOpts = [1, 2, 3].map(v => '<option value="' + v + '"' + (curLv === v ? ' selected' : '') + '>+' + v + '</option>').join('');
     return '<select class="admin-input emb-sel-pot" onchange="embSetPot(' + ci + ',\'' + lv + '\',' + slot + ',this.value)">' + potOpts + '</select>' +
       '<select class="admin-input emb-sel-tier" onchange="embSetTier(' + ci + ',\'' + lv + '\',' + slot + ',this.value)">' + lvOpts + '</select>';
@@ -766,8 +770,11 @@ function embPickAttr(ci, lv, slot, id) {
   const cfg = EMB_EDIT.cfgs[ci];
   const list = cfg.levels[lv] || (cfg.levels[lv] = []);
   if (!id) { list[slot] = null; renderEmblemEditor(); return; }
-  const used = list.map((e, i) => ({ e, i })).filter(x => x.e && embKeyOf(x.e) === id && x.i !== slot);
-  if (used.length) { showToast('这个词条已经选过了', 'err'); renderEmblemEditor(); return; }
+  // 潜能可以选多个（每个对应不同潜能），其它词条不能重复
+  if (id !== 'potential') {
+    const used = list.map((e, i) => ({ e, i })).filter(x => x.e && embKeyOf(x.e) === id && x.i !== slot);
+    if (used.length) { showToast('这个词条已经选过了', 'err'); renderEmblemEditor(); return; }
+  }
   const a = emblemById(id);
   if (id === 'potential') list[slot] = { id: 'potential', pot: '', lv: 0 };
   else list[slot] = { id: id, tier: (a && (a.values || []).length) ? 1 : 0 };
@@ -785,7 +792,17 @@ function embSetPot(ci, lv, slot, name) {
   if (!EMB_EDIT) return;
   const list = EMB_EDIT.cfgs[ci].levels[lv] || [];
   const e = list[slot];
-  if (e && embKeyOf(e) === 'potential') e.pot = name;
+  if (!e || embKeyOf(e) !== 'potential') return;
+  // 同一枚纹章里不能出现同一个潜能
+  if (name) {
+    const dup = list.some((x, i) => i !== slot && x && embKeyOf(x) === 'potential' && (x.pot || '') === name);
+    if (dup) {
+      showToast('「' + name + '」已经选过了，换个潜能', 'err');
+      renderEmblemEditor();
+      return;
+    }
+  }
+  e.pot = name;
 }
 function embCloseEditor() {
   if (EMB_EDIT && EMB_EDIT.modal) EMB_EDIT.modal.remove();
