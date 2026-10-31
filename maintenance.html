@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>配队站维护中 · 星塔旅人配队一览</title>
+  <meta name="robots" content="noindex">
+  <script>try{if(localStorage.getItem("ss_theme")==="dark")document.documentElement.setAttribute("data-theme","dark")}catch(e){}</script>
+  <style>
+    :root {
+      --bg: #f5f6fa; --card: #ffffff; --text: #1c2233; --muted: #5b6478;
+      --line: #e3e7f0; --accent: #4a9eff; --accent-2: #39c5bb;
+    }
+    html[data-theme="dark"] {
+      --bg: #05090f; --card: #0d1626; --text: #e9eef8; --muted: #93a3bb;
+      --line: #1d2b42; --accent: #6fb4ff; --accent-2: #5eead4;
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center;
+      background: var(--bg); color: var(--text); padding: 24px;
+      font-family: "MiSans", "MiSansLatin", -apple-system, "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+    }
+    .box { width: 100%; max-width: 560px; text-align: center; }
+    .icon {
+      width: 68px; height: 68px; margin: 0 auto 22px; border-radius: 20px;
+      display: flex; align-items: center; justify-content: center;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      box-shadow: 0 10px 30px rgba(74, 158, 255, 0.28);
+    }
+    .icon svg { width: 34px; height: 34px; display: block; }
+    h1 { font-size: 26px; margin: 0 0 14px; letter-spacing: 1px; }
+    p { font-size: 15px; line-height: 1.9; color: var(--muted); margin: 0 0 10px; }
+    .tips { margin-top: 26px; padding: 18px; border: 1px solid var(--line); border-radius: 14px; background: var(--card); }
+    .tips .t { font-size: 13px; color: var(--muted); margin-bottom: 12px; }
+    a.btn {
+      display: inline-block; padding: 11px 22px; border-radius: 10px; text-decoration: none;
+      background: var(--accent); color: #fff; font-weight: 700; font-size: 14px;
+      transition: transform .15s ease, box-shadow .15s ease;
+      box-shadow: 0 6px 18px rgba(74, 158, 255, 0.3);
+    }
+    a.btn:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(74, 158, 255, 0.4); }
+    .foot { margin-top: 30px; font-size: 12px; color: var(--muted); }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <div class="icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1"/>
+        <circle cx="12" cy="12" r="4"/>
+      </svg>
+    </div>
+    <h1>配队站维护中</h1>
+    <p>正在进行最后的线上测试，预计 1-2 小时维护结束。</p>
+    <p>或许可以玩玩离线小游戏消遣一下。</p>
+    <div class="tips">
+      <div class="t">Chrome 断网小恐龙（网页版，点击直接玩）</div>
+      <a class="btn" href="https://chromedino.com/" target="_blank" rel="noopener noreferrer">玩一局离线小恐龙 →</a>
+    </div>
+    <div class="foot">星塔旅人配队一览 · 维护完成后刷新本页即可</div>
+  </div>
+</body>
+</html>

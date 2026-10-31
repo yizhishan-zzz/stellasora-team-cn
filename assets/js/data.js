@@ -51,6 +51,7 @@ const DATA = {
   discSkills: {},            // 秘纹各级数值与音符表
   dict: {},                  // 翻译字典（英文 → 中文）
   charMeta: { chars: {} },   // 旅人附加信息（加强状态等，管理员可编辑）
+  charBuilds: { builds: {} }, // 技能加点：旅人 → 流派 → 普攻/主控/援护/绝招
   updates: { entries: [] }   // 更新日志
 };
 
@@ -66,6 +67,7 @@ const DATA_FILES = {
   discSkills:      'assets/data/disc-skills.json',
   dict:            'assets/data/dict.json',
   charMeta:        'assets/data/char-meta.json',
+  charBuilds:      'assets/data/char-builds.json',
   updates:         'assets/data/updates.json'
 };
 
@@ -75,7 +77,7 @@ const BASE_DATA = ['characters', 'patterns', 'presetTeams', 'dict'];
 const PAGE_DATA = {
   home:       ['characters', 'patterns', 'presetTeams', 'updates'],        // 首页要显示最新一条更新日志
   characters: ['characters', 'charMeta'],                      // 卡片 + 加强状态筛选
-  character:  ['characters', 'charSkills', 'charStats', 'potentialLevels', 'charMeta'],
+  character:  ['characters', 'charSkills', 'charStats', 'potentialLevels', 'charMeta', 'charBuilds'],
   patterns:   ['patterns'],
   pattern:    ['patterns', 'discSkills'],
   teams:      ['characters', 'patterns', 'presetTeams', 'potentialCfg'],   // 卡片要用（复制/搜索预设码需要配置）
@@ -91,7 +93,7 @@ function dataKeysForPage() {
 }
 
 // 这些文件缺失时不应该让整页崩掉（比如还没添加过更新日志）
-const OPTIONAL_DATA = ['charMeta', 'updates'];
+const OPTIONAL_DATA = ['charMeta', 'charBuilds', 'updates'];
 
 async function loadData() {
   // 只加载当前页面需要的数据文件
@@ -114,6 +116,7 @@ async function loadData() {
     if (key === 'potentialCfg') DATA.potentialCfg = json;
     else if (key === 'presetTeams') { DATA.presetTeams = json.teams || []; DATA.presetTeamsUpdatedAt = json.updatedAt || ''; }
     else if (key === 'charMeta') DATA.charMeta = json || { chars: {} };
+    else if (key === 'charBuilds') DATA.charBuilds = json || { builds: {} };
     else if (key === 'updates') DATA.updates = json || { entries: [] };
     else if (key === 'charSkills' || key === 'charStats' || key === 'potentialLevels' || key === 'discSkills' || key === 'dict') DATA[key] = json;
     else DATA[key] = json[key];
@@ -123,6 +126,7 @@ async function loadData() {
   // （换页面/刷新都会重新走这里，所以必须把 localStorage 里的版本合并回来）
   DATA.updates = preferLocalCopy('ss_updates', DATA.updates);
   DATA.charMeta = preferLocalCopy('ss_char_meta', DATA.charMeta);
+  DATA.charBuilds = preferLocalCopy('ss_char_builds', DATA.charBuilds);
 }
 
 function readLocalJson(key) {

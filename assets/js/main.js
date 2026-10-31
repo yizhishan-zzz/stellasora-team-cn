@@ -354,7 +354,10 @@ function renderHome() {
           : '';
       }
     };
-    blocks.querySelectorAll('.el-block').forEach(b => b.addEventListener('click', () => showEl(b.dataset.el)));
+    // 点哪个属性就跳到配队页并筛该属性（水队 → 只看水队）
+    blocks.querySelectorAll('.el-block').forEach(b => b.addEventListener('click', () => {
+      location.href = 'teams.html?el=' + encodeURIComponent(b.dataset.el);
+    }));
     const firstEl = ELORDER.find(e => byEl[e] && byEl[e].length);
     if (firstEl) showEl(firstEl);
   }
@@ -366,6 +369,124 @@ function renderHome() {
 }
 
 // ============ 角色图鉴 ============
+// ============ 技能加点（分流派，1-10）============
+const BUILD_SKILLS = [
+  { key: 'normal',  label: '普攻' },
+  { key: 'main',    label: '主控技' },
+  { key: 'support', label: '援护技' },
+  { key: 'ult',     label: '绝招' }
+];
+function charBuildsOf(id) {
+  const all = (DATA.charBuilds && DATA.charBuilds.builds) || {};
+  return all[id] || null;
+}
+function clampBuild(v) {
+  const n = Math.round(Number(v));
+  if (!isFinite(n) || n < 1) return 1;
+  return n > 10 ? 10 : n;
+}
+function charBuildHtml(char) {
+  const data = charBuildsOf(char.id);
+  const styles = data ? Object.keys(data) : [];
+  const editable = (typeof isAdmin === 'function') && isAdmin();
+  const head = '<h2 class="section-title">技能加点' +
+    (editable ? '<button type="button" class="mini-btn" id="buildEdit">编辑</button>' : '') + '</h2>';
+  if (!styles.length) {
+    return '<section class="section" id="charBuilds">' + head + emptyHint('还没有加点数据') + '</section>';
+  }
+  const blocks = styles.map(st => {
+    const v = data[st] || {};
+    const rows = BUILD_SKILLS.map(s => {
+      const n = clampBuild(v[s.key]);
+      return '<div class="build-row"><span class="build-k">' + s.label + '</span>' +
+        '<span class="build-bar"><i style="width:' + (n * 10) + '%"></i></span>' +
+        '<b class="build-v">' + n + '</b></div>';
+    }).join('');
+    return '<div class="build-card"><div class="build-head">' + escapeHtml(st) + '</div>' + rows + '</div>';
+  }).join('');
+  return '<section class="section" id="charBuilds">' + head + '<div class="build-grid">' + blocks + '</div></section>';
+}
+
+async function saveCharBuilds(id, data) {
+  const builds = Object.assign({}, (DATA.charBuilds && DATA.charBuilds.builds) || {});
+  if (data && Object.keys(data).length) builds[id] = data; else delete builds[id];
+  const payload = { builds: builds, updatedAt: new Date().toISOString() };
+  DATA.charBuilds = payload;
+  const json = JSON.stringify(payload, null, 2);
+  try { localStorage.setItem('ss_char_builds', json); } catch (e) {}
+  const local = await localApiPut('/api/char-builds', payload);
+  if (local) { showToast('已写入本地文件（发布时会一起推上去）', 'ok'); return { ok: true, where: 'localFile' }; }
+  if (typeof ghConfigured === 'function' && ghConfigured()) {
+    const cfg = ghGetCfg();
+    let remoteBuilds = null;
+    try {
+      const cur = await ghReadFile(cfg, 'assets/data/char-builds.json');
+      if (cur && cur.content) { const r0 = JSON.parse(b64ToUtf8(cur.content)); remoteBuilds = (r0 && r0.builds) || {}; }
+    } catch (e) { /* 读不到就按本地写 */ }
+    const baseBuilds = remoteBuilds || {};
+    if (data && Object.keys(data).length) baseBuilds[id] = data; else delete baseBuilds[id];
+    const full = { builds: baseBuilds, updatedAt: new Date().toISOString() };
+    await ghWriteFile(cfg, 'assets/data/char-builds.json', JSON.stringify(full, null, 2), '更新旅人技能加点');
+    DATA.charBuilds = full;
+    try { localStorage.setItem('ss_char_builds', JSON.stringify(full)); } catch (e) {}
+    showToast('已同步到线上仓库', 'ok');
+    return { ok: true, where: 'github' };
+  }
+  showToast('已存到本机（未连接仓库，别人看不到）', 'err');
+  return { ok: true, where: 'local' };
+}
+
+function openBuildEditor(char) {
+  const cur = charBuildsOf(char.id) || {};
+  const old = document.getElementById('buildModal');
+  if (old) old.remove();
+  const modal = document.createElement('div');
+  modal.id = 'buildModal';
+  modal.className = 'picker-modal';
+  const rows = STYLE_OPTIONS.map(st => {
+    const v = cur[st] || {};
+    const inputs = BUILD_SKILLS.map(s =>
+      '<label class="build-edit-cell"><span>' + s.label + '</span>' +
+      '<input type="number" class="admin-input build-num" data-style="' + escapeHtml(st) + '" data-skill="' + s.key + '" min="1" max="10" step="1" value="' +
+      (v[s.key] ? clampBuild(v[s.key]) : '') + '"></label>'
+    ).join('');
+    return '<div class="build-edit-row"><b class="build-edit-name">' + escapeHtml(st) + '</b><div class="build-edit-cells">' + inputs + '</div></div>';
+  }).join('');
+  modal.innerHTML = [
+    '<div class="picker-panel upd-panel">',
+    '<div class="picker-head"><b>技能加点 · ' + escapeHtml(char.name) + '</b><button type="button" class="picker-close" id="buildClose">✕</button></div>',
+    '<div class="upd-form"><p class="upd-hint" style="margin:0 0 10px">每项 1-10，留空表示不需要</p>' + rows + '</div>',
+    '<div class="picker-foot"><button type="button" class="btn" id="buildSave">保存</button>',
+    '<button type="button" class="btn-secondary" id="buildCancel">取消</button></div>',
+    '</div>'
+  ].join('');
+  document.body.appendChild(modal);
+  const close = () => modal.remove();
+  modal.addEventListener('click', ev => { if (ev.target === modal) close(); });
+  document.getElementById('buildClose').addEventListener('click', close);
+  document.getElementById('buildCancel').addEventListener('click', close);
+  document.getElementById('buildSave').addEventListener('click', async () => {
+    const next = {};
+    modal.querySelectorAll('.build-num').forEach(inp => {
+      const raw = String(inp.value || '').trim();
+      if (!raw) return;
+      const st = inp.dataset.style, sk = inp.dataset.skill;
+      next[st] = next[st] || {};
+      next[st][sk] = clampBuild(raw);
+    });
+    const btn = document.getElementById('buildSave');
+    btn.disabled = true; btn.textContent = '保存中…';
+    try {
+      await saveCharBuilds(char.id, next);
+      close();
+      renderCharacter();
+    } catch (err) {
+      btn.disabled = false; btn.textContent = '保存';
+      showToast('保存失败：' + (err && err.message ? err.message : '未知错误'), 'err');
+    }
+  });
+}
+
 function renderCharacters() {
   const defs = [
     { key: 'element', label: '属性', options: [{ value: 'all', label: '全部' }].concat(Object.entries(ELEMENTS).map(([v, o]) => ({ value: v, label: o.name, cls: 'el-' + v, html: elIcon(v) }))) },
@@ -757,6 +878,8 @@ function renderCharacter() {
 
     <section class="section"><h2 class="section-title">技能</h2>${skHtml}</section>
 
+    ${charBuildHtml(char)}
+
     <section class="section"><h2 class="section-title">潜能</h2>${potHtml}</section>
 
   `;
@@ -888,6 +1011,10 @@ function renderCharacter() {
       }
     });
   });
+
+  // 技能加点编辑（管理员）
+  const buildBtn = document.getElementById('buildEdit');
+  if (buildBtn) buildBtn.addEventListener('click', () => openBuildEditor(char));
 
   // 加强状态切换（管理员）
   const buffBtn = document.getElementById('buffToggle');
@@ -1455,6 +1582,93 @@ function bindTagDropdown(root, ddId, onPick) {
   });
 }
 
+// ============ 队伍纹章推荐（大毕业 / 小毕业）============
+const GRAD_DEFS = [
+  { key: 'big',   label: '大毕业', tip: '卷分向 · 要求更严' },
+  { key: 'small', label: '小毕业', tip: '够一档 / 二档开头即可' }
+];
+function teamGradOf(t) { return (t && t.graduates) || {}; }
+function patternById(id) {
+  return (DATA.patterns || []).find(p => String(p.id) === String(id)) || null;
+}
+function teamGradHtml(t) {
+  const g = teamGradOf(t);
+  const editable = (typeof isAdmin === 'function') && isAdmin();
+  const head = '<h2 class="section-title">纹章推荐' +
+    (editable ? '<button type="button" class="mini-btn" id="gradEdit">编辑</button>' : '') + '</h2>';
+  const cards = GRAD_DEFS.map(d => {
+    const item = g[d.key] || {};
+    const desc = String(item.desc || '').trim();
+    const ids = Array.isArray(item.patterns) ? item.patterns : [];
+    const pats = ids.map(patternById).filter(Boolean);
+    const patHtml = pats.length
+      ? '<div class="grad-pats">' + pats.map(p =>
+          '<span class="grad-pat" title="' + escapeHtml(p.name) + '">' +
+          (p.portrait ? '<img src="' + escapeHtml(p.portrait) + '" alt="" loading="lazy">' : '') +
+          '<i>' + escapeHtml(p.name) + '</i></span>'
+        ).join('') + '</div>'
+      : '';
+    const hasAny = desc || pats.length;
+    return '<div class="grad-card"><div class="grad-head"><b>' + d.label + '</b><span>' + d.tip + '</span></div>' +
+      (hasAny ? (desc ? '<div class="grad-desc">' + escapeHtml(desc).replace(/\n/g, '<br>') + '</div>' : '') + patHtml
+               : '<div class="grad-empty">还没填写</div>') +
+      '</div>';
+  }).join('');
+  return '<section class="section" id="teamGrad">' + head + '<div class="grad-grid">' + cards + '</div></section>';
+}
+
+function openGradEditor(t) {
+  const g = teamGradOf(t);
+  const old = document.getElementById('gradModal');
+  if (old) old.remove();
+  const modal = document.createElement('div');
+  modal.id = 'gradModal';
+  modal.className = 'picker-modal';
+  const groups = GRAD_DEFS.map(d => {
+    const item = g[d.key] || {};
+    const chosen = Array.isArray(item.patterns) ? item.patterns.map(String) : [];
+    const list = (DATA.patterns || []).map(p =>
+      '<label class="grad-pick"><input type="checkbox" data-grad="' + d.key + '" value="' + escapeHtml(String(p.id)) + '"' +
+      (chosen.indexOf(String(p.id)) >= 0 ? ' checked' : '') + '>' +
+      (p.portrait ? '<img src="' + escapeHtml(p.portrait) + '" alt="" loading="lazy">' : '') +
+      '<span>' + escapeHtml(p.name) + '</span></label>'
+    ).join('');
+    return '<div class="grad-edit-block">' +
+      '<div class="grad-edit-title">' + d.label + ' <em>' + d.tip + '</em></div>' +
+      '<textarea class="team-desc-input grad-edit-desc" data-grad="' + d.key + '" rows="3" placeholder="' + d.label + '的纹章简介（推荐哪些、为什么）">' + escapeHtml(item.desc || '') + '</textarea>' +
+      '<div class="grad-pick-box">' + list + '</div>' +
+      '</div>';
+  }).join('');
+  modal.innerHTML = [
+    '<div class="picker-panel upd-panel">',
+    '<div class="picker-head"><b>纹章推荐 · ' + escapeHtml(t.name || '') + '</b><button type="button" class="picker-close" id="gradClose">✕</button></div>',
+    '<div class="upd-form">' + groups + '</div>',
+    '<div class="picker-foot"><button type="button" class="btn" id="gradSave">保存</button>',
+    '<button type="button" class="btn-secondary" id="gradCancel">取消</button></div>',
+    '</div>'
+  ].join('');
+  document.body.appendChild(modal);
+  const close = () => modal.remove();
+  modal.addEventListener('click', ev => { if (ev.target === modal) close(); });
+  document.getElementById('gradClose').addEventListener('click', close);
+  document.getElementById('gradCancel').addEventListener('click', close);
+  document.getElementById('gradSave').addEventListener('click', () => {
+    const next = {};
+    GRAD_DEFS.forEach(d => {
+      const ta = modal.querySelector('.grad-edit-desc[data-grad="' + d.key + '"]');
+      const desc = ta ? String(ta.value || '').trim() : '';
+      const ids = [];
+      modal.querySelectorAll('input[type="checkbox"][data-grad="' + d.key + '"]').forEach(cb => {
+        if (cb.checked) ids.push(cb.value);
+      });
+      if (desc || ids.length) next[d.key] = { desc: desc, patterns: ids };
+    });
+    saveTeamEdit(t.id, { graduates: next });
+    close();
+    renderTeam();
+  });
+}
+
 function renderTeam() {
   const id = getUrlParam('id');
   const root = document.getElementById('content');
@@ -1611,6 +1825,7 @@ function renderTeam() {
         <div class="backup-title">辅位备选秘纹 <em>（上限 5 个）</em></div>
         ${backupRow(subBk, 'subBk')}
       </section>
+      ${teamGradHtml(t)}
       <section class="section">
         <h2 class="section-title">队伍标签</h2>
         ${isEdit ? tagEditor : (tagText ? '<div class="ut-tags">' + tagText + '</div>' : '<div class="team-desc-view empty">暂无标签</div>')}
@@ -1620,6 +1835,10 @@ function renderTeam() {
     // 读写当前配队：推荐配队的改动会自动落到本地覆盖层
     const cur = () => getTeamAny(id) || {};
     const save = patch => saveTeamEdit(id, patch);
+
+    // 纹章推荐编辑（管理员）
+    const gradBtn = document.getElementById('gradEdit');
+    if (gradBtn) gradBtn.addEventListener('click', () => openGradEditor(cur()));
 
     if (isEdit) {
       const descEl = document.getElementById('teamDesc');

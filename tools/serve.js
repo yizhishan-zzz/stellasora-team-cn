@@ -89,6 +89,7 @@ function normalizeTeams(obj) {
 const DATA_FILES = {
   '/api/teams': { file: TEAMS_FILE, key: 'teams' },
   '/api/char-meta': { file: path.join(ROOT, 'assets', 'data', 'char-meta.json'), key: 'chars', type: 'object' },
+  '/api/char-builds': { file: path.join(ROOT, 'assets', 'data', 'char-builds.json'), key: 'builds', type: 'object' },
   '/api/updates': { file: path.join(ROOT, 'assets', 'data', 'updates.json'), key: 'entries', type: 'array' }
 };
 

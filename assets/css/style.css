@@ -1349,3 +1349,48 @@ html[data-theme="dark"] .kw { color: #5eead4; }
 .ut-tag-el { padding-left: 5px; padding-right: 5px; }
 .ut-tag-el .el-icon { width: 16px; height: 16px; margin-right: 0; vertical-align: -3px; }
 
+
+/* ===== 技能加点 ===== */
+.section-title .mini-btn {
+  margin-left: 10px; font-size: 12px; padding: 3px 10px; border-radius: 8px;
+  border: 1px solid var(--border); background: var(--bg-soft); color: var(--text-secondary);
+  cursor: pointer; font-weight: 500; vertical-align: 2px;
+}
+.section-title .mini-btn:hover { border-color: var(--accent); color: var(--accent); }
+.build-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 12px; }
+.build-card { border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--card); padding: 12px 14px; }
+.build-head { font-weight: 700; font-size: 14px; margin-bottom: 10px; color: var(--accent); }
+.build-row { display: flex; align-items: center; gap: 8px; margin-bottom: 7px; font-size: 13px; }
+.build-k { width: 52px; flex: 0 0 auto; color: var(--text-secondary); }
+.build-bar { flex: 1; height: 7px; border-radius: 5px; background: var(--bg-soft); overflow: hidden; }
+.build-bar i { display: block; height: 100%; border-radius: 5px; background: linear-gradient(90deg, var(--accent), #39c5bb); }
+.build-v { width: 22px; text-align: right; font-weight: 700; font-size: 13px; }
+.build-edit-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }
+.build-edit-name { width: 74px; flex: 0 0 auto; font-size: 13px; }
+.build-edit-cells { display: flex; gap: 8px; flex: 1; flex-wrap: wrap; }
+.build-edit-cell { display: flex; align-items: center; gap: 5px; font-size: 12px; color: var(--text-muted); }
+.build-edit-cell .admin-input { width: 56px; padding: 5px 6px; }
+
+
+/* ===== 队伍纹章推荐 ===== */
+.grad-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; }
+.grad-card { border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--card); padding: 14px; }
+.grad-head { display: flex; align-items: baseline; gap: 8px; margin-bottom: 10px; }
+.grad-head b { font-size: 15px; color: var(--accent); }
+.grad-head span { font-size: 12px; color: var(--text-muted); }
+.grad-desc { font-size: 13px; line-height: 1.8; color: var(--text-secondary); }
+.grad-empty { font-size: 13px; color: var(--text-muted); padding: 6px 0; }
+.grad-pats { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.grad-pat { display: flex; align-items: center; gap: 6px; padding: 4px 8px 4px 4px; border-radius: 8px; background: var(--bg-soft); border: 1px solid var(--border); }
+.grad-pat img { width: 26px; height: 26px; border-radius: 6px; object-fit: cover; }
+.grad-pat i { font-style: normal; font-size: 12px; }
+.grad-edit-block { border-top: 1px solid var(--border); padding-top: 12px; margin-top: 4px; }
+.grad-edit-block:first-child { border-top: 0; margin-top: 0; padding-top: 0; }
+.grad-edit-title { font-weight: 700; font-size: 14px; margin-bottom: 8px; }
+.grad-edit-title em { font-style: normal; font-weight: 400; font-size: 12px; color: var(--text-muted); margin-left: 6px; }
+.grad-edit-desc { width: 100%; min-height: 62px; }
+.grad-pick-box { display: grid; grid-template-columns: repeat(auto-fill, minmax(132px, 1fr)); gap: 6px; max-height: 190px; overflow-y: auto; padding: 8px; border: 1px solid var(--border); border-radius: 10px; margin-top: 8px; background: var(--bg-soft); }
+.grad-pick { display: flex; align-items: center; gap: 6px; font-size: 12px; cursor: pointer; }
+.grad-pick img { width: 22px; height: 22px; border-radius: 5px; object-fit: cover; }
+.grad-pick span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
