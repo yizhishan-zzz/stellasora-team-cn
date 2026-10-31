@@ -39,6 +39,11 @@ echo.
 echo --- [4/8] build translation dictionary ---
 node build-dict.js
 echo.
+echo --- [4.5/8] build emblem attribute table  ^(from ss-data, optional^)
+node --use-system-ca build-emblems.js
+if errorlevel 1 node build-emblems.js
+if errorlevel 1 echo     [!] emblem table not updated - keeping the old one. Not fatal.
+echo.
 echo --- [5/8] download icons ---
 node --use-system-ca download-icons.js
 if errorlevel 1 node download-icons.js

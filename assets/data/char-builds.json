@@ -1,4 +1,727 @@
 {
-  "builds": {},
-  "updatedAt": ""
+  "builds": {
+    "firstlight-noya": [
+      {
+        "name": "技伤",
+        "desc": "普攻可点到7",
+        "skills": {
+          "normal": 1,
+          "main": 10,
+          "support": 1,
+          "ult": 10
+        }
+      },
+      {
+        "name": "普攻",
+        "desc": "主控技可点到7",
+        "skills": {
+          "normal": 10,
+          "main": 1,
+          "support": 1,
+          "ult": 10
+        }
+      }
+    ],
+    "wlsh": [
+      {
+        "name": "水援护",
+        "desc": "",
+        "skills": {
+          "normal": 1,
+          "main": 1,
+          "support": 10,
+          "ult": 10
+        }
+      },
+      {
+        "name": "主控通用",
+        "desc": "",
+        "skills": {
+          "normal": 1,
+          "main": 10,
+          "support": 1,
+          "ult": 10
+        }
+      }
+    ],
+    "kelnxc": [
+      {
+        "name": "援护位",
+        "desc": "",
+        "skills": {
+          "normal": 1,
+          "main": 1,
+          "support": 10,
+          "ult": 1
+        }
+      }
+    ],
+    "lalusy": [
+      {
+        "name": "援护辅助位",
+        "desc": "",
+        "skills": {
+          "normal": 1,
+          "main": 1,
+          "support": 1,
+          "ult": 1
+        }
+      },
+      {
+        "name": "主控",
+        "desc": "一般不玩这个",
+        "skills": {
+          "normal": 7,
+          "main": 10,
+          "support": 1,
+          "ult": 7
+        }
+      },
+      {
+        "name": "援护仆从流",
+        "desc": "仅与紫槿主控契合，一般也不玩这个",
+        "skills": {
+          "normal": 1,
+          "main": 1,
+          "support": 10,
+          "ult": 1
+        }
+      }
+    ],
+    "hualing": [
+      {
+        "name": "绝招流",
+        "desc": "首推",
+        "skills": {
+          "normal": 1,
+          "main": 10,
+          "support": 1,
+          "ult": 10
+        }
+      },
+      {
+        "name": "普攻流",
+        "desc": "",
+        "skills": {
+          "normal": 10,
+          "main": 1,
+          "support": 1,
+          "ult": 10
+        }
+      }
+    ],
+    "xiaohe": [
+      {
+        "name": "主控位",
+        "desc": "一般为小禾地印记",
+        "skills": {
+          "normal": 1,
+          "main": 10,
+          "support": 1,
+          "ult": 10
+        }
+      },
+      {
+        "name": "援护位",
+        "desc": "正常辅助位",
+        "skills": {
+          "normal": 1,
+          "main": 1,
+          "support": 10,
+          "ult": 10
+        }
+      }
+    ],
+    "xiya": [
+      {
+        "name": "普攻流",
+        "desc": "打不了灾变，无光尘沙可用；点普攻能增加相应核心潜能的伤害倍率",
+        "skills": {
+          "normal": 10,
+          "main": 7,
+          "support": 1,
+          "ult": 1
+        }
+      },
+      {
+        "name": "技伤流",
+        "desc": "灾变可用",
+        "skills": {
+          "normal": 1,
+          "main": 10,
+          "support": 1,
+          "ult": 1
+        }
+      }
+    ],
+    "lalu": [
+      {
+        "name": "一般不玩，过渡也不要加点",
+        "desc": "",
+        "skills": {
+          "normal": 1,
+          "main": 1,
+          "support": 1,
+          "ult": 1
+        }
+      }
+    ],
+    "gerui": [
+      {
+        "name": "后台印记",
+        "desc": "印记只与等级与攻击（是面板攻击，不含触发条件的加攻击）有关；所以一概不点",
+        "skills": {
+          "normal": 1,
+          "main": 1,
+          "support": 1,
+          "ult": 1
+        }
+      },
+      {
+        "name": "主控普攻",
+        "desc": "心危擂台boss可用，普攻可点到10",
+        "skills": {
+          "main": 1,
+          "support": 1,
+          "ult": 1,
+          "normal": 7
+        }
+      },
+      {
+        "name": "主控技伤",
+        "desc": "心危擂台，灾变防线可用，主控技可点到10",
+        "skills": {
+          "normal": 1,
+          "main": 7,
+          "support": 1,
+          "ult": 1
+        }
+      }
+    ],
+    "jiaotang": [
+      {
+        "name": "一般不玩，过渡也不要加点",
+        "desc": "",
+        "skills": {
+          "normal": 1,
+          "main": 1,
+          "support": 1,
+          "ult": 1
+        }
+      }
+    ],
+    "yiye": [
+      {
+        "name": "后台技伤",
+        "desc": "",
+        "skills": {
+          "normal": 1,
+          "main": 1,
+          "support": 10,
+          "ult": 7
+        }
+      },
+      {
+        "name": "后台绝招",
+        "desc": "",
+        "skills": {
+          "normal": 1,
+          "main": 1,
+          "support": 7,
+          "ult": 10
+        }
+      }
+    ],
+    "qiandushi": [
+      {
+        "name": "普攻流",
+        "desc": "",
+        "skills": {
+          "normal": 10,
+          "main": 7,
+          "support": 1,
+          "ult": 1
+        }
+      },
+      {
+        "name": "技伤流",
+        "desc": "",
+        "skills": {
+          "normal": 7,
+          "main": 10,
+          "support": 1,
+          "ult": 1
+        }
+      }
+    ],
+    "fengying": [
+      {
+        "name": "普攻流",
+        "desc": "技伤手感不好，而且普攻流与普攻与主控技等级互绑",
+        "skills": {
+          "normal": 10,
+          "main": 10,
+          "support": 1,
+          "ult": 1
+        }
+      }
+    ],
+    "kesaite": [
+      {
+        "name": "后台辅助",
+        "desc": "",
+        "skills": {
+          "normal": 1,
+          "main": 1,
+          "support": 10,
+          "ult": 1
+        }
+      },
+      {
+        "name": "前台辅助（新手过渡）",
+        "desc": "主控技最多点到7",
+        "skills": {
+          "normal": 1,
+          "support": 1,
+          "ult": 1,
+          "main": 7
+        }
+      }
+    ],
+    "chixia": [
+      {
+        "name": "后排辅助",
+        "desc": "赤霞不打伤害的，一般也不作为主控来使用",
+        "skills": {
+          "normal": 1,
+          "main": 1,
+          "support": 1,
+          "ult": 1
+        }
+      }
+    ],
+    "sipakela": [
+      {
+        "name": "主控",
+        "desc": "死绑技伤流",
+        "skills": {
+          "normal": 1,
+          "main": 10,
+          "support": 1,
+          "ult": 1
+        }
+      },
+      {
+        "name": "援护技伤",
+        "desc": "",
+        "skills": {
+          "normal": 1,
+          "main": 1,
+          "support": 10,
+          "ult": 1
+        }
+      },
+      {
+        "name": "援护普攻",
+        "desc": "",
+        "skills": {
+          "normal": 10,
+          "main": 1,
+          "support": 7,
+          "ult": 1
+        }
+      }
+    ],
+    "allie": [
+      {
+        "name": "主控技伤",
+        "desc": "普攻可点到7",
+        "skills": {
+          "main": 10,
+          "ult": 10,
+          "support": 1,
+          "normal": 1
+        }
+      },
+      {
+        "name": "主控印记",
+        "desc": "主控技可点到7",
+        "skills": {
+          "normal": 10,
+          "main": 1,
+          "support": 1,
+          "ult": 10
+        }
+      }
+    ],
+    "ailinuo": [
+      {
+        "name": "后排通用加点",
+        "desc": "技伤流配合薇洛（盛夏）使用；普攻流为风影服务",
+        "skills": {
+          "normal": 1,
+          "main": 1,
+          "support": 10,
+          "ult": 1
+        }
+      }
+    ],
+    "wuyu": [
+      {
+        "name": "主控仆从流",
+        "desc": "一般过渡使用，不加点",
+        "skills": {
+          "normal": 1,
+          "main": 1,
+          "support": 1,
+          "ult": 1
+        }
+      },
+      {
+        "name": "援护仆从流",
+        "desc": "也是过渡使用，有暗先锋无乙叶就按这个点",
+        "skills": {
+          "normal": 1,
+          "main": 1,
+          "support": 7,
+          "ult": 1
+        }
+      }
+    ],
+    "dongxiang": [
+      {
+        "name": "主控绝招流",
+        "desc": "由于是绝招爆发，想通过普攻/主控技多打点伤害可把普攻点到7，主控技点到10",
+        "skills": {
+          "normal": 5,
+          "main": 7,
+          "support": 1,
+          "ult": 10
+        }
+      }
+    ],
+    "xiahua": [
+      {
+        "name": "后排c",
+        "desc": "",
+        "skills": {
+          "normal": 1,
+          "main": 1,
+          "support": 10,
+          "ult": 1
+        }
+      }
+    ],
+    "mimiebo": [
+      {
+        "name": "主控过渡",
+        "desc": "仅推荐技伤两种核心潜能抓法的加点，绝招可点（前期补伤害）",
+        "skills": {
+          "normal": 1,
+          "main": 7,
+          "support": 1,
+          "ult": 3
+        }
+      },
+      {
+        "name": "后排辅助",
+        "desc": "要用绝招打伤害建议点到7",
+        "skills": {
+          "normal": 1,
+          "main": 1,
+          "support": 1,
+          "ult": 1
+        }
+      }
+    ],
+    "duona": [
+      {
+        "name": "后排副c+辅助",
+        "desc": "",
+        "skills": {
+          "normal": 1,
+          "main": 1,
+          "support": 10,
+          "ult": 1
+        }
+      }
+    ],
+    "telisha": [
+      {
+        "name": "主控辅助",
+        "desc": "早期的万送屋配队特丽莎为主控（顶过分的）",
+        "skills": {
+          "normal": 1,
+          "main": 10,
+          "support": 1,
+          "ult": 1
+        }
+      },
+      {
+        "name": "后排辅助",
+        "desc": "",
+        "skills": {
+          "normal": 1,
+          "main": 1,
+          "support": 10,
+          "ult": 1
+        }
+      }
+    ],
+    "zijin": [
+      {
+        "name": "主控玩法",
+        "desc": "仅为菈露（圣夜）的仆从流玩法推荐，一般不常用",
+        "skills": {
+          "normal": 1,
+          "main": 10,
+          "support": 1,
+          "ult": 1
+        }
+      },
+      {
+        "name": "后排辅助",
+        "desc": "",
+        "skills": {
+          "normal": 1,
+          "main": 1,
+          "support": 10,
+          "ult": 1
+        }
+      }
+    ],
+    "canglan": [
+      {
+        "name": "主控技伤",
+        "desc": "无5星水先锋可用",
+        "skills": {
+          "normal": 1,
+          "main": 10,
+          "support": 1,
+          "ult": 1
+        }
+      },
+      {
+        "name": "援护普攻",
+        "desc": "被削弱了",
+        "skills": {
+          "normal": 10,
+          "main": 1,
+          "support": 1,
+          "ult": 1
+        }
+      }
+    ],
+    "xingzi": [
+      {
+        "name": "后排辅助",
+        "desc": "一般不玩前排辅助",
+        "skills": {
+          "normal": 1,
+          "main": 1,
+          "support": 10,
+          "ult": 1
+        }
+      }
+    ],
+    "kanasi": [
+      {
+        "name": "一般不玩，过渡也不要加点",
+        "desc": "",
+        "skills": {
+          "normal": 1,
+          "main": 1,
+          "support": 1,
+          "ult": 1
+        }
+      }
+    ],
+    "huayuan": [
+      {
+        "name": "主控普攻",
+        "desc": "加强还是区",
+        "skills": {
+          "support": 1,
+          "normal": 10,
+          "main": 7,
+          "ult": 1
+        }
+      },
+      {
+        "name": "主控技伤",
+        "desc": "加强还是区",
+        "skills": {
+          "normal": 5,
+          "main": 10,
+          "support": 1,
+          "ult": 1
+        }
+      }
+    ],
+    "keluonisi": [
+      {
+        "name": "主控过渡",
+        "desc": "别加点多了",
+        "skills": {
+          "main": 5,
+          "normal": 1,
+          "support": 1,
+          "ult": 1
+        }
+      }
+    ],
+    "jinglin": [
+      {
+        "name": "一般不玩，过渡也不要加点",
+        "desc": "",
+        "skills": {
+          "normal": 1,
+          "main": 1,
+          "support": 1,
+          "ult": 1
+        }
+      }
+    ],
+    "lingchuan": [
+      {
+        "name": "主要流派无需加点",
+        "desc": "",
+        "skills": {
+          "normal": 1,
+          "main": 1,
+          "support": 1,
+          "ult": 1
+        }
+      }
+    ],
+    "huochui": [
+      {
+        "name": "后排副c",
+        "desc": "",
+        "skills": {
+          "normal": 1,
+          "main": 1,
+          "support": 10,
+          "ult": 1
+        }
+      }
+    ],
+    "maoyan": [
+      {
+        "name": "主控技伤dot",
+        "desc": "追求极致伤害可把普攻点满",
+        "skills": {
+          "normal": 1,
+          "main": 10,
+          "support": 1,
+          "ult": 1
+        }
+      },
+      {
+        "name": "主控绝招流",
+        "desc": "主控技不用点满",
+        "skills": {
+          "normal": 1,
+          "main": 7,
+          "support": 1,
+          "ult": 10
+        }
+      }
+    ],
+    "shimiao": [
+      {
+        "name": "一般不玩，过渡也不要加点",
+        "desc": "",
+        "skills": {
+          "normal": 1,
+          "main": 1,
+          "support": 1,
+          "ult": 1
+        }
+      }
+    ],
+    "chensha": [
+      {
+        "name": "一般不玩，过渡也不要加点",
+        "desc": "",
+        "skills": {
+          "normal": 1,
+          "main": 1,
+          "support": 1,
+          "ult": 1
+        }
+      }
+    ],
+    "yuanwei": [
+      {
+        "name": "过渡不要加点",
+        "desc": "鸢尾不打伤害",
+        "skills": {
+          "normal": 1,
+          "main": 1,
+          "support": 1,
+          "ult": 1
+        }
+      }
+    ],
+    "tiliya": [
+      {
+        "name": "后排辅助",
+        "desc": "主控非主流玩法；与尘沙（源初）组队可全部不点",
+        "skills": {
+          "normal": 1,
+          "main": 1,
+          "support": 10,
+          "ult": 1
+        }
+      }
+    ],
+    "feilengcui": [
+      {
+        "name": "主控混伤流（技能加绝招）",
+        "desc": "",
+        "skills": {
+          "normal": 1,
+          "main": 10,
+          "support": 1,
+          "ult": 10
+        }
+      },
+      {
+        "name": "主控仆从流",
+        "desc": "一般不玩这个",
+        "skills": {
+          "normal": 10,
+          "main": 10,
+          "support": 1,
+          "ult": 1
+        }
+      }
+    ],
+    "kaximila": [
+      {
+        "name": "过渡不要加点",
+        "desc": "",
+        "skills": {
+          "normal": 1,
+          "main": 1,
+          "support": 1,
+          "ult": 1
+        }
+      }
+    ],
+    "hupo": [
+      {
+        "name": "一般不玩，过渡也不要加点",
+        "desc": "一定要玩的话，普攻流普攻点到7，技伤流主控技点到7；绝招点到7",
+        "skills": {
+          "normal": 1,
+          "main": 1,
+          "support": 1,
+          "ult": 1
+        }
+      }
+    ]
+  },
+  "updatedAt": "2026-10-31T13:55:09.488Z"
 }

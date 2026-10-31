@@ -90,6 +90,7 @@ const DATA_FILES = {
   '/api/teams': { file: TEAMS_FILE, key: 'teams' },
   '/api/char-meta': { file: path.join(ROOT, 'assets', 'data', 'char-meta.json'), key: 'chars', type: 'object' },
   '/api/char-builds': { file: path.join(ROOT, 'assets', 'data', 'char-builds.json'), key: 'builds', type: 'object' },
+  '/api/char-emblems': { file: path.join(ROOT, 'assets', 'data', 'char-emblems.json'), key: 'emblems', type: 'object' },
   '/api/updates': { file: path.join(ROOT, 'assets', 'data', 'updates.json'), key: 'entries', type: 'array' }
 };
 
@@ -164,7 +165,7 @@ async function handleApi(req, res, urlPath) {
       obj.updatedAt = new Date().toISOString();
       backupFile(target.file);
       fs.writeFileSync(target.file, JSON.stringify(obj, null, 2), 'utf8');
-      const n = obj[target.key].length;
+      const n = wantArray ? obj[target.key].length : Object.keys(obj[target.key]).length;
       console.log('  [保存] ' + n + ' 条 → ' + path.relative(ROOT, target.file));
       sendJson(res, 200, { ok: true, count: n, file: path.relative(ROOT, target.file).replace(/\\/g, '/') });
     } catch (e) {

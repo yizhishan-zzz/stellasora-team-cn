@@ -1,0 +1,554 @@
+{
+  "attrs": [
+    {
+      "id": "def",
+      "en": "DEF",
+      "cn": "防御",
+      "group": "基础",
+      "values": [
+        "35",
+        "44",
+        "53",
+        "105"
+      ],
+      "max": "105",
+      "brackets": [
+        "lv70",
+        "lv80",
+        "lv90"
+      ],
+      "note": "",
+      "scheme": "g-b-gold-pink"
+    },
+    {
+      "id": "atk",
+      "en": "ATK",
+      "cn": "攻击",
+      "group": "基础",
+      "values": [
+        "70",
+        "88",
+        "105",
+        "210"
+      ],
+      "max": "210",
+      "brackets": [
+        "lv70",
+        "lv80",
+        "lv90"
+      ],
+      "note": "",
+      "scheme": "g-b-gold-pink"
+    },
+    {
+      "id": "hp",
+      "en": "HP",
+      "cn": "生命",
+      "group": "基础",
+      "values": [
+        "680",
+        "850",
+        "1020",
+        "2040"
+      ],
+      "max": "2040",
+      "brackets": [
+        "lv70",
+        "lv80",
+        "lv90"
+      ],
+      "note": "",
+      "scheme": "g-b-gold-pink"
+    },
+    {
+      "id": "def-pct",
+      "en": "DEF",
+      "cn": "防御%",
+      "group": "大基础",
+      "values": [
+        "10%",
+        "12.5%",
+        "15%",
+        "30%"
+      ],
+      "max": "30%",
+      "brackets": [
+        "lv70",
+        "lv80",
+        "lv90"
+      ],
+      "note": "",
+      "scheme": "g-b-gold-pink"
+    },
+    {
+      "id": "atk-pct",
+      "en": "ATK",
+      "cn": "攻击%",
+      "group": "大基础",
+      "values": [
+        "4%",
+        "5%",
+        "6%",
+        "12%"
+      ],
+      "max": "12%",
+      "brackets": [
+        "lv70",
+        "lv80",
+        "lv90"
+      ],
+      "note": "",
+      "scheme": "g-b-gold-pink"
+    },
+    {
+      "id": "hp-pct",
+      "en": "HP",
+      "cn": "生命%",
+      "group": "大基础",
+      "values": [
+        "4%",
+        "5%",
+        "6%",
+        "12%"
+      ],
+      "max": "12%",
+      "brackets": [
+        "lv70",
+        "lv80",
+        "lv90"
+      ],
+      "note": "",
+      "scheme": "g-b-gold-pink"
+    },
+    {
+      "id": "crit-rate",
+      "en": "Crit Rate",
+      "cn": "暴击率",
+      "group": "暴击",
+      "values": [
+        "5%",
+        "6.3%",
+        "7.5%",
+        "15%"
+      ],
+      "max": "15%",
+      "brackets": [
+        "lv70",
+        "lv80"
+      ],
+      "note": "",
+      "scheme": "g-b-gold-pink"
+    },
+    {
+      "id": "crit-dmg",
+      "en": "Crit DMG",
+      "cn": "暴击伤害",
+      "group": "暴击",
+      "values": [
+        "8%",
+        "10%",
+        "12%",
+        "24%"
+      ],
+      "max": "24%",
+      "brackets": [
+        "lv70",
+        "lv80",
+        "lv90"
+      ],
+      "note": "",
+      "scheme": "g-b-gold-pink"
+    },
+    {
+      "id": "skill-crit-rate",
+      "en": "Skill Crit Rate",
+      "cn": "技能暴击率",
+      "group": "暴击",
+      "values": [
+        "5%",
+        "6.3%",
+        "7.5%"
+      ],
+      "max": "7.5%",
+      "brackets": [
+        "lv70",
+        "lv80"
+      ],
+      "note": "",
+      "scheme": "green-blue-gold"
+    },
+    {
+      "id": "ultimate-crit-rate",
+      "en": "Ultimate Crit Rate",
+      "cn": "绝招暴击率",
+      "group": "暴击",
+      "values": [
+        "5%",
+        "6.3%",
+        "7.5%"
+      ],
+      "max": "7.5%",
+      "brackets": [
+        "lv70",
+        "lv80"
+      ],
+      "note": "",
+      "scheme": "green-blue-gold"
+    },
+    {
+      "id": "minion-crit-rate",
+      "en": "Minion Crit Rate",
+      "cn": "仆从暴击率",
+      "group": "暴击",
+      "values": [
+        "5%",
+        "6.3%",
+        "7.5%"
+      ],
+      "max": "7.5%",
+      "brackets": [
+        "lv70",
+        "lv80"
+      ],
+      "note": "",
+      "scheme": "green-blue-gold"
+    },
+    {
+      "id": "auto-attack-crit-rate",
+      "en": "Auto Attack Crit Rate",
+      "cn": "普攻暴击率",
+      "group": "暴击",
+      "values": [
+        "5%",
+        "6.3%",
+        "7.5%"
+      ],
+      "max": "7.5%",
+      "brackets": [
+        "lv70",
+        "lv80"
+      ],
+      "note": "",
+      "scheme": "green-blue-gold"
+    },
+    {
+      "id": "derivative-crit-rate",
+      "en": "Derivative Crit Rate",
+      "cn": "衍生暴击率",
+      "group": "暴击",
+      "values": [
+        "5%",
+        "6.3%",
+        "7.5%"
+      ],
+      "max": "7.5%",
+      "brackets": [
+        "lv70",
+        "lv80"
+      ],
+      "note": "",
+      "scheme": "green-blue-gold"
+    },
+    {
+      "id": "mark-crit-rate",
+      "en": "Mark Crit Rate",
+      "cn": "印记暴击率",
+      "group": "暴击",
+      "values": [
+        "5%",
+        "6.3%",
+        "7.5%"
+      ],
+      "max": "7.5%",
+      "brackets": [
+        "lv70",
+        "lv80"
+      ],
+      "note": "",
+      "scheme": "green-blue-gold"
+    },
+    {
+      "id": "skill-dmg",
+      "en": "Skill DMG",
+      "cn": "技能伤害",
+      "group": "伤害",
+      "values": [
+        "7%",
+        "8%",
+        "10%",
+        "20%"
+      ],
+      "max": "20%",
+      "brackets": [
+        "lv70",
+        "lv80",
+        "lv90"
+      ],
+      "note": "",
+      "scheme": "g-b-gold-pink"
+    },
+    {
+      "id": "ultimate-dmg",
+      "en": "Ultimate DMG",
+      "cn": "绝招伤害",
+      "group": "伤害",
+      "values": [
+        "10%",
+        "13%",
+        "15%",
+        "30%"
+      ],
+      "max": "30%",
+      "brackets": [
+        "lv70",
+        "lv80",
+        "lv90"
+      ],
+      "note": "",
+      "scheme": "g-b-gold-pink"
+    },
+    {
+      "id": "minion-dmg",
+      "en": "Minion DMG",
+      "cn": "仆从伤害",
+      "group": "伤害",
+      "values": [
+        "7%",
+        "8%",
+        "10%",
+        "20%"
+      ],
+      "max": "20%",
+      "brackets": [
+        "lv70",
+        "lv80",
+        "lv90"
+      ],
+      "note": "",
+      "scheme": "g-b-gold-pink"
+    },
+    {
+      "id": "auto-attack-dmg",
+      "en": "Auto Attack DMG",
+      "cn": "普攻伤害",
+      "group": "伤害",
+      "values": [
+        "10%",
+        "12.5%",
+        "15%",
+        "30%"
+      ],
+      "max": "30%",
+      "brackets": [
+        "lv70",
+        "lv80",
+        "lv90"
+      ],
+      "note": "",
+      "scheme": "g-b-gold-pink"
+    },
+    {
+      "id": "derivative-dmg",
+      "en": "Derivative DMG",
+      "cn": "衍生伤害",
+      "group": "伤害",
+      "values": [
+        "7%",
+        "8%",
+        "10%",
+        "20%"
+      ],
+      "max": "20%",
+      "brackets": [
+        "lv70",
+        "lv80",
+        "lv90"
+      ],
+      "note": "",
+      "scheme": "g-b-gold-pink"
+    },
+    {
+      "id": "mark-dmg",
+      "en": "Mark DMG",
+      "cn": "印记伤害",
+      "group": "伤害",
+      "values": [
+        "27%",
+        "33%",
+        "40%",
+        "80%"
+      ],
+      "max": "80%",
+      "brackets": [
+        "lv70",
+        "lv80",
+        "lv90"
+      ],
+      "note": "",
+      "scheme": "g-b-gold-pink"
+    },
+    {
+      "id": "elemental-dmg",
+      "en": "Elemental DMG",
+      "cn": "元素伤害",
+      "group": "伤害",
+      "values": [
+        "4%",
+        "5%",
+        "6%",
+        "12%"
+      ],
+      "max": "12%",
+      "brackets": [
+        "lv70",
+        "lv80",
+        "lv90"
+      ],
+      "note": "",
+      "scheme": "g-b-gold-pink"
+    },
+    {
+      "id": "charge-efficiency-support",
+      "en": "Charge Efficiency (Support)",
+      "cn": "充能效率（援护）",
+      "group": "特殊",
+      "values": [
+        "13.5%",
+        "17%",
+        "20.3%",
+        "40%"
+      ],
+      "max": "40%",
+      "brackets": [
+        "lv70",
+        "lv80"
+      ],
+      "note": "",
+      "scheme": "g-b-gold-pink"
+    },
+    {
+      "id": "charge-efficiency-main",
+      "en": "Charge Efficiency (Main)",
+      "cn": "充能效率（主控）",
+      "group": "特殊",
+      "values": [
+        "10%",
+        "12.5%",
+        "15%",
+        "30%"
+      ],
+      "max": "30%",
+      "brackets": [
+        "lv70",
+        "lv80"
+      ],
+      "note": "",
+      "scheme": "g-b-gold-pink"
+    },
+    {
+      "id": "ultimate",
+      "en": "Ultimate",
+      "cn": "绝招等级",
+      "group": "特殊",
+      "values": [
+        "1",
+        "2",
+        "3"
+      ],
+      "max": "3",
+      "brackets": [
+        "lv80"
+      ],
+      "note": "绝招技能等级 +1 / +2 / +3",
+      "scheme": "gold-pink-pink"
+    },
+    {
+      "id": "auto-attack",
+      "en": "Auto Attack",
+      "cn": "普攻等级",
+      "group": "特殊",
+      "values": [
+        "1",
+        "2",
+        "3"
+      ],
+      "max": "3",
+      "brackets": [
+        "lv80"
+      ],
+      "note": "普攻技能等级 +1 / +2 / +3",
+      "scheme": "gold-pink-pink"
+    },
+    {
+      "id": "potential",
+      "en": "Potential",
+      "cn": "潜能等级",
+      "group": "特殊",
+      "values": [
+        "1",
+        "2",
+        "3"
+      ],
+      "max": "3",
+      "brackets": [
+        "lv90"
+      ],
+      "note": "除核心潜能外，任意潜能都能加点；每档 +1 / +2 / +3",
+      "scheme": "gold-pink-pink"
+    },
+    {
+      "id": "elemental-pen",
+      "en": "Elemental PEN",
+      "cn": "元素穿透",
+      "group": "特殊",
+      "values": [
+        "35",
+        "40",
+        "53",
+        "110"
+      ],
+      "max": "110",
+      "brackets": [
+        "lv70",
+        "lv80"
+      ],
+      "note": "",
+      "scheme": "g-b-gold-pink"
+    },
+    {
+      "id": "support-skill",
+      "en": "Support Skill",
+      "cn": "援护技等级",
+      "group": "特殊",
+      "values": [
+        "1",
+        "2",
+        "3"
+      ],
+      "max": "3",
+      "brackets": [
+        "lv80"
+      ],
+      "note": "援护技能等级 +1 / +2 / +3",
+      "scheme": "gold-pink-pink"
+    },
+    {
+      "id": "main-skill",
+      "en": "Main Skill",
+      "cn": "主控技等级",
+      "group": "特殊",
+      "values": [
+        "1",
+        "2",
+        "3"
+      ],
+      "max": "3",
+      "brackets": [
+        "lv80"
+      ],
+      "note": "主控技能等级 +1 / +2 / +3",
+      "scheme": "gold-pink-pink"
+    }
+  ],
+  "updatedAt": "2026-10-31T14:43:35.364Z"
+}

@@ -1394,3 +1394,195 @@ html[data-theme="dark"] .kw { color: #5eead4; }
 .grad-pick img { width: 22px; height: 22px; border-radius: 5px; object-fit: cover; }
 .grad-pick span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
+
+/* ===== 技能加点（自定义流派） ===== */
+.build-desc { font-size: 12.5px; color: var(--text-muted); line-height: 1.7; margin: -4px 0 10px; }
+.build-panel { max-width: 640px; }
+.build-edit-list { padding: 4px 18px 0; max-height: 56vh; overflow-y: auto; }
+.build-edit-card { border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 10px 12px; margin-bottom: 10px; background: var(--bg-soft); }
+.build-edit-head { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.build-edit-head .build-name { flex: 1; font-weight: 600; }
+.build-edit-head .team-del { margin: 0; flex: 0 0 auto; }
+.build-desc-input { width: 100%; margin-bottom: 8px; font-size: 12.5px; }
+.build-edit-add { padding: 4px 18px 14px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.build-edit-add .upd-hint { flex: 1 1 auto; }
+
+
+/* ===== 纹章（Emblem）词条 ===== */
+.emb-lines { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.emb-line {
+  font-size: 12px; padding: 4px 9px; border-radius: 8px; line-height: 1.3;
+  background: var(--bg-soft); border: 1px solid var(--border); color: var(--text-secondary);
+  font-family: "Consolas", "Menlo", monospace;
+}
+.grad-edit-lines { width: 100%; min-height: 96px; margin-top: 8px; font-size: 12.5px; font-family: "Consolas", "Menlo", monospace; }
+
+
+/* ===== 纹章选择器 ===== */
+.emb-pick-box { border: 1px solid var(--border); border-radius: 10px; background: var(--bg-soft); padding: 10px; margin-top: 8px; max-height: 260px; overflow-y: auto; }
+.emb-group { margin-bottom: 10px; }
+.emb-group:last-child { margin-bottom: 0; }
+.emb-group-t { font-size: 12px; color: var(--text-muted); margin-bottom: 6px; font-weight: 600; }
+.emb-pick-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(158px, 1fr)); gap: 4px 10px; }
+.emb-pick { display: flex; align-items: center; gap: 6px; font-size: 12.5px; cursor: pointer; padding: 2px 0; }
+.emb-pick input { flex: 0 0 auto; }
+.emb-pick-name { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.emb-pick-max { font-size: 11.5px; color: var(--accent); font-weight: 700; }
+.grad-panel { max-width: 700px; }
+
+
+/* ===== 旅人纹章（70/80/90） ===== */
+.emb-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+.emb-block { border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--card); padding: 12px 14px; }
+.emb-block-head { font-weight: 700; font-size: 13px; color: var(--accent); margin-bottom: 10px; letter-spacing: .5px; }
+.emb-desc { font-size: 12.5px; color: var(--text-muted); line-height: 1.7; margin-bottom: 8px; }
+.emb-rows { display: flex; flex-direction: column; gap: 7px; }
+.emb-row { display: flex; align-items: center; gap: 10px; font-size: 12.5px; }
+.emb-name { flex: 0 0 88px; color: var(--text); }
+.emb-ladder { display: flex; align-items: center; gap: 2px; font-family: "Consolas", "Menlo", monospace; font-size: 12px; color: var(--text-muted); flex-wrap: wrap; }
+.emb-v { padding: 0 1px; }
+.emb-v.max { color: var(--accent); font-weight: 700; }
+.emb-sep { font-style: normal; color: var(--border-strong, #b9c3d4); margin: 0 1px; }
+
+
+/* 纹章选择项：可展开查看档位 */
+.emb-pick-item { border-bottom: 1px dashed var(--border); padding: 3px 0; }
+.emb-pick-item:last-child { border-bottom: 0; }
+.emb-pick { display: flex; align-items: center; gap: 6px; font-size: 12.5px; }
+.emb-pick-name { flex: 1; cursor: pointer; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.emb-caret {
+  border: 0; background: transparent; color: var(--text-muted); cursor: pointer;
+  font-size: 11px; padding: 0 4px; line-height: 1; transition: transform .15s;
+}
+.emb-caret.open { transform: rotate(180deg); color: var(--accent); }
+.emb-tier { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; padding: 4px 0 6px 22px; }
+.emb-tier-vals { display: inline-flex; align-items: center; gap: 2px; font-family: "Consolas", "Menlo", monospace; font-size: 12px; color: var(--text-secondary); }
+.emb-tv { padding: 1px 4px; border-radius: 4px; background: var(--bg-soft); }
+.emb-tv.max { color: var(--accent); font-weight: 700; }
+.emb-tier-note { font-size: 11.5px; color: var(--text-muted); margin-left: 6px; }
+
+
+/* 多个纹章 + 4 词条上限 */
+.emb-card { border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 10px 12px; margin-top: 8px; background: var(--bg-soft); }
+.emb-card-head { display: flex; align-items: center; justify-content: space-between; font-size: 12.5px; font-weight: 700; margin-bottom: 8px; color: var(--text); }
+.emb-card-num { font-style: normal; font-weight: 400; font-size: 11.5px; color: var(--text-muted); }
+.emb-edit-cards { margin-top: 8px; }
+.emb-edit-head { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.emb-edit-head .emb-name-input { flex: 1; font-size: 12.5px; padding: 5px 8px; }
+.emb-count { font-size: 12px; color: var(--text-muted); flex: 0 0 auto; font-family: "Consolas", monospace; }
+.emb-count.full { color: var(--accent); font-weight: 700; }
+.emb-edit-card { border: 1px solid var(--border); border-radius: 10px; padding: 10px; margin-bottom: 10px; background: var(--card); }
+.emb-edit-add { margin-top: 2px; }
+.emb-edit-add .emb-add { font-size: 12.5px; padding: 6px 12px; }
+.emb-pick input[disabled] + .emb-pick-name { opacity: .45; }
+
+
+/* 纹章词条：整行可点，自绘勾选框 */
+.emb-pick {
+  display: flex; align-items: center; gap: 7px; font-size: 12.5px;
+  padding: 4px 6px; border-radius: 7px; cursor: pointer; user-select: none;
+  transition: background .12s;
+}
+.emb-pick:hover { background: var(--bg-soft); }
+.emb-box {
+  flex: 0 0 auto; width: 14px; height: 14px; border-radius: 4px;
+  border: 1.5px solid var(--border-strong, #b9c3d4); background: transparent;
+  position: relative; transition: background .12s, border-color .12s;
+}
+.emb-pick.on .emb-box { background: var(--accent); border-color: var(--accent); }
+.emb-pick.on .emb-box::after {
+  content: ""; position: absolute; left: 3px; top: 0px; width: 5px; height: 9px;
+  border: solid #fff; border-width: 0 2px 2px 0; transform: rotate(45deg);
+}
+.emb-pick.off { opacity: .42; cursor: not-allowed; }
+.emb-pick.off:hover { background: transparent; }
+html[data-theme="dark"] .emb-pick.on .emb-box::after { border-color: #06121f; }
+
+/* 潜能：先选潜能，再选 +1/+2/+3 */
+.emb-pot { display: flex; align-items: center; gap: 8px; padding: 6px 0 8px 22px; flex-wrap: wrap; }
+.emb-pot-sel { font-size: 12px; padding: 4px 8px; max-width: 190px; }
+.emb-pot-lv { display: inline-flex; gap: 4px; }
+.emb-lv {
+  font-size: 12px; padding: 3px 10px; border-radius: 7px; cursor: pointer;
+  border: 1px solid var(--border); background: var(--bg-soft); color: var(--text-secondary);
+}
+.emb-lv.on { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 700; }
+html[data-theme="dark"] .emb-lv.on { color: #06121f; }
+
+
+/* ===== 纹章配置（多套，仿技能加点） ===== */
+.emb-set-list { padding: 4px 18px 0; max-height: 58vh; overflow-y: auto; }
+.emb-edit-card { border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 10px 12px; margin-bottom: 10px; background: var(--bg-soft); }
+.emb-edit-head { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
+.emb-edit-head .emb-name-input { flex: 1 1 150px; min-width: 120px; font-weight: 600; }
+.emb-level-sel { flex: 0 0 auto; width: 82px; font-size: 12.5px; padding: 5px 6px; }
+.emb-desc-input { width: 100%; margin-bottom: 8px; font-size: 12.5px; }
+.emb-pick-box { border: 1px solid var(--border); border-radius: 10px; background: var(--card); padding: 8px 10px; max-height: 240px; overflow-y: auto; }
+.emb-pick { display: flex; align-items: center; gap: 7px; font-size: 12.5px; padding: 4px 6px; border-radius: 7px; cursor: pointer; user-select: none; }
+.emb-pick:hover { background: var(--bg-soft); }
+.emb-box { flex: 0 0 auto; width: 14px; height: 14px; border-radius: 4px; border: 1.5px solid var(--border-strong, #b9c3d4); position: relative; transition: background .12s, border-color .12s; }
+.emb-pick.on .emb-box { background: var(--accent); border-color: var(--accent); }
+.emb-pick.on .emb-box::after { content: ""; position: absolute; left: 3px; top: 0px; width: 5px; height: 9px; border: solid #fff; border-width: 0 2px 2px 0; transform: rotate(45deg); }
+.emb-pick.off { opacity: .42; }
+.emb-pick-name { flex: 0 0 auto; }
+.emb-pick-vals { flex: 1 1 auto; text-align: right; font-family: "Consolas", "Menlo", monospace; font-size: 11.5px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.emb-pot { display: flex; align-items: center; gap: 8px; padding: 6px 0 8px 22px; flex-wrap: wrap; border-top: 1px dashed var(--border); }
+.emb-pot-sel { font-size: 12px; padding: 4px 8px; max-width: 200px; }
+.emb-pot-lv { display: inline-flex; gap: 4px; }
+.emb-lv { font-size: 12px; padding: 3px 10px; border-radius: 7px; cursor: pointer; border: 1px solid var(--border); background: var(--bg-soft); color: var(--text-secondary); }
+.emb-lv.on { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 700; }
+
+
+/* ===== 纹章配置（每套含 70/80/90 三枚，可选档位） ===== */
+.emb-configs { display: flex; flex-direction: column; gap: 12px; }
+.emb-config { border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--card); padding: 12px 14px; }
+.emb-config-head { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; }
+.emb-config-head b { font-size: 14px; color: var(--accent); }
+.emb-config-desc { font-size: 12.5px; color: var(--text-muted); }
+.emb-lv-row { display: flex; align-items: flex-start; gap: 10px; padding: 7px 0; border-top: 1px dashed var(--border); font-size: 13px; }
+.emb-lv-row:first-of-type { border-top: 0; }
+.emb-lv-tag { flex: 0 0 48px; font-size: 12px; color: var(--text-muted); font-weight: 700; letter-spacing: .5px; padding-top: 2px; }
+.emb-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.emb-chip { display: inline-flex; align-items: baseline; gap: 6px; padding: 3px 9px; border-radius: 8px; background: var(--bg-soft); border: 1px solid var(--border); }
+.emb-chip b { font-weight: 500; font-size: 12.5px; }
+.emb-chip i { font-style: normal; font-size: 11.5px; color: var(--accent); font-weight: 700; }
+/* 编辑器 */
+.emb-newcfg { font-size: 12px; padding: 4px 12px; margin-left: auto; margin-right: 8px; }
+.emb-edit-lv { border-top: 1px dashed var(--border); padding-top: 8px; margin-top: 8px; }
+.emb-edit-lv:first-of-type { border-top: 0; margin-top: 0; padding-top: 0; }
+.emb-edit-lv-t { font-size: 12px; font-weight: 700; color: var(--text-muted); margin-bottom: 6px; }
+.emb-slot { display: flex; align-items: center; gap: 6px; margin-bottom: 5px; }
+.emb-slot-no { flex: 0 0 16px; font-size: 11px; color: var(--text-muted); text-align: right; }
+.emb-sel-attr { flex: 1 1 auto; min-width: 0; font-size: 12.5px; padding: 4px 6px; }
+.emb-sel-tier, .emb-sel-pot { flex: 0 0 auto; font-size: 12px; padding: 4px 6px; max-width: 132px; }
+
+
+/* ===== 纹章词条：按档位染外框（4 档：绿→蓝→金→粉紫；3 档：金→粉紫→粉紫） ===== */
+.emb-chip {
+  position: relative; border-width: 1.5px; border-style: solid;
+  transition: box-shadow .15s, border-color .15s, background .15s;
+}
+.emb-chip.tier-green  { border-color: #22c55e; background: rgba(34, 197, 94, .10); }
+.emb-chip.tier-blue   { border-color: #3b82f6; background: rgba(59, 130, 246, .10); }
+.emb-chip.tier-gold   { border-color: #d4a017; background: rgba(212, 160, 23, .12); }
+.emb-chip.tier-pink   { border-color: #c026d3; background: rgba(192, 38, 211, .10); }
+
+.emb-chip.tier-green i { color: #16a34a; }
+.emb-chip.tier-blue  i { color: #2563eb; }
+.emb-chip.tier-gold  i { color: #b78900; }
+.emb-chip.tier-pink  i { color: #a21caf; }
+
+.emb-chip.tier-green  { box-shadow: 0 0 0 1px rgba(34, 197, 94, .18) inset; }
+.emb-chip.tier-blue   { box-shadow: 0 0 0 1px rgba(59, 130, 246, .18) inset; }
+.emb-chip.tier-gold   { box-shadow: 0 0 0 1px rgba(212, 160, 23, .20) inset; }
+.emb-chip.tier-pink   { box-shadow: 0 0 0 1px rgba(192, 38, 211, .18) inset; }
+
+html[data-theme="dark"] .emb-chip.tier-green { border-color: #4ade80; background: rgba(74, 222, 128, .12); }
+html[data-theme="dark"] .emb-chip.tier-blue  { border-color: #60a5fa; background: rgba(96, 165, 250, .12); }
+html[data-theme="dark"] .emb-chip.tier-gold  { border-color: #fbbf24; background: rgba(251, 191, 36, .13); }
+html[data-theme="dark"] .emb-chip.tier-pink  { border-color: #e879f9; background: rgba(232, 121, 249, .12); }
+html[data-theme="dark"] .emb-chip.tier-green i { color: #86efac; }
+html[data-theme="dark"] .emb-chip.tier-blue  i { color: #93c5fd; }
+html[data-theme="dark"] .emb-chip.tier-gold  i { color: #fcd34d; }
+html[data-theme="dark"] .emb-chip.tier-pink  i { color: #f0abfc; }
+

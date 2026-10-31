@@ -354,10 +354,7 @@ function renderHome() {
           : '';
       }
     };
-    // 点哪个属性就跳到配队页并筛该属性（水队 → 只看水队）
-    blocks.querySelectorAll('.el-block').forEach(b => b.addEventListener('click', () => {
-      location.href = 'teams.html?el=' + encodeURIComponent(b.dataset.el);
-    }));
+    blocks.querySelectorAll('.el-block').forEach(b => b.addEventListener('click', () => showEl(b.dataset.el)));
     const firstEl = ELORDER.find(e => byEl[e] && byEl[e].length);
     if (firstEl) showEl(firstEl);
   }
@@ -369,16 +366,20 @@ function renderHome() {
 }
 
 // ============ 角色图鉴 ============
-// ============ 技能加点（分流派，1-10）============
+// ============ 技能加点（自定义流派 + 简介，1-10）============
 const BUILD_SKILLS = [
   { key: 'normal',  label: '普攻' },
   { key: 'main',    label: '主控技' },
   { key: 'support', label: '援护技' },
   { key: 'ult',     label: '绝招' }
 ];
+const BUILD_DESC_MAX = 100;
+
+// 数据格式：charId → [ { name, desc, skills: {normal,main,support,ult} }, ... ]
 function charBuildsOf(id) {
   const all = (DATA.charBuilds && DATA.charBuilds.builds) || {};
-  return all[id] || null;
+  const list = all[id];
+  return Array.isArray(list) ? list : [];
 }
 function clampBuild(v) {
   const n = Math.round(Number(v));
@@ -386,30 +387,31 @@ function clampBuild(v) {
   return n > 10 ? 10 : n;
 }
 function charBuildHtml(char) {
-  const data = charBuildsOf(char.id);
-  const styles = data ? Object.keys(data) : [];
+  const list = charBuildsOf(char.id);
   const editable = (typeof isAdmin === 'function') && isAdmin();
   const head = '<h2 class="section-title">技能加点' +
     (editable ? '<button type="button" class="mini-btn" id="buildEdit">编辑</button>' : '') + '</h2>';
-  if (!styles.length) {
+  if (!list.length) {
     return '<section class="section" id="charBuilds">' + head + emptyHint('还没有加点数据') + '</section>';
   }
-  const blocks = styles.map(st => {
-    const v = data[st] || {};
+  const blocks = list.map(b => {
+    const v = (b && b.skills) || {};
     const rows = BUILD_SKILLS.map(s => {
       const n = clampBuild(v[s.key]);
       return '<div class="build-row"><span class="build-k">' + s.label + '</span>' +
         '<span class="build-bar"><i style="width:' + (n * 10) + '%"></i></span>' +
         '<b class="build-v">' + n + '</b></div>';
     }).join('');
-    return '<div class="build-card"><div class="build-head">' + escapeHtml(st) + '</div>' + rows + '</div>';
+    const desc = String((b && b.desc) || '').trim();
+    return '<div class="build-card"><div class="build-head">' + escapeHtml((b && b.name) || '加点') + '</div>' +
+      (desc ? '<div class="build-desc">' + escapeHtml(desc) + '</div>' : '') + rows + '</div>';
   }).join('');
   return '<section class="section" id="charBuilds">' + head + '<div class="build-grid">' + blocks + '</div></section>';
 }
 
-async function saveCharBuilds(id, data) {
+async function saveCharBuilds(id, list) {
   const builds = Object.assign({}, (DATA.charBuilds && DATA.charBuilds.builds) || {});
-  if (data && Object.keys(data).length) builds[id] = data; else delete builds[id];
+  if (list && list.length) builds[id] = list; else delete builds[id];
   const payload = { builds: builds, updatedAt: new Date().toISOString() };
   DATA.charBuilds = payload;
   const json = JSON.stringify(payload, null, 2);
@@ -424,7 +426,7 @@ async function saveCharBuilds(id, data) {
       if (cur && cur.content) { const r0 = JSON.parse(b64ToUtf8(cur.content)); remoteBuilds = (r0 && r0.builds) || {}; }
     } catch (e) { /* 读不到就按本地写 */ }
     const baseBuilds = remoteBuilds || {};
-    if (data && Object.keys(data).length) baseBuilds[id] = data; else delete baseBuilds[id];
+    if (list && list.length) baseBuilds[id] = list; else delete baseBuilds[id];
     const full = { builds: baseBuilds, updatedAt: new Date().toISOString() };
     await ghWriteFile(cfg, 'assets/data/char-builds.json', JSON.stringify(full, null, 2), '更新旅人技能加点');
     DATA.charBuilds = full;
@@ -436,48 +438,76 @@ async function saveCharBuilds(id, data) {
   return { ok: true, where: 'local' };
 }
 
+// 编辑弹窗：流派名可自定义，每个流派带 100 字以内简介
 function openBuildEditor(char) {
-  const cur = charBuildsOf(char.id) || {};
+  const cur = charBuildsOf(char.id).map(b => ({
+    name: (b && b.name) || '',
+    desc: (b && b.desc) || '',
+    skills: Object.assign({}, (b && b.skills) || {})
+  }));
+  if (!cur.length) cur.push({ name: '普攻流', desc: '', skills: {} });
   const old = document.getElementById('buildModal');
   if (old) old.remove();
   const modal = document.createElement('div');
   modal.id = 'buildModal';
   modal.className = 'picker-modal';
-  const rows = STYLE_OPTIONS.map(st => {
-    const v = cur[st] || {};
-    const inputs = BUILD_SKILLS.map(s =>
-      '<label class="build-edit-cell"><span>' + s.label + '</span>' +
-      '<input type="number" class="admin-input build-num" data-style="' + escapeHtml(st) + '" data-skill="' + s.key + '" min="1" max="10" step="1" value="' +
-      (v[s.key] ? clampBuild(v[s.key]) : '') + '"></label>'
-    ).join('');
-    return '<div class="build-edit-row"><b class="build-edit-name">' + escapeHtml(st) + '</b><div class="build-edit-cells">' + inputs + '</div></div>';
-  }).join('');
   modal.innerHTML = [
-    '<div class="picker-panel upd-panel">',
+    '<div class="picker-panel upd-panel build-panel">',
     '<div class="picker-head"><b>技能加点 · ' + escapeHtml(char.name) + '</b><button type="button" class="picker-close" id="buildClose">✕</button></div>',
-    '<div class="upd-form"><p class="upd-hint" style="margin:0 0 10px">每项 1-10，留空表示不需要</p>' + rows + '</div>',
+    '<div class="build-edit-list" id="buildList"></div>',
+    '<div class="build-edit-add"><button type="button" class="btn-secondary" id="buildAdd">＋ 添加流派</button>',
+    '<span class="upd-hint">流派名自己取，简介最多 ' + BUILD_DESC_MAX + ' 字</span></div>',
     '<div class="picker-foot"><button type="button" class="btn" id="buildSave">保存</button>',
     '<button type="button" class="btn-secondary" id="buildCancel">取消</button></div>',
     '</div>'
   ].join('');
   document.body.appendChild(modal);
+  const listEl = document.getElementById('buildList');
+
+  const renderList = () => {
+    listEl.innerHTML = cur.map((b, i) => {
+      const inputs = BUILD_SKILLS.map(s =>
+        '<label class="build-edit-cell"><span>' + s.label + '</span>' +
+        '<input type="number" class="admin-input build-num" data-i="' + i + '" data-skill="' + s.key + '" min="1" max="10" step="1" value="' +
+        (b.skills[s.key] ? clampBuild(b.skills[s.key]) : '') + '"></label>'
+      ).join('');
+      return '<div class="build-edit-card">' +
+        '<div class="build-edit-head">' +
+        '<input class="admin-input build-name" data-i="' + i + '" maxlength="12" placeholder="流派名（如：普攻流）" value="' + escapeHtml(b.name) + '">' +
+        '<button type="button" class="team-del build-del" data-i="' + i + '">删除</button></div>' +
+        '<input class="admin-input build-desc-input" data-i="' + i + '" maxlength="' + BUILD_DESC_MAX + '" placeholder="这个流派的简介（' + BUILD_DESC_MAX + ' 字以内）" value="' + escapeHtml(b.desc) + '">' +
+        '<div class="build-edit-cells">' + inputs + '</div>' +
+        '</div>';
+    }).join('');
+    listEl.querySelectorAll('.build-name').forEach(inp => inp.addEventListener('input', () => { cur[Number(inp.dataset.i)].name = inp.value; }));
+    listEl.querySelectorAll('.build-desc-input').forEach(inp => inp.addEventListener('input', () => { cur[Number(inp.dataset.i)].desc = inp.value.slice(0, BUILD_DESC_MAX); }));
+    listEl.querySelectorAll('.build-num').forEach(inp => inp.addEventListener('input', () => {
+      const i = Number(inp.dataset.i), k = inp.dataset.skill;
+      const v = String(inp.value || '').trim();
+      if (!v) delete cur[i].skills[k]; else cur[i].skills[k] = clampBuild(v);
+    }));
+    listEl.querySelectorAll('.build-del').forEach(btn => btn.addEventListener('click', () => {
+      cur.splice(Number(btn.dataset.i), 1);
+      renderList();
+    }));
+  };
+  renderList();
+
+  document.getElementById('buildAdd').addEventListener('click', () => {
+    cur.push({ name: '', desc: '', skills: {} });
+    renderList();
+  });
   const close = () => modal.remove();
   modal.addEventListener('click', ev => { if (ev.target === modal) close(); });
   document.getElementById('buildClose').addEventListener('click', close);
   document.getElementById('buildCancel').addEventListener('click', close);
   document.getElementById('buildSave').addEventListener('click', async () => {
-    const next = {};
-    modal.querySelectorAll('.build-num').forEach(inp => {
-      const raw = String(inp.value || '').trim();
-      if (!raw) return;
-      const st = inp.dataset.style, sk = inp.dataset.skill;
-      next[st] = next[st] || {};
-      next[st][sk] = clampBuild(raw);
-    });
+    const out = cur.filter(b => (b.name || '').trim() || Object.keys(b.skills || {}).length || (b.desc || '').trim())
+      .map(b => ({ name: (b.name || '').trim() || '加点', desc: (b.desc || '').trim().slice(0, BUILD_DESC_MAX), skills: b.skills || {} }));
     const btn = document.getElementById('buildSave');
     btn.disabled = true; btn.textContent = '保存中…';
     try {
-      await saveCharBuilds(char.id, next);
+      await saveCharBuilds(char.id, out);
       close();
       renderCharacter();
     } catch (err) {
@@ -486,6 +516,323 @@ function openBuildEditor(char) {
     }
   });
 }
+
+
+// ============ 旅人纹章：每套配置含 Lv70/80/90 三枚，每个最多 4 词条并可选档位 ============
+const EMB_LEVELS = [
+  { key: 'lv70', label: 'Lv70' },
+  { key: 'lv80', label: 'Lv80' },
+  { key: 'lv90', label: 'Lv90' }
+];
+const EMB_MAX_ATTRS = 4;
+const EMB_MAX_CONFIGS = 8;
+
+function emblemTable() { return (DATA.emblems && DATA.emblems.attrs) || []; }
+function emblemAttrsIn(level) { return emblemTable().filter(a => (a.brackets || []).indexOf(level) >= 0); }
+function emblemById(id) { return emblemTable().find(a => a.id === id) || null; }
+function embKeyOf(e) { return typeof e === 'string' ? e : (e && e.id) || ''; }
+function embTierOf(e) { const t = Number(typeof e === 'object' && e ? e.tier : 0); return t >= 1 ? t : 0; }
+
+// 统一成：{ name, desc, levels: { lv70: [], lv80: [], lv90: [] } }
+function charEmblemConfigs(id) {
+  const all = (DATA.charEmblems && DATA.charEmblems.emblems) || {};
+  const raw = all[id];
+  const out = [];
+  const blank = () => ({ name: '', desc: '', levels: { lv70: [], lv80: [], lv90: [] } });
+  if (Array.isArray(raw)) {
+    if (raw.some(s => s && s.levels)) {
+      raw.forEach(s => {
+        const c = blank();
+        c.name = s.name || ''; c.desc = s.desc || '';
+        EMB_LEVELS.forEach(b => { c.levels[b.key] = Array.isArray((s.levels || {})[b.key]) ? (s.levels[b.key]).slice() : []; });
+        out.push(c);
+      });
+      return out;
+    }
+    // 旧：平铺 [{ name, level, attrs }]
+    const byName = {};
+    raw.forEach(s => {
+      const key = (s.name || '').trim() || '纹章';
+      if (!byName[key]) { byName[key] = blank(); byName[key].name = (s.name || '').trim(); }
+      const lv = s.level || 'lv70';
+      if (EMB_LEVELS.some(b => b.key === lv)) byName[key].levels[lv] = (s.attrs || []).slice();
+    });
+    return Object.keys(byName).map(k => byName[k]);
+  }
+  if (raw && typeof raw === 'object') {
+    // 旧：{ lv70: { desc, emblems: [{ name, attrs }] } }
+    const byName = {};
+    EMB_LEVELS.forEach(b => {
+      const item = raw[b.key];
+      if (!item) return;
+      const list = Array.isArray(item.emblems) ? item.emblems : (Array.isArray(item.attrs) ? [{ name: '', attrs: item.attrs }] : []);
+      list.forEach(em => {
+        const key = (em.name || '').trim() || '纹章';
+        if (!byName[key]) { byName[key] = blank(); byName[key].name = (em.name || '').trim(); byName[key].desc = item.desc || ''; }
+        byName[key].levels[b.key] = (em.attrs || []).slice();
+      });
+    });
+    return Object.keys(byName).map(k => byName[k]);
+  }
+  return out;
+}
+
+function emblemNameFor(a, char) {
+  if (!a) return '';
+  const el = (char && ELEMENTS[char.element]) ? ELEMENTS[char.element].name : '';
+  if (el && a.id === 'elemental-pen') return el + '系穿透';
+  if (el && a.id === 'elemental-dmg') return el + '系伤害';
+  return a.cn;
+}
+// 选了第几档就显示那一档的数值
+// 档位外框配色（按属性自带的 scheme 决定）
+//   g-b-gold-pink  ：绿 → 蓝 → 金 → 粉紫（4 档词条）
+//   green-blue-gold：绿 → 蓝 → 金      （3 档暴击率类）
+//   gold-pink-pink ：金 → 粉紫 → 粉紫  （技能等级 / 潜能）
+const EMB_SCHEMES = {
+  'g-b-gold-pink':   ['tier-green', 'tier-blue', 'tier-gold', 'tier-pink'],
+  'green-blue-gold': ['tier-green', 'tier-blue', 'tier-gold'],
+  'gold-pink-pink':  ['tier-gold', 'tier-pink', 'tier-pink']
+};
+function embTierCls(entry, a) {
+  if (!a) return '';
+  if (embKeyOf(entry) === 'potential') {
+    const lv = (typeof entry === 'object' && entry.lv) ? Number(entry.lv) : 0;
+    return EMB_SCHEMES['gold-pink-pink'][lv - 1] || '';
+  }
+  const tier = embTierOf(entry);
+  if (!tier) return '';
+  const n = (a.values || []).length;
+  const fallback = n >= 4 ? 'g-b-gold-pink' : (a.group === '特殊' ? 'gold-pink-pink' : 'green-blue-gold');
+  const arr = EMB_SCHEMES[a.scheme || fallback] || EMB_SCHEMES['g-b-gold-pink'];
+  return arr[tier - 1] || '';
+}
+
+function embEntryLabel(entry, char) {
+  const id = embKeyOf(entry);
+  const a = emblemById(id);
+  if (!a) return null;
+  const name = emblemNameFor(a, char);
+  if (id === 'potential') {
+    const pot = (typeof entry === 'object' && entry.pot) ? entry.pot : '';
+    const lv = (typeof entry === 'object' && entry.lv) ? entry.lv : '';
+    return { name: name + (pot ? ' · ' + pot : ''), value: '+' + (lv || '?') };
+  }
+  const tier = embTierOf(entry);
+  const vals = a.values || [];
+  const v = tier && vals[tier - 1] !== undefined ? vals[tier - 1] : (vals[vals.length - 1] || '');
+  return { name: name, value: v };
+}
+
+function charEmblemHtml(char) {
+  const cfgs = charEmblemConfigs(char.id);
+  const editable = (typeof isAdmin === 'function') && isAdmin();
+  const head = '<h2 class="section-title">纹章' +
+    (editable ? '<button type="button" class="mini-btn" id="embEdit">编辑</button>' : '') + '</h2>';
+  if (!cfgs.length) return '<section class="section" id="charEmblems">' + head + emptyHint('还没有纹章配置') + '</section>';
+  const cards = cfgs.map((c, i) => {
+    const levels = EMB_LEVELS.map(b => {
+      const list = (c.levels || {})[b.key] || [];
+      const chips = list.map(e => {
+        const lab = embEntryLabel(e, char);
+        if (!lab) return '';
+        const cls = embTierCls(e, emblemById(embKeyOf(e)));
+        return '<span class="emb-chip ' + cls + '"><b>' + escapeHtml(lab.name) + '</b><i>' + escapeHtml(lab.value) + '</i></span>';
+      }).filter(Boolean).join('');
+      return '<div class="emb-lv-row"><span class="emb-lv-tag">' + b.label + '</span>' +
+        (chips ? '<span class="emb-chips">' + chips + '</span>' : '<span class="grad-empty">未设置</span>') + '</div>';
+    }).join('');
+    return '<div class="emb-config"><div class="emb-config-head">' +
+      '<b>' + escapeHtml((c.name || '').trim() || ('配置 ' + (i + 1))) + '</b>' +
+      (c.desc ? '<span class="emb-config-desc">' + escapeHtml(c.desc) + '</span>' : '') + '</div>' + levels + '</div>';
+  }).join('');
+  return '<section class="section" id="charEmblems">' + head + '<div class="emb-configs">' + cards + '</div></section>';
+}
+
+async function saveCharEmblems(id, data) {
+  const map = Object.assign({}, (DATA.charEmblems && DATA.charEmblems.emblems) || {});
+  if (data && data.length) map[id] = data; else delete map[id];
+  const payload = { emblems: map, updatedAt: new Date().toISOString() };
+  DATA.charEmblems = payload;
+  const json = JSON.stringify(payload, null, 2);
+  try { localStorage.setItem('ss_char_emblems', json); } catch (e) {}
+  const local = await localApiPut('/api/char-emblems', payload);
+  if (local) { showToast('已写入本地文件（发布时会一起推上去）', 'ok'); return { ok: true, where: 'localFile' }; }
+  if (typeof ghConfigured === 'function' && ghConfigured()) {
+    const cfg = ghGetCfg();
+    let remoteMap = null;
+    try {
+      const cur = await ghReadFile(cfg, 'assets/data/char-emblems.json');
+      if (cur && cur.content) { const r0 = JSON.parse(b64ToUtf8(cur.content)); remoteMap = (r0 && r0.emblems) || {}; }
+    } catch (e) {}
+    const baseMap = remoteMap || {};
+    if (data && data.length) baseMap[id] = data; else delete baseMap[id];
+    const full = { emblems: baseMap, updatedAt: new Date().toISOString() };
+    await ghWriteFile(cfg, 'assets/data/char-emblems.json', JSON.stringify(full, null, 2), '更新旅人纹章');
+    DATA.charEmblems = full;
+    try { localStorage.setItem('ss_char_emblems', JSON.stringify(full)); } catch (e) {}
+    showToast('已同步到线上仓库', 'ok');
+    return { ok: true, where: 'github' };
+  }
+  showToast('只存到浏览器缓存了：本地服务器没在跑，或 /api/char-emblems 接口未启用（重启 启动服务器.bat 试试）', 'err');
+  return { ok: true, where: 'local' };
+}
+
+// ===== 编辑器：全部用原生 select，避免点不动 =====  
+let EMB_EDIT = null;
+
+function embAttrSelect(ci, lv, slot, curId) {
+  const groupsOrder = ['基础', '大基础', '暴击', '伤害', '特殊', '其他'];
+  const groups = {};
+  emblemAttrsIn(lv).forEach(a => { (groups[a.group || '其他'] = groups[a.group || '其他'] || []).push(a); });
+  const opts = ['<option value="">—</option>'].concat(groupsOrder.filter(g => groups[g]).map(g =>
+    '<optgroup label="' + g + '">' + groups[g].map(a =>
+      '<option value="' + escapeHtml(a.id) + '"' + (a.id === curId ? ' selected' : '') + '>' + escapeHtml(a.cn) + '</option>'
+    ).join('') + '</optgroup>'
+  )).join('');
+  return '<select class="admin-input emb-sel-attr" onchange="embPickAttr(' + ci + ',\'' + lv + '\',' + slot + ',this.value)">' + opts + '</select>';
+}
+
+function embTierSelect(ci, lv, slot, a, entry) {
+  if (!a) return '<select class="admin-input emb-sel-tier" disabled><option>—</option></select>';
+  if (a.id === 'potential') {
+    const pots = (EMB_EDIT && EMB_EDIT.pots) || [];
+    const curPot = (entry && entry.pot) || '';
+    const curLv = (entry && entry.lv) || 0;
+    const potOpts = ['<option value="">选择潜能</option>'].concat(pots.map(p =>
+      '<option value="' + escapeHtml(p.name) + '"' + (p.name === curPot ? ' selected' : '') + '>' + escapeHtml(p.name) + '</option>'
+    )).join('');
+    const lvOpts = [1, 2, 3].map(v => '<option value="' + v + '"' + (curLv === v ? ' selected' : '') + '>+' + v + '</option>').join('');
+    return '<select class="admin-input emb-sel-pot" onchange="embSetPot(' + ci + ',\'' + lv + '\',' + slot + ',this.value)">' + potOpts + '</select>' +
+      '<select class="admin-input emb-sel-tier" onchange="embSetTier(' + ci + ',\'' + lv + '\',' + slot + ',this.value)">' + lvOpts + '</select>';
+  }
+  const vals = a.values || [];
+  const cur = embTierOf(entry);
+  const opts = vals.map((v, i) => '<option value="' + (i + 1) + '"' + (cur === i + 1 ? ' selected' : '') + '>' + escapeHtml(v) + '</option>').join('');
+  return '<select class="admin-input emb-sel-tier" onchange="embSetTier(' + ci + ',\'' + lv + '\',' + slot + ',this.value)">' + opts + '</select>';
+}
+
+function embSlotRow(ci, lv, slot) {
+  const cfg = EMB_EDIT.cfgs[ci];
+  const entry = (cfg.levels[lv] || [])[slot] || null;
+  const id = embKeyOf(entry) || '';
+  const a = id ? emblemById(id) : null;
+  return '<div class="emb-slot"><span class="emb-slot-no">' + (slot + 1) + '</span>' +
+    embAttrSelect(ci, lv, slot, id) + embTierSelect(ci, lv, slot, a, entry) + '</div>';
+}
+
+function renderEmblemEditor() {
+  const st = EMB_EDIT;
+  if (!st) return;
+  const cards = st.cfgs.map((c, ci) => {
+    const levels = EMB_LEVELS.map(b =>
+      '<div class="emb-edit-lv"><div class="emb-edit-lv-t">' + b.label + '</div>' +
+      [0, 1, 2, 3].map(slot => embSlotRow(ci, b.key, slot)).join('') + '</div>'
+    ).join('');
+    return '<div class="emb-edit-card">' +
+      '<div class="emb-edit-head">' +
+      '<input class="admin-input emb-name-input" maxlength="16" placeholder="配置名（如：普攻流）" value="' + escapeHtml(c.name) + '" oninput="EMB_EDIT.cfgs[' + ci + '].name=this.value">' +
+      '<button type="button" class="team-del" onclick="embDelConfig(' + ci + ')">删除</button>' +
+      '</div>' +
+      '<input class="admin-input emb-desc-input" maxlength="100" placeholder="这套纹章的说明（100 字以内）" value="' + escapeHtml(c.desc) + '" oninput="EMB_EDIT.cfgs[' + ci + '].desc=this.value">' +
+      levels +
+      '</div>';
+  }).join('');
+  st.modal.innerHTML = [
+    '<div class="picker-panel upd-panel grad-panel">',
+    '<div class="picker-head"><b>纹章 · ' + escapeHtml(st.char.name) + '</b>',
+    '<button type="button" class="btn-secondary emb-newcfg" onclick="embAddConfig()">＋ 新建配置</button>',
+    '<button type="button" class="picker-close" onclick="embCloseEditor()">✕</button></div>',
+    '<div class="upd-form emb-set-list">' + cards + '</div>',
+    '<div class="picker-foot"><button type="button" class="btn" onclick="embSaveEditor()">保存</button>',
+    '<button type="button" class="btn-secondary" onclick="embCloseEditor()">取消</button></div>',
+    '</div>'
+  ].join('');
+}
+
+function embAddConfig() {
+  if (!EMB_EDIT) return;
+  if (EMB_EDIT.cfgs.length >= EMB_MAX_CONFIGS) { showToast('最多 ' + EMB_MAX_CONFIGS + ' 套配置', 'err'); return; }
+  EMB_EDIT.cfgs.push({ name: '', desc: '', levels: { lv70: [], lv80: [], lv90: [] } });
+  renderEmblemEditor();
+}
+function embDelConfig(ci) {
+  if (!EMB_EDIT) return;
+  EMB_EDIT.cfgs.splice(ci, 1);
+  renderEmblemEditor();
+}
+function embPickAttr(ci, lv, slot, id) {
+  if (!EMB_EDIT) return;
+  const cfg = EMB_EDIT.cfgs[ci];
+  const list = cfg.levels[lv] || (cfg.levels[lv] = []);
+  if (!id) { list[slot] = null; renderEmblemEditor(); return; }
+  const used = list.map((e, i) => ({ e, i })).filter(x => x.e && embKeyOf(x.e) === id && x.i !== slot);
+  if (used.length) { showToast('这个词条已经选过了', 'err'); renderEmblemEditor(); return; }
+  const a = emblemById(id);
+  if (id === 'potential') list[slot] = { id: 'potential', pot: '', lv: 0 };
+  else list[slot] = { id: id, tier: (a && (a.values || []).length) ? 1 : 0 };
+  renderEmblemEditor();
+}
+function embSetTier(ci, lv, slot, v) {
+  if (!EMB_EDIT) return;
+  const list = EMB_EDIT.cfgs[ci].levels[lv] || [];
+  const e = list[slot];
+  if (!e) return;
+  if (embKeyOf(e) === 'potential') e.lv = Number(v) || 0;
+  else e.tier = Number(v) || 0;
+}
+function embSetPot(ci, lv, slot, name) {
+  if (!EMB_EDIT) return;
+  const list = EMB_EDIT.cfgs[ci].levels[lv] || [];
+  const e = list[slot];
+  if (e && embKeyOf(e) === 'potential') e.pot = name;
+}
+function embCloseEditor() {
+  if (EMB_EDIT && EMB_EDIT.modal) EMB_EDIT.modal.remove();
+  EMB_EDIT = null;
+}
+
+function openCharEmblemEditor(char) {
+  const cfgs = charEmblemConfigs(char.id);
+  const old = document.getElementById('embModal');
+  if (old) old.remove();
+  const modal = document.createElement('div');
+  modal.id = 'embModal';
+  modal.className = 'picker-modal';
+  document.body.appendChild(modal);
+  EMB_EDIT = {
+    char: char,
+    modal: modal,
+    pots: (char.potentials || []).filter(p => p && p.name && p.type !== '核心潜能'),
+    cfgs: cfgs.length ? cfgs : [{ name: '', desc: '', levels: { lv70: [], lv80: [], lv90: [] } }]
+  };
+  modal.onclick = ev => { if (ev.target === modal) embCloseEditor(); };
+  renderEmblemEditor();
+}
+
+async function embSaveEditor() {
+  const st = EMB_EDIT;
+  if (!st) return;
+  const out = st.cfgs.map(c => {
+    const levels = {};
+    EMB_LEVELS.forEach(b => {
+      const list = (c.levels[b.key] || []).filter(Boolean).slice(0, EMB_MAX_ATTRS);
+      if (list.length) levels[b.key] = list;
+    });
+    return { name: String(c.name || '').trim(), desc: String(c.desc || '').trim(), levels: levels };
+  }).filter(c => Object.keys(c.levels).length || c.name || c.desc);
+  const btn = st.modal.querySelector('.picker-foot .btn');
+  if (btn) { btn.disabled = true; btn.textContent = '保存中…'; }
+  try {
+    await saveCharEmblems(st.char.id, out);
+    embCloseEditor();
+    renderCharacter();
+  } catch (err) {
+    if (btn) { btn.disabled = false; btn.textContent = '保存'; }
+    showToast('保存失败：' + (err && err.message ? err.message : '未知错误'), 'err');
+  }
+}
+
 
 function renderCharacters() {
   const defs = [
@@ -880,6 +1227,8 @@ function renderCharacter() {
 
     ${charBuildHtml(char)}
 
+    ${charEmblemHtml(char)}
+
     <section class="section"><h2 class="section-title">潜能</h2>${potHtml}</section>
 
   `;
@@ -1015,6 +1364,10 @@ function renderCharacter() {
   // 技能加点编辑（管理员）
   const buildBtn = document.getElementById('buildEdit');
   if (buildBtn) buildBtn.addEventListener('click', () => openBuildEditor(char));
+
+  // 纹章编辑（管理员）
+  const embBtn = document.getElementById('embEdit');
+  if (embBtn) embBtn.addEventListener('click', () => openCharEmblemEditor(char));
 
   // 加强状态切换（管理员）
   const buffBtn = document.getElementById('buffToggle');
@@ -1267,7 +1620,9 @@ function renderTeams() {
     const key = String(raw || '').trim();
     if (!key) return;
     const target = (ELEMENTS[key] || {}).name || key;   // water → 水
-    if (FILTER_DEFS[0].opts.indexOf(target) >= 0) filterState.element = target;
+    // 注意：元素选项现在是 {value,label,cls,html} 对象，要取 value 再比
+    const elOpts = FILTER_DEFS[0].opts.map(o => (typeof o === 'string' ? o : o.value));
+    if (elOpts.indexOf(target) >= 0) filterState.element = target;
   })();
   // 默认排序：强度 → 编辑时间（新的在前）→ 元素（水 火 风 土 光 暗）
   const EL_SORT_ORDER = ['water', 'fire', 'wind', 'earth', 'light', 'dark'];
@@ -1582,93 +1937,6 @@ function bindTagDropdown(root, ddId, onPick) {
   });
 }
 
-// ============ 队伍纹章推荐（大毕业 / 小毕业）============
-const GRAD_DEFS = [
-  { key: 'big',   label: '大毕业', tip: '卷分向 · 要求更严' },
-  { key: 'small', label: '小毕业', tip: '够一档 / 二档开头即可' }
-];
-function teamGradOf(t) { return (t && t.graduates) || {}; }
-function patternById(id) {
-  return (DATA.patterns || []).find(p => String(p.id) === String(id)) || null;
-}
-function teamGradHtml(t) {
-  const g = teamGradOf(t);
-  const editable = (typeof isAdmin === 'function') && isAdmin();
-  const head = '<h2 class="section-title">纹章推荐' +
-    (editable ? '<button type="button" class="mini-btn" id="gradEdit">编辑</button>' : '') + '</h2>';
-  const cards = GRAD_DEFS.map(d => {
-    const item = g[d.key] || {};
-    const desc = String(item.desc || '').trim();
-    const ids = Array.isArray(item.patterns) ? item.patterns : [];
-    const pats = ids.map(patternById).filter(Boolean);
-    const patHtml = pats.length
-      ? '<div class="grad-pats">' + pats.map(p =>
-          '<span class="grad-pat" title="' + escapeHtml(p.name) + '">' +
-          (p.portrait ? '<img src="' + escapeHtml(p.portrait) + '" alt="" loading="lazy">' : '') +
-          '<i>' + escapeHtml(p.name) + '</i></span>'
-        ).join('') + '</div>'
-      : '';
-    const hasAny = desc || pats.length;
-    return '<div class="grad-card"><div class="grad-head"><b>' + d.label + '</b><span>' + d.tip + '</span></div>' +
-      (hasAny ? (desc ? '<div class="grad-desc">' + escapeHtml(desc).replace(/\n/g, '<br>') + '</div>' : '') + patHtml
-               : '<div class="grad-empty">还没填写</div>') +
-      '</div>';
-  }).join('');
-  return '<section class="section" id="teamGrad">' + head + '<div class="grad-grid">' + cards + '</div></section>';
-}
-
-function openGradEditor(t) {
-  const g = teamGradOf(t);
-  const old = document.getElementById('gradModal');
-  if (old) old.remove();
-  const modal = document.createElement('div');
-  modal.id = 'gradModal';
-  modal.className = 'picker-modal';
-  const groups = GRAD_DEFS.map(d => {
-    const item = g[d.key] || {};
-    const chosen = Array.isArray(item.patterns) ? item.patterns.map(String) : [];
-    const list = (DATA.patterns || []).map(p =>
-      '<label class="grad-pick"><input type="checkbox" data-grad="' + d.key + '" value="' + escapeHtml(String(p.id)) + '"' +
-      (chosen.indexOf(String(p.id)) >= 0 ? ' checked' : '') + '>' +
-      (p.portrait ? '<img src="' + escapeHtml(p.portrait) + '" alt="" loading="lazy">' : '') +
-      '<span>' + escapeHtml(p.name) + '</span></label>'
-    ).join('');
-    return '<div class="grad-edit-block">' +
-      '<div class="grad-edit-title">' + d.label + ' <em>' + d.tip + '</em></div>' +
-      '<textarea class="team-desc-input grad-edit-desc" data-grad="' + d.key + '" rows="3" placeholder="' + d.label + '的纹章简介（推荐哪些、为什么）">' + escapeHtml(item.desc || '') + '</textarea>' +
-      '<div class="grad-pick-box">' + list + '</div>' +
-      '</div>';
-  }).join('');
-  modal.innerHTML = [
-    '<div class="picker-panel upd-panel">',
-    '<div class="picker-head"><b>纹章推荐 · ' + escapeHtml(t.name || '') + '</b><button type="button" class="picker-close" id="gradClose">✕</button></div>',
-    '<div class="upd-form">' + groups + '</div>',
-    '<div class="picker-foot"><button type="button" class="btn" id="gradSave">保存</button>',
-    '<button type="button" class="btn-secondary" id="gradCancel">取消</button></div>',
-    '</div>'
-  ].join('');
-  document.body.appendChild(modal);
-  const close = () => modal.remove();
-  modal.addEventListener('click', ev => { if (ev.target === modal) close(); });
-  document.getElementById('gradClose').addEventListener('click', close);
-  document.getElementById('gradCancel').addEventListener('click', close);
-  document.getElementById('gradSave').addEventListener('click', () => {
-    const next = {};
-    GRAD_DEFS.forEach(d => {
-      const ta = modal.querySelector('.grad-edit-desc[data-grad="' + d.key + '"]');
-      const desc = ta ? String(ta.value || '').trim() : '';
-      const ids = [];
-      modal.querySelectorAll('input[type="checkbox"][data-grad="' + d.key + '"]').forEach(cb => {
-        if (cb.checked) ids.push(cb.value);
-      });
-      if (desc || ids.length) next[d.key] = { desc: desc, patterns: ids };
-    });
-    saveTeamEdit(t.id, { graduates: next });
-    close();
-    renderTeam();
-  });
-}
-
 function renderTeam() {
   const id = getUrlParam('id');
   const root = document.getElementById('content');
@@ -1825,7 +2093,6 @@ function renderTeam() {
         <div class="backup-title">辅位备选秘纹 <em>（上限 5 个）</em></div>
         ${backupRow(subBk, 'subBk')}
       </section>
-      ${teamGradHtml(t)}
       <section class="section">
         <h2 class="section-title">队伍标签</h2>
         ${isEdit ? tagEditor : (tagText ? '<div class="ut-tags">' + tagText + '</div>' : '<div class="team-desc-view empty">暂无标签</div>')}
@@ -1836,9 +2103,6 @@ function renderTeam() {
     const cur = () => getTeamAny(id) || {};
     const save = patch => saveTeamEdit(id, patch);
 
-    // 纹章推荐编辑（管理员）
-    const gradBtn = document.getElementById('gradEdit');
-    if (gradBtn) gradBtn.addEventListener('click', () => openGradEditor(cur()));
 
     if (isEdit) {
       const descEl = document.getElementById('teamDesc');
