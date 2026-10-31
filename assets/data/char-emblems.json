@@ -110,7 +110,7 @@
     "wlsh": [
       {
         "name": "后排毕业必要纹章",
-        "desc": "",
+        "desc": "两个金充能也行，其他尽量+3，+2也可",
         "levels": {
           "lv70": [
             {
@@ -129,11 +129,1052 @@
               "id": "potential",
               "pot": "海风执纪",
               "lv": 3
+            },
+            {
+              "id": "potential",
+              "pot": "潮音渐歇",
+              "lv": 3
+            }
+          ]
+        }
+      },
+      {
+        "name": "主控毕业必要纹章",
+        "desc": "两个金充能也行，其他尽量+3，+2或+1也可，潜能少一个问题也不大",
+        "levels": {
+          "lv70": [
+            {
+              "id": "charge-efficiency-main",
+              "tier": 4
+            }
+          ],
+          "lv80": [
+            {
+              "id": "main-skill",
+              "tier": 3
+            }
+          ],
+          "lv90": [
+            {
+              "id": "potential",
+              "pot": "碎沫余音",
+              "lv": 3
+            },
+            {
+              "id": "potential",
+              "pot": "触地既跃",
+              "lv": 3
+            },
+            {
+              "id": "potential",
+              "pot": "摇曳浮光",
+              "lv": 3
+            }
+          ]
+        }
+      }
+    ],
+    "xiya": [
+      {
+        "name": "跑A流纹章",
+        "desc": "毕业大致为这样，也别太努力刷这个，现在是光尘沙时代",
+        "levels": {
+          "lv70": [
+            {
+              "id": "crit-rate",
+              "tier": 4
+            },
+            {
+              "id": "elemental-pen",
+              "tier": 4
+            },
+            {
+              "id": "auto-attack-dmg",
+              "tier": 3
+            }
+          ],
+          "lv80": [
+            {
+              "id": "auto-attack",
+              "tier": 3
+            },
+            {
+              "id": "crit-rate",
+              "tier": 4
+            },
+            {
+              "id": "auto-attack-dmg",
+              "tier": 3
+            },
+            {
+              "id": "elemental-pen",
+              "tier": 4
+            }
+          ],
+          "lv90": [
+            {
+              "id": "potential",
+              "pot": "雪域压制",
+              "lv": 2
+            },
+            {
+              "id": "potential",
+              "pot": "穿雪破空",
+              "lv": 3
+            },
+            {
+              "id": "atk-pct",
+              "tier": 4
+            }
+          ]
+        }
+      }
+    ],
+    "mimiebo": [
+      {
+        "name": "主控技伤（新手可过渡）",
+        "desc": "对于过渡用可能配置高了，可以适当减少",
+        "levels": {
+          "lv70": [
+            {
+              "id": "crit-rate",
+              "tier": 3
+            },
+            {
+              "id": "elemental-pen",
+              "tier": 3
+            },
+            {
+              "id": "charge-efficiency-main",
+              "tier": 2
+            }
+          ],
+          "lv80": [
+            {
+              "id": "main-skill",
+              "tier": 1
+            },
+            {
+              "id": "elemental-dmg",
+              "tier": 3
+            },
+            {
+              "id": "charge-efficiency-main",
+              "tier": 2
+            }
+          ],
+          "lv90": [
+            {
+              "id": "skill-dmg",
+              "tier": 2
+            },
+            {
+              "id": "potential",
+              "pot": "耀目辉芒",
+              "lv": 0
+            },
+            {
+              "id": "potential",
+              "pot": "星云残响",
+              "lv": 0
+            }
+          ]
+        }
+      },
+      {
+        "name": "援护辅助",
+        "desc": "就这么简单，培养成本不高",
+        "levels": {
+          "lv70": [
+            {
+              "id": "charge-efficiency-support",
+              "tier": 3
+            }
+          ],
+          "lv80": [
+            {
+              "id": "charge-efficiency-support",
+              "tier": 3
+            }
+          ],
+          "lv90": [
+            {
+              "id": "potential",
+              "pot": "大喝彩",
+              "lv": 2
+            }
+          ]
+        }
+      }
+    ],
+    "lalu": [
+      {
+        "name": "不推荐培养纹章",
+        "desc": "",
+        "levels": {}
+      }
+    ],
+    "jinglin": [
+      {
+        "name": "不推荐培养纹章",
+        "desc": "",
+        "levels": {}
+      }
+    ],
+    "huochui": [
+      {
+        "name": "光尘沙队",
+        "desc": "打伤害兼辅助，火垂在尘沙队的伤害占比会在总伤的10%-20%",
+        "levels": {
+          "lv70": [
+            {
+              "id": "elemental-pen",
+              "tier": 4
+            },
+            {
+              "id": "crit-rate",
+              "tier": 4
+            },
+            {
+              "id": "skill-dmg",
+              "tier": 3
+            }
+          ],
+          "lv80": [
+            {
+              "id": "support-skill",
+              "tier": 3
+            },
+            {
+              "id": "crit-rate",
+              "tier": 4
+            },
+            {
+              "id": "elemental-pen",
+              "tier": 4
+            }
+          ],
+          "lv90": [
+            {
+              "id": "potential",
+              "pot": "纯洁领域",
+              "lv": 3
+            },
+            {
+              "id": "potential",
+              "pot": "星芒坠落",
+              "lv": 3
+            }
+          ]
+        }
+      },
+      {
+        "name": "希娅队",
+        "desc": "就比密涅瓦强了不到20%，只是可以打伤害了适配性比密涅瓦差，要的纹章还更多",
+        "levels": {
+          "lv70": [
+            {
+              "id": "crit-rate",
+              "tier": 4
+            },
+            {
+              "id": "elemental-pen",
+              "tier": 4
+            },
+            {
+              "id": "skill-dmg",
+              "tier": 3
+            }
+          ],
+          "lv80": [
+            {
+              "id": "crit-rate",
+              "tier": 4
+            },
+            {
+              "id": "elemental-pen",
+              "tier": 4
+            },
+            {
+              "id": "support-skill",
+              "tier": 3
+            }
+          ],
+          "lv90": [
+            {
+              "id": "potential",
+              "pot": "纯洁领域",
+              "lv": 3
+            },
+            {
+              "id": "potential",
+              "pot": "光流蓄锋",
+              "lv": 2
+            }
+          ]
+        }
+      }
+    ],
+    "tiliya": [
+      {
+        "name": "后台辅助",
+        "desc": "尘沙（源初）的队伍甚至不需要援护技+2；顽敌克制给技伤队，强光致盲给印记队，骑士圣印和奇招馈能可给需要攻击拐的队伍（eg：希娅队）",
+        "levels": {
+          "lv70": [
+            {
+              "id": "charge-efficiency-support",
+              "tier": 3
+            }
+          ],
+          "lv80": [
+            {
+              "id": "support-skill",
+              "tier": 2
+            }
+          ],
+          "lv90": [
+            {
+              "id": "potential",
+              "pot": "顽敌克制",
+              "lv": 3
+            },
+            {
+              "id": "potential",
+              "pot": "强光致盲",
+              "lv": 3
+            },
+            {
+              "id": "potential",
+              "pot": "骑士圣印",
+              "lv": 3
+            },
+            {
+              "id": "potential",
+              "pot": "奇招馈能",
+              "lv": 3
+            }
+          ]
+        }
+      }
+    ],
+    "jiaotang": [
+      {
+        "name": "不推荐培养纹章",
+        "desc": "",
+        "levels": {}
+      }
+    ],
+    "keluonisi": [
+      {
+        "name": "不推荐培养纹章",
+        "desc": "",
+        "levels": {}
+      }
+    ],
+    "wuyu": [
+      {
+        "name": "仆从流纹章",
+        "desc": "雾语当输出时才需要这么高配置，不输出只要汲阳+2即可",
+        "levels": {
+          "lv70": [
+            {
+              "id": "elemental-pen",
+              "tier": 4
+            },
+            {
+              "id": "crit-rate",
+              "tier": 4
+            },
+            {
+              "id": "minion-dmg",
+              "tier": 4
+            }
+          ],
+          "lv80": [
+            {
+              "id": "support-skill",
+              "tier": 3
+            },
+            {
+              "id": "crit-rate",
+              "tier": 4
+            },
+            {
+              "id": "elemental-pen",
+              "tier": 4
+            }
+          ],
+          "lv90": [
+            {
+              "id": "potential",
+              "pot": "汲阳",
+              "lv": 2
+            }
+          ]
+        }
+      }
+    ],
+    "kesaite": [
+      {
+        "name": "后排辅助",
+        "desc": "主控纹章不做，未来不用；潜能等级能刷多少算多少，越多越强；一个彩充能也够",
+        "levels": {
+          "lv70": [
+            {
+              "id": "charge-efficiency-support",
+              "tier": 3
+            }
+          ],
+          "lv80": [
+            {
+              "id": "support-skill",
+              "tier": 3
+            },
+            {
+              "id": "charge-efficiency-support",
+              "tier": 3
+            }
+          ],
+          "lv90": [
+            {
+              "id": "potential",
+              "pot": "幽冥烈焰",
+              "lv": 3
+            },
+            {
+              "id": "potential",
+              "pot": "暗·魔痕",
+              "lv": 3
+            },
+            {
+              "id": "potential",
+              "pot": "暗·余辉",
+              "lv": 3
+            }
+          ]
+        }
+      }
+    ],
+    "feilengcui": [
+      {
+        "name": "混伤流纹章",
+        "desc": "仆从流纹章不做，不要浪费资源；需要一定的充能对轴（暗队充能普遍较快）",
+        "levels": {
+          "lv70": [
+            {
+              "id": "crit-rate",
+              "tier": 4
+            },
+            {
+              "id": "elemental-pen",
+              "tier": 4
+            },
+            {
+              "id": "charge-efficiency-main",
+              "tier": 2
+            },
+            {
+              "id": "skill-dmg",
+              "tier": 3
+            }
+          ],
+          "lv80": [
+            {
+              "id": "crit-rate",
+              "tier": 4
+            },
+            {
+              "id": "elemental-pen",
+              "tier": 4
+            },
+            {
+              "id": "main-skill",
+              "tier": 3
+            }
+          ],
+          "lv90": [
+            {
+              "id": "potential",
+              "pot": "买定离手",
+              "lv": 2
+            },
+            {
+              "id": "potential",
+              "pot": "瞬影断迷",
+              "lv": 2
+            }
+          ]
+        }
+      }
+    ],
+    "yiye": [
+      {
+        "name": "后台技伤",
+        "desc": "很吃暴击的纹章，作为与翡冷翠的双c队友，给满暗穿可大幅提高乙叶的伤害占比",
+        "levels": {
+          "lv70": [
+            {
+              "id": "crit-rate",
+              "tier": 4
+            },
+            {
+              "id": "elemental-pen",
+              "tier": 4
+            },
+            {
+              "id": "skill-dmg",
+              "tier": 3
+            }
+          ],
+          "lv80": [
+            {
+              "id": "support-skill",
+              "tier": 3
+            },
+            {
+              "id": "elemental-pen",
+              "tier": 4
+            },
+            {
+              "id": "crit-rate",
+              "tier": 4
+            },
+            {
+              "id": "elemental-dmg",
+              "tier": 4
+            }
+          ],
+          "lv90": [
+            {
+              "id": "potential",
+              "pot": "雨织愁痕",
+              "lv": 2
+            },
+            {
+              "id": "potential",
+              "pot": "终期于尽",
+              "lv": 2
+            }
+          ]
+        }
+      },
+      {
+        "name": "后台绝招",
+        "desc": "更适合花玲的队伍（翡冷翠也能用），暴击要求没那么高，一个彩暴基本就可以高暴甚至百暴；而且不缺充能",
+        "levels": {
+          "lv70": [
+            {
+              "id": "crit-rate",
+              "tier": 4
+            },
+            {
+              "id": "elemental-pen",
+              "tier": 4
+            },
+            {
+              "id": "ultimate-dmg",
+              "tier": 4
+            }
+          ],
+          "lv80": [
+            {
+              "id": "support-skill",
+              "tier": 2
+            },
+            {
+              "id": "elemental-pen",
+              "tier": 4
+            },
+            {
+              "id": "ultimate-dmg",
+              "tier": 4
+            }
+          ],
+          "lv90": [
+            {
+              "id": "potential",
+              "pot": "孤灯摇曳",
+              "lv": 1
+            },
+            {
+              "id": "potential",
+              "pot": "须臾无踪",
+              "lv": 3
+            }
+          ]
+        }
+      }
+    ],
+    "hualing": [
+      {
+        "name": "绝招纹章",
+        "desc": "",
+        "levels": {
+          "lv70": [
+            {
+              "id": "charge-efficiency-main",
+              "tier": 3
+            },
+            {
+              "id": "crit-rate",
+              "tier": 4
+            },
+            {
+              "id": "elemental-pen",
+              "tier": 4
+            }
+          ],
+          "lv80": [
+            {
+              "id": "main-skill",
+              "tier": 3
+            },
+            {
+              "id": "elemental-pen",
+              "tier": 4
+            },
+            {
+              "id": "ultimate-dmg",
+              "tier": 4
+            },
+            {
+              "id": "crit-rate",
+              "tier": 4
+            }
+          ],
+          "lv90": [
+            {
+              "id": "potential",
+              "pot": "滔天巨浪",
+              "lv": 2
+            },
+            {
+              "id": "potential",
+              "pot": "绝海的斗争",
+              "lv": 3
+            }
+          ]
+        }
+      },
+      {
+        "name": "普攻纹章",
+        "desc": "",
+        "levels": {
+          "lv70": [
+            {
+              "id": "elemental-pen",
+              "tier": 4
+            },
+            {
+              "id": "crit-rate",
+              "tier": 4
+            },
+            {
+              "id": "auto-attack-dmg",
+              "tier": 4
+            }
+          ],
+          "lv80": [
+            {
+              "id": "elemental-pen",
+              "tier": 4
+            },
+            {
+              "id": "crit-rate",
+              "tier": 4
+            },
+            {
+              "id": "auto-attack",
+              "tier": 3
+            },
+            {
+              "id": "main-skill",
+              "tier": 3
+            }
+          ],
+          "lv90": [
+            {
+              "id": "potential",
+              "pot": "暗锁溢爆",
+              "lv": 3
+            },
+            {
+              "id": "auto-attack-dmg",
+              "tier": 4
+            }
+          ]
+        }
+      }
+    ],
+    "kelnxc": [
+      {
+        "name": "后排直伤纹章",
+        "desc": "玫瑰流是锦上添花+3，枯萎流是药石淬炼+3和岁暮穷途+3",
+        "levels": {
+          "lv70": [
+            {
+              "id": "crit-rate",
+              "tier": 4
+            },
+            {
+              "id": "elemental-pen",
+              "tier": 4
+            }
+          ],
+          "lv80": [
+            {
+              "id": "crit-rate",
+              "tier": 4
+            },
+            {
+              "id": "support-skill",
+              "tier": 3
+            },
+            {
+              "id": "elemental-pen",
+              "tier": 4
+            }
+          ],
+          "lv90": [
+            {
+              "id": "potential",
+              "pot": "锦上添花",
+              "lv": 3
+            },
+            {
+              "id": "potential",
+              "pot": "药石淬炼",
+              "lv": 3
+            },
+            {
+              "id": "potential",
+              "pot": "岁暮穷途",
+              "lv": 3
+            }
+          ]
+        }
+      },
+      {
+        "name": "印记流纹章",
+        "desc": "",
+        "levels": {
+          "lv90": [
+            {
+              "id": "potential",
+              "pot": "大地共鸣",
+              "lv": 3
+            }
+          ]
+        }
+      }
+    ],
+    "xiaohe": [
+      {
+        "name": "主控印记核心",
+        "desc": "",
+        "levels": {
+          "lv70": [
+            {
+              "id": "charge-efficiency-main",
+              "tier": 3
+            }
+          ],
+          "lv80": [
+            {
+              "id": "charge-efficiency-main",
+              "tier": 3
+            },
+            {
+              "id": "main-skill",
+              "tier": 3
+            },
+            {
+              "id": "ultimate",
+              "tier": 2
+            }
+          ],
+          "lv90": [
+            {
+              "id": "potential",
+              "pot": "自然之触",
+              "lv": 3
+            }
+          ]
+        }
+      },
+      {
+        "name": "后台技伤辅",
+        "desc": "",
+        "levels": {
+          "lv70": [
+            {
+              "id": "charge-efficiency-support",
+              "tier": 3
+            }
+          ],
+          "lv80": [
+            {
+              "id": "support-skill",
+              "tier": 3
+            },
+            {
+              "id": "ultimate",
+              "tier": 2
+            },
+            {
+              "id": "charge-efficiency-support",
+              "tier": 3
+            }
+          ],
+          "lv90": [
+            {
+              "id": "potential",
+              "pot": "天降幸运",
+              "lv": 2
+            },
+            {
+              "id": "potential",
+              "pot": "欢腾旋跃",
+              "lv": 3
+            }
+          ]
+        }
+      },
+      {
+        "name": "后台地伤辅",
+        "desc": "",
+        "levels": {
+          "lv70": [
+            {
+              "id": "charge-efficiency-support",
+              "tier": 3
+            }
+          ],
+          "lv80": [
+            {
+              "id": "support-skill",
+              "tier": 3
+            },
+            {
+              "id": "ultimate",
+              "tier": 2
+            },
+            {
+              "id": "charge-efficiency-support",
+              "tier": 3
+            }
+          ],
+          "lv90": [
+            {
+              "id": "potential",
+              "pot": "天降幸运",
+              "lv": 3
+            },
+            {
+              "id": "potential",
+              "pot": "情弩落雨",
+              "lv": 2
+            }
+          ]
+        }
+      }
+    ],
+    "gerui": [
+      {
+        "name": "后台印记",
+        "desc": "拉满了，真的拉满了",
+        "levels": {
+          "lv70": [
+            {
+              "id": "elemental-pen",
+              "tier": 4
+            },
+            {
+              "id": "crit-rate",
+              "tier": 4
+            },
+            {
+              "id": "atk-pct",
+              "tier": 4
+            }
+          ],
+          "lv80": [
+            {
+              "id": "elemental-pen",
+              "tier": 4
+            },
+            {
+              "id": "crit-rate",
+              "tier": 4
+            },
+            {
+              "id": "atk-pct",
+              "tier": 4
+            }
+          ],
+          "lv90": [
+            {
+              "id": "potential",
+              "pot": "黄昏的断罪",
+              "lv": 3
+            },
+            {
+              "id": "potential",
+              "pot": "黄昏的同狩",
+              "lv": 3
+            },
+            {
+              "id": "atk-pct",
+              "tier": 4
+            }
+          ]
+        }
+      },
+      {
+        "name": "主控通用",
+        "desc": "一般不用，仅给出基本配置；普攻和技伤混在一起了，可以根据需要刷",
+        "levels": {
+          "lv70": [
+            {
+              "id": "elemental-pen",
+              "tier": 3
+            },
+            {
+              "id": "atk-pct",
+              "tier": 3
+            },
+            {
+              "id": "crit-rate",
+              "tier": 1
+            }
+          ],
+          "lv80": [
+            {
+              "id": "main-skill",
+              "tier": 1
+            },
+            {
+              "id": "auto-attack",
+              "tier": 1
+            },
+            {
+              "id": "elemental-pen",
+              "tier": 3
+            },
+            {
+              "id": "atk-pct",
+              "tier": 3
+            }
+          ],
+          "lv90": [
+            {
+              "id": "potential",
+              "pot": "施虐快意",
+              "lv": 2
+            },
+            {
+              "id": "potential",
+              "pot": "多人游戏",
+              "lv": 2
+            },
+            {
+              "id": "atk-pct",
+              "tier": 2
+            },
+            {
+              "id": "crit-dmg",
+              "tier": 2
+            }
+          ]
+        }
+      }
+    ],
+    "sipakela": [
+      {
+        "name": "主控技伤",
+        "desc": "",
+        "levels": {
+          "lv70": [
+            {
+              "id": "elemental-pen",
+              "tier": 4
+            },
+            {
+              "id": "crit-rate",
+              "tier": 4
+            }
+          ],
+          "lv80": [
+            {
+              "id": "main-skill",
+              "tier": 3
+            },
+            {
+              "id": "elemental-pen",
+              "tier": 4
+            },
+            {
+              "id": "crit-rate",
+              "tier": 4
+            }
+          ],
+          "lv90": [
+            {
+              "id": "potential",
+              "pot": "浮轨伴射",
+              "lv": 3
+            },
+            {
+              "id": "potential",
+              "pot": "齿轮叩契",
+              "lv": 3
+            }
+          ]
+        }
+      },
+      {
+        "name": "印记",
+        "desc": "",
+        "levels": {
+          "lv70": [
+            {
+              "id": "elemental-pen",
+              "tier": 4
+            },
+            {
+              "id": "mark-dmg",
+              "tier": 4
+            }
+          ],
+          "lv80": [
+            {
+              "id": "elemental-pen",
+              "tier": 4
+            },
+            {
+              "id": "mark-dmg",
+              "tier": 4
+            }
+          ],
+          "lv90": [
+            {
+              "id": "potential",
+              "pot": "协兔爆发",
+              "lv": 3
+            },
+            {
+              "id": "potential",
+              "pot": "刻度爆表",
+              "lv": 3
+            },
+            {
+              "id": "mark-dmg",
+              "tier": 4
             }
           ]
         }
       }
     ]
   },
-  "updatedAt": "2026-10-31T15:21:11.918Z"
+  "updatedAt": "2026-10-31T16:56:55.223Z"
 }

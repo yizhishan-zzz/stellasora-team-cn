@@ -305,30 +305,20 @@
         "name": "主控",
         "desc": "死绑技伤流",
         "skills": {
-          "normal": 1,
           "main": 10,
           "support": 1,
-          "ult": 1
+          "ult": 1,
+          "normal": 5
         }
       },
       {
-        "name": "援护技伤",
+        "name": "印记（后排）",
         "desc": "",
         "skills": {
           "normal": 1,
           "main": 1,
           "support": 10,
-          "ult": 1
-        }
-      },
-      {
-        "name": "援护普攻",
-        "desc": "",
-        "skills": {
-          "normal": 10,
-          "main": 1,
-          "support": 7,
-          "ult": 1
+          "ult": 7
         }
       }
     ],
@@ -471,7 +461,7 @@
     "zijin": [
       {
         "name": "主控玩法",
-        "desc": "仅为菈露（圣夜）的仆从流玩法推荐，一般不常用",
+        "desc": "仅为菈露（圣夜）的仆从流玩法推荐，一般不用",
         "skills": {
           "normal": 1,
           "main": 10,
@@ -723,5 +713,5 @@
       }
     ]
   },
-  "updatedAt": "2026-10-31T13:55:09.488Z"
+  "updatedAt": "2026-10-31T16:53:51.666Z"
 }

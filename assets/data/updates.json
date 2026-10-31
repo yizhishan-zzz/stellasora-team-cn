@@ -141,7 +141,41 @@
       "body": "本站为玩家自制的非官方工具，与游戏官方无任何关联\n项目完全免费、无广告、无打赏、无任何盈利\n站内游戏素材（立绘、头像、图标等）版权归原发行商所有，仅用于资料展示，不提供素材下载；如涉侵权可通过网站底部联系方式告知，我会立即删除或调整\n已向悠星客服邮箱报备过本项目\n配队预设码使用已获星塔攻略组授权\n\n网站地址：https://stellasora-team-cn.pages.dev\n建议复制网址到浏览器打开，B站内置浏览器可能打不开\n\n当然此项目也已经在github上开源，网站链接：https://github.com/yizhishan-zzz/stellasora-team-cn\n（由于我是第一次开发网站，所以github上提交的次数会很多，相关经验较少，还请理解）\n\n感谢星塔攻略组的预设码授权\n数据来源为stelladb的github开源库，网站链接：https://github.com/AutumnVN/stelladb（使用了ss-data 与 ssassets 资源）\n\n本项目由本人独立开发完成，承诺永久免费、不接任何广告。\n感谢每一位愿意试用并提出建议的魔王，\n有 bug 或想法欢迎在b站bv号：BV1xeh26sEP6 的视频评论区留言，或直接联系 3910443008@qq.com邮箱给我提出意见或bug，欢迎各位魔王大人参与。",
       "images": [],
       "updatedAt": "2026-10-20T06:23:29.064Z"
+    },
+    {
+      "id": "u_mvwo84ve",
+      "title": "2026/11/1功能更新",
+      "date": "2026/11/01",
+      "body": "1.删除了配队：冬香技伤（心危擂台）\n新增了配队：尘沙岭川技伤（尘沙单c）\n2.更新了首页配队跳转逻辑，现在只要是对应属性的配队跳转就是相应属性的配队（如图2.1，图2.2所示）\n[图:imvwnzefw303]\n[图:imvwo07c3223]\n3.更新旅人技能加点，现在可在旅人页看到各个旅人的技能推荐加点，进入一个旅人（以尘沙（源初）为例），技能加点如图3.1所示\n[图:imvwo2qxq194]\n4.更新旅人纹章推荐，现在可在旅人页看到各个旅人的纹章推荐（就在技能推荐下面），进入一个旅人（以尘沙（源初）为例），纹章推荐如图4.1所示\n[图:imvwo4j03999]\n目前做完了光队，地队，暗队；其他的再等等。\n5.添加维护页面，内置Google恐龙小游戏链接，具体内容如图5.1所示\n[图:imvwo7vnd930]\n",
+      "images": [
+        {
+          "id": "imvwnzefw303",
+          "src": "assets/img/updates/xtlr_update_2026_11_01_062990.png",
+          "caption": "图2.1 点击查看全部（现在为水队）"
+        },
+        {
+          "id": "imvwo07c3223",
+          "src": "assets/img/updates/xtlr_update_2026_11_01_100444.png",
+          "caption": "图2.2 跳转至水队"
+        },
+        {
+          "id": "imvwo2qxq194",
+          "src": "assets/img/updates/xtlr_update_2026_11_01_219158.png",
+          "caption": "图3.1 技能加点"
+        },
+        {
+          "id": "imvwo4j03999",
+          "src": "assets/img/updates/xtlr_update_2026_11_01_302189.png",
+          "caption": "图4.1 纹章推荐"
+        },
+        {
+          "id": "imvwo7vnd930",
+          "src": "assets/img/updates/xtlr_update_2026_11_01_458545.png",
+          "caption": "图5.1 维护页面"
+        }
+      ],
+      "updatedAt": "2026-10-31T17:24:30.506Z"
     }
   ],
-  "updatedAt": "2026-10-24T05:47:47.556Z"
+  "updatedAt": "2026-10-31T17:24:30.520Z"
 }
