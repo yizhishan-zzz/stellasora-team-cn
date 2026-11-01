@@ -390,7 +390,8 @@ function charBuildHtml(char) {
   const list = charBuildsOf(char.id);
   const editable = (typeof isAdmin === 'function') && isAdmin();
   const head = '<h2 class="section-title">技能加点' +
-    (editable ? '<button type="button" class="mini-btn" id="buildEdit">编辑</button>' : '') + '</h2>';
+    (editable ? '<button type="button" class="mini-btn" id="buildEdit">编辑</button>' : '') +
+    '<span class="section-hint">技能加点仅为推荐加点，可根据自身情况或需求自行调节</span></h2>';
   if (!list.length) {
     return '<section class="section" id="charBuilds">' + head + emptyHint('还没有加点数据') + '</section>';
   }
@@ -628,7 +629,8 @@ function charEmblemHtml(char) {
   const cfgs = charEmblemConfigs(char.id);
   const editable = (typeof isAdmin === 'function') && isAdmin();
   const head = '<h2 class="section-title">纹章' +
-    (editable ? '<button type="button" class="mini-btn" id="embEdit">编辑</button>' : '') + '</h2>';
+    (editable ? '<button type="button" class="mini-btn" id="embEdit">编辑</button>' : '') +
+    '<span class="section-hint">纹章都按最高配置（或极高配置）推荐，可根据自身条件以及培养素材降低配置</span></h2>';
   if (!cfgs.length) return '<section class="section" id="charEmblems">' + head + emptyHint('还没有纹章配置') + '</section>';
   const cards = cfgs.map((c, i) => {
     const levels = EMB_LEVELS.map(b => {

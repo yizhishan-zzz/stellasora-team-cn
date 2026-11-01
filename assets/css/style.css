@@ -1586,3 +1586,13 @@ html[data-theme="dark"] .emb-chip.tier-blue  i { color: #93c5fd; }
 html[data-theme="dark"] .emb-chip.tier-gold  i { color: #fcd34d; }
 html[data-theme="dark"] .emb-chip.tier-pink  i { color: #f0abfc; }
 
+
+/* 区块标题右侧的小字说明 */
+.section-hint {
+  margin-left: 12px; font-size: 12px; font-weight: 400;
+  color: var(--text-muted); letter-spacing: 0; vertical-align: 2px;
+}
+@media (max-width: 720px) {
+  .section-hint { display: block; margin: 6px 0 0; font-size: 11.5px; line-height: 1.6; }
+}
+
