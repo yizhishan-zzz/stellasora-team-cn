@@ -711,7 +711,29 @@
           "ult": 1
         }
       }
+    ],
+    "leafia": [
+      {
+        "name": "印记流",
+        "desc": "印记流不需要加点",
+        "skills": {
+          "normal": 1,
+          "main": 1,
+          "support": 1,
+          "ult": 1
+        }
+      },
+      {
+        "name": "援护普攻",
+        "desc": "普攻伤害来自援护技",
+        "skills": {
+          "main": 1,
+          "support": 10,
+          "ult": 1,
+          "normal": 1
+        }
+      }
     ]
   },
-  "updatedAt": "2026-10-31T16:53:51.666Z"
+  "updatedAt": "2026-11-14T02:47:44.339Z"
 }

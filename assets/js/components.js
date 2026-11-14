@@ -101,7 +101,7 @@ function initNavbar(active) {
 function renderCharCard(char) {
   const meta = [
     char.element ? elIcon(char.element) : '<span class="badge badge-none">元素待补</span>',
-    char.role ? '<span class="badge role-' + char.role + '">' + roleName(char.role) + '</span>' : '<span class="badge badge-none">职业待补</span>'
+    '<span class="badge role-' + (char.role || 'balanced') + '">' + roleName(char.role || 'balanced') + '</span>'
   ].join('');
   // 已加强的旅人在卡片上打个标记；管理员直接看到可点的开关
   const buffed = (typeof isCharStrengthened === 'function') && isCharStrengthened(char.id);

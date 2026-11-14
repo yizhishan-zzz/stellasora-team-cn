@@ -1860,80 +1860,6 @@
       "date": "2026/09/25"
     },
     {
-      "id": "t_mu6tiimf5vve",
-      "name": "二代土印记（小禾格芮春科）",
-      "presetCode": "AAAAnAAAAJ8AAACVMYEbPAaRgABsMGAAGwYA",
-      "description": "土印记的强度很高，能快赶上花铃的双c暗队\n秘纹很难选（抓住传说很关键，稀有的地易伤秘纹），主位没合适的秘纹可以拿迷途的朝圣者，如果还没有那就拿数值高的吧\n参考了星塔攻略组的预设，网页链接：https://www.bilibili.com/opus/1165164205862551561?spm_id_from=333.1369.0.0",
-      "tags": {
-        "element": "土",
-        "style": "印记流",
-        "power": "力大转飞，跨属执法",
-        "scene": [
-          "单体环境"
-        ]
-      },
-      "chars": [
-        "xiaohe",
-        "kelnxc",
-        "gerui"
-      ],
-      "mainPatterns": [
-        "p008",
-        "p011",
-        "p009"
-      ],
-      "mainBackup": [
-        "p075",
-        null,
-        null,
-        null,
-        null
-      ],
-      "subPatterns": [
-        "p081",
-        "p091",
-        "p095"
-      ],
-      "subBackup": [
-        "p085",
-        "p036",
-        "p027",
-        null,
-        null
-      ],
-      "pots": [
-        {
-          "幸运开奖": 1,
-          "华丽转身": 1,
-          "萌萌助威": 6,
-          "一击全倒": 1,
-          "垫步技巧": 6,
-          "古灵精怪": 6,
-          "协同火力": 3,
-          "自然之触": 6,
-          "飚速手推车": 6
-        },
-        {
-          "药剂提纯": 1,
-          "余韵悠长": 1,
-          "病灶显影": 6,
-          "满室生香": 6,
-          "大地共鸣": 6,
-          "余泽犹在": 6
-        },
-        {
-          "绝妙余兴": 1,
-          "罪缚共振": 1,
-          "黄昏的断罪": 6,
-          "黄昏的同狩": 6,
-          "魂糸之共鸣": 3
-        }
-      ],
-      "isRecommended": false,
-      "updatedAt": 1792815745762,
-      "date": "2026/09/25"
-    },
-    {
       "id": "t_mu9xqmu633uf",
       "name": "早期格芮主控对单",
       "presetCode": "AAAAlQAAAJwAAAB0zbYDAADBgBgMBqGAAGAA",
@@ -3688,6 +3614,365 @@
       ],
       "isRecommended": false,
       "updatedAt": 1793466749028
+    },
+    {
+      "id": "t_mu6tiimf5vve",
+      "name": "二代土印记（小禾格芮春科）",
+      "presetCode": "AAAAnAAAAJ8AAACVMYEbPAaRgABsMGAAGwYA",
+      "description": "土印记的强度很高，能快赶上花铃的双c暗队\n秘纹很难选（抓住传说很关键，稀有的地易伤秘纹），主位没合适的秘纹可以拿迷途的朝圣者，如果还没有那就拿数值高的吧\n参考了星塔攻略组的预设，网页链接：https://www.bilibili.com/opus/1165164205862551561?spm_id_from=333.1369.0.0",
+      "tags": {
+        "element": "土",
+        "style": "印记流",
+        "power": "环境优解，对策使用",
+        "scene": [
+          "单体环境"
+        ]
+      },
+      "chars": [
+        "xiaohe",
+        "kelnxc",
+        "gerui"
+      ],
+      "mainPatterns": [
+        "p008",
+        "p011",
+        "p009"
+      ],
+      "mainBackup": [
+        "p075",
+        null,
+        null,
+        null,
+        null
+      ],
+      "subPatterns": [
+        "p081",
+        "p091",
+        "p095"
+      ],
+      "subBackup": [
+        "p085",
+        "p036",
+        "p027",
+        null,
+        null
+      ],
+      "pots": [
+        {
+          "幸运开奖": 1,
+          "华丽转身": 1,
+          "萌萌助威": 6,
+          "一击全倒": 1,
+          "垫步技巧": 6,
+          "古灵精怪": 6,
+          "协同火力": 3,
+          "自然之触": 6,
+          "飚速手推车": 6
+        },
+        {
+          "药剂提纯": 1,
+          "余韵悠长": 1,
+          "病灶显影": 6,
+          "满室生香": 6,
+          "大地共鸣": 6,
+          "余泽犹在": 6
+        },
+        {
+          "绝妙余兴": 1,
+          "罪缚共振": 1,
+          "黄昏的断罪": 6,
+          "黄昏的同狩": 6,
+          "魂糸之共鸣": 3
+        }
+      ],
+      "isRecommended": false,
+      "updatedAt": 1794622547200,
+      "date": "2026/09/25"
+    },
+    {
+      "id": "t_mwfrxwvkkxhk",
+      "name": "斯帕克拉四代土印记",
+      "date": "2026/11/14",
+      "presetCode": "AAAAnAAAAKEAAACMwYEDbAbMAACMAMGwGAAA",
+      "description": "参考了星塔攻略组的预设，网页链接：https://www.bilibili.com/opus/1270166213360615432?spm_id_from=333.1387.0.0\n伤害略低于格芮四代土印记，但是没有了画地为牢的问题\n今天是2026年11月14日，不建议各位魔王大人在石头不足的情况下去抽优叶，40天后就是圣诞限定了",
+      "tags": {
+        "element": "土",
+        "style": "印记流",
+        "power": "环境优解，对策使用",
+        "scene": [
+          "单体环境",
+          "群体环境"
+        ]
+      },
+      "chars": [
+        "xiaohe",
+        "leafia",
+        "sipakela"
+      ],
+      "mainPatterns": [
+        "p105",
+        "p008",
+        "p036"
+      ],
+      "mainBackup": [
+        "p081",
+        "p011",
+        null,
+        null,
+        null
+      ],
+      "subPatterns": [
+        "p085",
+        "p106",
+        "p095"
+      ],
+      "subBackup": [
+        "p091",
+        "p009",
+        "p027",
+        null,
+        null
+      ],
+      "pots": [
+        {
+          "小小军势": 1,
+          "摇摇舞步": 1,
+          "萌萌助威": 6,
+          "一击全倒": 1,
+          "古灵精怪": 6,
+          "协同火力": 6,
+          "自然之触": 6,
+          "飚速手推车": 6
+        },
+        {
+          "战术联绘": 1,
+          "观测迭代": 1,
+          "地伤增绘": 6,
+          "厚土沉积": 1,
+          "地源增幅": 6
+        },
+        {
+          "背兔鸣火": 1,
+          "轮辙援护": 1,
+          "协兔爆发": 6,
+          "刻度爆表": 6,
+          "工匠的自傲": 6
+        }
+      ],
+      "isRecommended": false,
+      "updatedAt": 1794622797507
+    },
+    {
+      "id": "t_mwfri5b2w15w",
+      "name": "格芮四代土印记",
+      "date": "2026/11/14",
+      "presetCode": "AAAAnAAAAJUAAAChwYEDbAbAADsMAMwAAIwA",
+      "description": "参考了星塔攻略组的预设，网站链接：https://www.bilibili.com/opus/1270166213360615432?spm_id_from=333.1387.0.0\n优叶相较春科提升不大，厉害的是优叶的伴生秘纹，给的数值很强力\n此配队还是有画地为牢的劣势，但伤害在现版本确实是最高的\n但今天是2026年11月14日，不建议各位魔王大人在石头不足的情况下去抽优叶，40天后就是圣诞限定了\n若是新手更建议使用缇莉娅来过渡；若有尘沙（源初）绑定缇莉娅且石头在未来的40天能达到240抽，可以考虑一只优叶本体",
+      "tags": {
+        "element": "土",
+        "style": "印记流",
+        "power": "环境优解，对策使用",
+        "scene": [
+          "单体环境",
+          "新手向"
+        ]
+      },
+      "chars": [
+        "xiaohe",
+        "gerui",
+        "leafia"
+      ],
+      "mainPatterns": [
+        "p105",
+        "p008",
+        "p036"
+      ],
+      "mainBackup": [
+        "p081",
+        "p011",
+        null,
+        null,
+        null
+      ],
+      "subPatterns": [
+        "p106",
+        "p095",
+        "p085"
+      ],
+      "subBackup": [
+        "p091",
+        "p009",
+        "p027",
+        null,
+        null
+      ],
+      "pots": [
+        {
+          "小小军势": 1,
+          "摇摇舞步": 1,
+          "萌萌助威": 6,
+          "一击全倒": 1,
+          "古灵精怪": 6,
+          "协同火力": 6,
+          "自然之触": 6,
+          "飚速手推车": 6
+        },
+        {
+          "罪加一等": 1,
+          "绝妙余兴": 1,
+          "六灾·饥溃": 1,
+          "黄昏的断罪": 6,
+          "黄昏的同狩": 6,
+          "魂糸之共鸣": 6
+        },
+        {
+          "战术联绘": 1,
+          "观测迭代": 1,
+          "地伤增绘": 6,
+          "厚土沉积": 1,
+          "地源增幅": 6
+        }
+      ],
+      "isRecommended": false,
+      "updatedAt": 1794622817376
+    },
+    {
+      "id": "t_mwfs448qm5l8",
+      "name": "斯帕克拉主控技伤二代",
+      "date": "2026/11/14",
+      "presetCode": "AAAAjAAAAKEAAACczbAYAAAwBsBsAMGAGA2G",
+      "description": "参考了星塔攻略组的预设，网页链接：https://www.bilibili.com/opus/1270166213360615432?spm_id_from=333.1387.0.0\n此配队让优叶的伤害占比是较于春科提升了一大截的，易伤拐力多了11.6%，攻击拐力少了40%，两个拐力影响的最终伤害不会差太多（易伤乘区较少，攻击乘区太多易稀释）；但优叶比春科更能打伤害\n今天是2026年11月14日，不建议各位魔王大人在石头不足的情况下去抽优叶，40天后就是圣诞限定了",
+      "tags": {
+        "element": "土",
+        "style": "混伤流",
+        "power": "环境优解，对策使用",
+        "scene": [
+          "单体环境"
+        ]
+      },
+      "chars": [
+        "sipakela",
+        "leafia",
+        "xiaohe"
+      ],
+      "mainPatterns": [
+        "p008",
+        "p036",
+        "p105"
+      ],
+      "mainBackup": [
+        "p091",
+        "p081",
+        "p011",
+        null,
+        null
+      ],
+      "subPatterns": [
+        "p106",
+        "p085",
+        "p095"
+      ],
+      "subBackup": [
+        "p009",
+        "p027",
+        null,
+        null,
+        null
+      ],
+      "pots": [
+        {
+          "跃耳极射": 1,
+          "咔哒叠响": 1,
+          "聚跃极射": 6,
+          "浮轨伴射": 6,
+          "齿轮叩契": 6,
+          "集束余韵": 6
+        },
+        {
+          "先导标定": 1,
+          "标定引爆": 1,
+          "标定扩蚀": 6,
+          "重标压制": 6,
+          "印记蚀刻": 6,
+          "地源增幅": 6
+        },
+        {
+          "理直气壮": 1,
+          "尽情摇摆": 1,
+          "欢腾旋跃": 6,
+          "天降幸运": 6,
+          "双连惊喜": 6,
+          "胡闹总动员": 6,
+          "飚速手推车": 6
+        }
+      ],
+      "isRecommended": false,
+      "updatedAt": 1794623603294
+    },
+    {
+      "id": "t_mwfsmm26nvt7",
+      "name": "优叶混伤（待开发）",
+      "date": "2026/11/14",
+      "presetCode": "AAAAoAAAAKEAAABvMAYDYDAwAABsAMAAAAwA",
+      "description": "现在没这个环境，角色不够，但优叶的潜能印记蚀刻，地源增幅可能会为以后的配队铺垫\n这个只能等策划给第三位队友，这里先拿鸢尾占位；这里属性设置为土\n这也只是我的一个思路，官方真有这样的想法的话那我们的终焉绝响和联合讨伐到底会变成什么样子（总不能和ba一样的油桶蟹搞个双属性吧）",
+      "tags": {
+        "element": "土",
+        "style": "",
+        "power": "未来可期，静静等待",
+        "scene": []
+      },
+      "chars": [
+        "wlsh",
+        "leafia",
+        "yuanwei"
+      ],
+      "mainPatterns": [
+        null,
+        null,
+        null
+      ],
+      "mainBackup": [
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "subPatterns": [
+        null,
+        null,
+        null
+      ],
+      "subBackup": [
+        null,
+        null,
+        null,
+        null,
+        null
+      ],
+      "pots": [
+        {
+          "七彩回弹": 1,
+          "律动光泡": 1,
+          "碎沫余音": 6,
+          "摇曳浮光": 6,
+          "云泡乘风": 6,
+          "晴滩管制": 6
+        },
+        {
+          "先导标定": 1,
+          "标定引爆": 1,
+          "地源增幅": 6,
+          "印记蚀刻": 6
+        },
+        {
+          "常量·引力": 1,
+          "常量·扩散": 1,
+          "积极信号": 6
+        }
+      ],
+      "isRecommended": false,
+      "updatedAt": 1794624201433
     }
   ]
 }

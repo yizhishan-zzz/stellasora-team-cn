@@ -1228,7 +1228,7 @@ function renderCharacter() {
 
           <span class="badge el-${char.element}">${elIcon(char.element)}${elementName(char.element)}元素</span>
 
-          <span class="badge role-${char.role}">${roleName(char.role)}</span>
+          <span class="badge role-${char.role || 'balanced'}">${roleName(char.role || 'balanced')}</span>
 
           <span class="badge badge-rarity">${char.rarity ? char.rarity + '星' : '稀有度待补'}</span>
 
@@ -1992,7 +1992,7 @@ function renderTeam() {
       return `
         <div class="build-row">
           <div class="build-char${isEdit ? ' editable' : ''}" data-idx="${i}"${isEdit ? ' title="点击更换旅人"' : ''}>
-            ${c ? '<span class="bc-avatar">' + renderPortrait(c, 'bc-img') + '<i class="bc-pot-count">' + keys.length + '</i></span>' + '<div class="bc-name">' + escapeHtml(c.name) + '</div><div class="bc-sub">' + escapeHtml(roleName(c.role)) + '</div>'
+            ${c ? '<span class="bc-avatar">' + renderPortrait(c, 'bc-img') + '<i class="bc-pot-count">' + keys.length + '</i></span>' + '<div class="bc-name">' + escapeHtml(c.name) + '</div><div class="bc-sub">' + escapeHtml(roleName(c.role || 'balanced')) + '</div>'
                 : '<div class="es-empty">＋<br>选择旅人</div>'}
           </div>
           <div class="build-pots">
@@ -2200,7 +2200,7 @@ function renderTeam() {
         const i = parseInt(el.dataset.idx, 10);
         const used = (cur().chars || []).filter((x, idx) => x && idx !== i);
         openPicker('选择旅人', DATA.characters,
-          c => renderPortrait(c, 'pk-img') + '<span>' + escapeHtml(c.name) + '</span><em>' + elementName(c.element) + ' ' + roleName(c.role) + '</em>',
+          c => renderPortrait(c, 'pk-img') + '<span>' + escapeHtml(c.name) + '</span><em>' + elementName(c.element) + ' ' + roleName(c.role || 'balanced') + '</em>',
           c => {
             const arr = (cur().chars || [null, null, null]).slice(); arr[i] = c.id;
             const pots = (cur().pots || [{},{},{}]).slice(); pots[i] = {};
