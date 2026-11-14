@@ -3692,7 +3692,7 @@
       "id": "t_mwfri5b2w15w",
       "name": "格芮四代土印记",
       "date": "2026/11/14",
-      "presetCode": "AAAAnAAAAJUAAAChwYEDbAbAADsMAMwAAIwA",
+      "presetCode": "AAAAnAAAAJUAAAChwYEDbAZgADsMAMwAAIwA",
       "description": "参考了星塔攻略组的预设，网站链接：https://www.bilibili.com/opus/1270166213360615432?spm_id_from=333.1387.0.0\n优叶相较春科提升不大，厉害的是优叶的伴生秘纹，给的数值很强力\n此配队还是有画地为牢的劣势，但伤害在现版本确实是最高的\n但今天是2026年11月14日，不建议各位魔王大人在石头不足的情况下去抽优叶，40天后就是圣诞限定了\n若是新手更建议使用缇莉娅来过渡；若有尘沙（源初）绑定缇莉娅且石头在未来的40天能达到240抽，可以考虑一只优叶本体",
       "tags": {
         "element": "土",
@@ -3760,7 +3760,7 @@
         }
       ],
       "isRecommended": false,
-      "updatedAt": 1794631265009
+      "updatedAt": 1794631268415
     },
     {
       "id": "t_mwfs448qm5l8",
@@ -3901,5 +3901,5 @@
       "updatedAt": 1794624201433
     }
   ],
-  "updatedAt": "2026-11-14T04:41:05.011Z"
+  "updatedAt": "2026-11-14T04:41:08.416Z"
 }
